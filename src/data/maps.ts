@@ -412,7 +412,7 @@ const MAPS = uniqueMap([
 			min: 20,
 			max: 50,
 			reason:
-				"Solo guides put the quest around 20–30 minutes. A fuller run is about 30–50 minutes. Time varies with player count, Host rounds, and knowledge of the steps.",
+				"Solo runs put the quest around 20–30 minutes. A fuller run is about 30–50 minutes. Time varies with player count, Host rounds, and knowledge of the steps.",
 		}),
 	}),
 	makeMap("shadows-of-evil", {
