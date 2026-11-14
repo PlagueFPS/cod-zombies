@@ -398,6 +398,23 @@ const MAPS = uniqueMap([
 				"Time varies significantly based on the game (BO2/BO3), player knowledge of steps, and slight RNG.",
 		}),
 	}),
+	makeMap("descent", {
+		title: "Descent",
+		releaseDate: "2015-09-03",
+		description:
+			"Beneath the waves, an Atlas resort called the Trident Retreat still keeps the lights on. Oz's past is waiting in the Tidal Generator.",
+		image: "/maps/descent.webp",
+		game: "advanced-warfare",
+		state: Option.none(),
+		mainQuest: Option.some("content/main-quests/reunion"),
+		difficulty: Option.some("Medium"),
+		estimatedTimeMins: Option.some({
+			min: 70,
+			max: 90,
+			reason:
+				"Solo runs take about 70–90 minutes. Time varies with player count, Oz challenge retries, and boss rounds pushing a challenge back.",
+		}),
+	}),
 	makeMap("shadows-of-evil", {
 		title: "Shadows of Evil",
 		releaseDate: "2015-11-06",

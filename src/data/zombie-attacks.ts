@@ -907,4 +907,63 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Sends a fire wall from the throne that downs players instantly. The Talon of Lu'roth stops it.",
 	}),
+	makeZombieAttack("emz-discharge", {
+		title: "Electric Attack",
+		range: "Short",
+		description:
+			"An electric attack. Within 180 units of the Galleria capacitor, it charges the capacitor and consumes the EMZ.",
+	}),
+	makeZombieAttack("host-infection", {
+		title: "Host Infection",
+		range: "Short",
+		description:
+			"Infects the player. The round-13 gas trap applies it, and a down from Mutated Oz infects you instead of a normal last stand. Cure it at a decontamination station.",
+	}),
+	makeZombieAttack("exo-emp-lasers", {
+		title: "Laser Grid",
+		range: "Medium",
+		description:
+			"Arena lasers deal 40 damage and EMP the Exo suit every 2.5 seconds while the trap is active.",
+	}),
+	makeZombieAttack("electricity-field", {
+		title: "Electricity Field",
+		range: "Medium",
+		description: "Arena electricity deals 17 damage per second while the trap is active.",
+	}),
+	makeZombieAttack("turret-trap", {
+		title: "Turret Trap",
+		range: "Long",
+		description:
+			"Sentries or mounted turrets open fire. One turret with two or fewer players, and two turrets with three or more.",
+	}),
+	makeZombieAttack("crushing-melee", {
+		title: "Crushing Melee",
+		range: "Short",
+		description: "A melee hit that deals 250 damage.",
+	}),
+	makeZombieAttack("spin-attack", {
+		title: "Spin",
+		range: "Short",
+		description: "A spinning strike. The cooldown is 5 seconds solo and 15 seconds in co-op.",
+	}),
+	makeZombieAttack("charging-lunge", {
+		title: "Charging Lunge",
+		range: "Medium",
+		description: "Lunges at a player from outside melee range.",
+	}),
+	makeZombieAttack("bounding-leap", {
+		title: "Bounding Leap",
+		range: "Long",
+		description: "Leaps toward a player.",
+	}),
+	makeZombieAttack("homing-rockets", {
+		title: "Homing Rockets",
+		range: "Long",
+		description: "Fires homing rockets that EMP Exo suits within 150 units.",
+	}),
+	makeZombieAttack("exo-emp-stomp", {
+		title: "EMP Stomp",
+		range: "Long",
+		description: "A stomp that EMPs Exo suits within 1000 units.",
+	}),
 ])
