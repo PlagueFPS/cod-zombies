@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-11-01T20:09:15.572Z
- * generated in: 30ms
+ * generated at: 2026-11-14T02:50:02.943Z
+ * generated in: 27ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -47,6 +47,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/pop-goes-the-weasel"
 	| "content/main-quests/pyrrhic-victory"
 	| "content/main-quests/reckoning"
+	| "content/main-quests/reunion"
 	| "content/main-quests/rex-infernus"
 	| "content/main-quests/richtofens-grand-scheme"
 	| "content/main-quests/salvation-lies-above"
@@ -380,6 +381,7 @@ export type ZombiesPaths =
 	| "content/zombies/dravakar"
 	| "content/zombies/dread-skull"
 	| "content/zombies/elder-disciple"
+	| "content/zombies/emz"
 	| "content/zombies/eye-of-malice"
 	| "content/zombies/fire-catalyst"
 	| "content/zombies/frost-zombie"
@@ -396,6 +398,7 @@ export type ZombiesPaths =
 	| "content/zombies/guardian"
 	| "content/zombies/heavy-zombie"
 	| "content/zombies/hellhound"
+	| "content/zombies/host-zombie"
 	| "content/zombies/insanity-elementals"
 	| "content/zombies/jolting-jack"
 	| "content/zombies/jumping-jack"
@@ -413,6 +416,7 @@ export type ZombiesPaths =
 	| "content/zombies/meistermeuchler"
 	| "content/zombies/meuchler"
 	| "content/zombies/mimic"
+	| "content/zombies/mutated-oz"
 	| "content/zombies/napalm-zombie"
 	| "content/zombies/nathan"
 	| "content/zombies/necropincer"
@@ -425,6 +429,7 @@ export type ZombiesPaths =
 	| "content/zombies/oni"
 	| "content/zombies/orda"
 	| "content/zombies/oscar"
+	| "content/zombies/oz"
 	| "content/zombies/panzermorder"
 	| "content/zombies/panzersoldat"
 	| "content/zombies/parasite"
@@ -445,6 +450,7 @@ export type ZombiesPaths =
 	| "content/zombies/sasquatch"
 	| "content/zombies/scorched-zombie"
 	| "content/zombies/scout"
+	| "content/zombies/security-dog"
 	| "content/zombies/sentinel-artifact"
 	| "content/zombies/shadow-soul"
 	| "content/zombies/shadow-werewolf"
