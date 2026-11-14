@@ -449,6 +449,23 @@ const MAPS = uniqueMap([
 				"Solo runs take around 60–80 minutes. Time varies with Plinko, fishing for the shovel, and teleport-mutator spawns.",
 		}),
 	}),
+	makeMap("descent", {
+		title: "Descent",
+		releaseDate: "2015-09-03",
+		description:
+			"The hunt for Oz leads to a climatic showdown in Atlas's underwater city. Fight with up to 4 players to survive against endless waves of mutant zombies!",
+		image: "/maps/descent.webp",
+		game: "advanced-warfare",
+		state: Option.none(),
+		mainQuest: Option.some("content/main-quests/reunion"),
+		difficulty: Option.some("Medium"),
+		estimatedTimeMins: Option.some({
+			min: 70,
+			max: 90,
+			reason:
+				"Solo runs take about 70–90 minutes. Time varies with player count, Oz challenge retries, and boss rounds pushing a challenge back.",
+		}),
+	}),
 	makeMap("shadows-of-evil", {
 		title: "Shadows of Evil",
 		releaseDate: "2015-11-06",
