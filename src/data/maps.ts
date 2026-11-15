@@ -399,15 +399,15 @@ const MAPS = uniqueMap([
 		}),
 	}),
 	makeMap("outbreak-aw", {
-		title: "Outbreak",
+		title: "Outbreak (AW)",
 		releaseDate: "2015-01-27",
 		description:
-			"Atlas's new pet broke out of the lab and infested an entire compound. Fight with up to 4 players to survive against endless waves of mutant zombies.",
+			"Atlas's new pet broke out of the lab and infested an entire compound. Fight with up to 4 players to survive against endless waves of mutant zombies!",
 		image: "/maps/outbreak-aw.webp",
 		game: "advanced-warfare",
 		state: Option.none(),
 		mainQuest: Option.some("content/main-quests/outbreak-aw"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Easy"),
 		estimatedTimeMins: Option.some({
 			min: 20,
 			max: 50,
