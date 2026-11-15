@@ -471,7 +471,7 @@ const ZOMBIES = uniqueMap([
 		elementalWeakness: [],
 		attacks: ["melee-swing", "infection"],
 		spawnBehavior:
-			"Hosts spawn on their own rounds and always sprint. Their health does not rise as the rounds go up. An-G warns that contamination has been detected. The last kill of the round drops a Full Reload and cures every infected player.",
+			"On Outbreak, Hosts spawn on their own rounds and always sprint. Their health does not rise as the rounds go up. An-G warns that contamination has been detected. The last kill of the round drops a Full Reload and cures every infected player.",
 		combatStrategy: "content/zombies/host",
 	}),
 	makeZombie("emz", {
@@ -516,16 +516,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2015-01-27",
 		image: "/zombies/security-dogs.webp",
 		description:
-			"Zombified security dogs that emerge from their kennels during dedicated special rounds. Fast and capable of jumping to high ground, they can also spawn with EMZ or Exploder traits.",
+			"Zombified security dogs that emerge from their kennels during dedicated special rounds. Fast and capable of jumping to high ground, they can also spawn with EMZ or Exploder traits. On Carrier, a bite deals 45 damage, and a dog with the teleport mutator has blue eyes and blinks.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw"],
+		maps: ["outbreak-aw", "carrier"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
 		elementalWeakness: [],
-		attacks: ["bite", "lunge"],
+		attacks: ["bite", "lunge", "blink"],
 		spawnBehavior:
-			"Security Dogs spawn in dedicated special rounds announced by An-G, emerging from kennels to hunt players. Killing the last dog of the round drops a Full Reload power-up. Some dogs spawn as EMZ or Exploder variants.",
+			"Security Dogs spawn in dedicated special rounds announced by An-G, emerging from kennels to hunt players. Killing the last dog of the round drops a Full Reload power-up. Some dogs spawn as EMZ or Exploder variants. On Carrier, the first special round is dogs. A round spawns 6 dogs per player, or 8 per player once the special-round counter is past 3. Health starts at 400 and climbs through 900 and 1300 to 1600 as that counter rises.",
 		combatStrategy: "content/zombies/security-dogs",
 	}),
 	makeZombie("exploder", {
@@ -563,24 +563,6 @@ const ZOMBIES = uniqueMap([
 		spawnBehavior:
 			"The teleport mutator joins normal rounds at wave 6. Solo adds a wave offset of 2, so they show up about wave 8. They spawn inside those rounds rather than on a round of their own.",
 		combatStrategy: "content/zombies/teleport-zombie",
-	}),
-	makeZombie("security-dog", {
-		title: "Security Dog",
-		state: Option.none(),
-		releaseDate: "2015-06-02",
-		image: "/zombies/security-dog.webp",
-		description:
-			"Security Dogs are the zombified security dogs on Carrier. They bite for 45 damage, and a dog with the teleport mutator has blue eyes and blinks.",
-		games: ["advanced-warfare"],
-		maps: ["carrier"],
-		type: "Special",
-		speed: "Fast",
-		weakPoints: ["head"],
-		elementalWeakness: [],
-		attacks: ["bite", "blink"],
-		spawnBehavior:
-			"Security Dogs spawn on dog rounds. The first special round is dogs. An-G announces the round, and the last dog drops a Full Reload. A round spawns 6 dogs per player, or 8 per player once the special-round counter is past 3. Health starts at 400 and climbs through 900 and 1300 to 1600 as that counter rises.",
-		combatStrategy: "content/zombies/security-dog",
 	}),
 	makeZombie("keepers", {
 		title: "Keepers",
