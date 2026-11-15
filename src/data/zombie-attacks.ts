@@ -911,12 +911,54 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		title: "Infection",
 		range: "Short",
 		description:
-			"A hit infects the player. The timer is 60 seconds, or 75 seconds with Exo tactical armor active. A later zombie hit removes 3 seconds, or 5 seconds when that hit deals more than 50 damage. Other damage drains the timer faster.",
+			"A hit infects the player instead of a normal down. The timer is 60 seconds, or 75 seconds with Exo tactical armor active. A later zombie hit removes 3 seconds, or 5 seconds when that hit deals more than 50 damage. Other damage takes off a tenth of a second per point.",
+	}),
+	makeZombieAttack("goliath-melee", {
+		title: "Improvised Melee",
+		range: "Short",
+		description:
+			"Swings a parking meter, stop sign, or axle, or bashes with the riot shield, for 90 damage inside about 120 units.",
+	}),
+	makeZombieAttack("goliath-lunge", {
+		title: "Lunge",
+		range: "Medium",
+		description:
+			"Lunges from up to about 250 units. It has to move about 100 units from that spot before it can lunge again.",
+	}),
+	makeZombieAttack("goliath-spin", {
+		title: "Spin",
+		range: "Short",
+		description:
+			"Spins if you are still near where it last lunged. The cooldown is about 5 seconds solo and 15 seconds in co-op.",
+	}),
+	makeZombieAttack("emp-stomp", {
+		title: "EMP Stomp",
+		range: "Medium",
+		description:
+			"After taking 2000 damage and waiting 15 seconds, it stomps when you are within about 500 units and shuts down Exos in that radius.",
+	}),
+	makeZombieAttack("goliath-rockets", {
+		title: "Homing Rockets",
+		range: "Long",
+		description:
+			"Fires homing rockets once you are outside melee reach. A rocket EMPs Exos within about 150 units when it detonates.",
 	}),
 	makeZombieAttack("emp-pulse", {
 		title: "EMP Pulse",
 		range: "Short",
 		description:
 			"Triggered when hitting a player or when a player attempts to boost away, disabling their Exoskeleton for 5 seconds and blurring vision.",
+	}),
+	makeZombieAttack("spike-shrapnel", {
+		title: "Spike Shrapnel",
+		range: "Short",
+		description:
+			"Sprays shrapnel around itself when shot in the torso or killed, damaging nearby players and zombies.",
+	}),
+	makeZombieAttack("acid-trail", {
+		title: "Acid Trail",
+		range: "Short",
+		description:
+			"Constantly drops puddles of acid on the ground wherever it walks, damaging players who step in them.",
 	}),
 ])
