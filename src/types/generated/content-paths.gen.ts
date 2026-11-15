@@ -3,7 +3,7 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-11-15T11:42:28.725Z
+ * generated at: 2026-11-15T18:16:31.339Z
  * generated in: 39ms
  */
 
@@ -416,6 +416,7 @@ export type ZombiesPaths =
 	| "content/zombies/mangler"
 	| "content/zombies/marauder"
 	| "content/zombies/margwa"
+	| "content/zombies/meatbag"
 	| "content/zombies/megaton"
 	| "content/zombies/meistermeuchler"
 	| "content/zombies/meuchler"
@@ -430,6 +431,7 @@ export type ZombiesPaths =
 	| "content/zombies/nova-6-crawler"
 	| "content/zombies/nxyara"
 	| "content/zombies/oni"
+	| "content/zombies/oozer"
 	| "content/zombies/orda"
 	| "content/zombies/oscar"
 	| "content/zombies/panzermorder"
@@ -463,6 +465,7 @@ export type ZombiesPaths =
 	| "content/zombies/slasher"
 	| "content/zombies/space-monkey"
 	| "content/zombies/spider"
+	| "content/zombies/spiker"
 	| "content/zombies/stadtjager"
 	| "content/zombies/stoker"
 	| "content/zombies/tempest"

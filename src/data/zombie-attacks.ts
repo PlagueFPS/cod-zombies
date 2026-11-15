@@ -949,4 +949,16 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Triggered when hitting a player or when a player attempts to boost away, disabling their Exoskeleton for 5 seconds and blurring vision.",
 	}),
+	makeZombieAttack("spike-shrapnel", {
+		title: "Spike Shrapnel",
+		range: "Short",
+		description:
+			"Sprays shrapnel around itself when shot in the torso or killed, damaging nearby players and zombies.",
+	}),
+	makeZombieAttack("acid-trail", {
+		title: "Acid Trail",
+		range: "Short",
+		description:
+			"Constantly drops puddles of acid on the ground wherever it walks, damaging players who step in them.",
+	}),
 ])
