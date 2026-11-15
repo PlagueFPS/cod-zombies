@@ -415,6 +415,23 @@ const MAPS = uniqueMap([
 				"Solo runs put the quest around 20–30 minutes. A fuller run is about 30–50 minutes. Time varies with player count, Host rounds, and knowledge of the steps.",
 		}),
 	}),
+	makeMap("infection", {
+		title: "Infection",
+		releaseDate: "2015-03-31",
+		description:
+			"The infection has spread to rural America, and everyone's favorite burger joint! Fight with up to 4 players against endless waves of mutant zombies!",
+		image: "/maps/infection.webp",
+		game: "advanced-warfare",
+		mainQuest: Option.some("content/main-quests/meat-is-murder"),
+		difficulty: Option.some("Easy"),
+		state: Option.none(),
+		estimatedTimeMins: Option.some({
+			min: 30,
+			max: 55,
+			reason:
+				"Solo runs take about 30–45 minutes. Full estimates run 30–55 minutes. Time varies with the 3D Printer, meat and valve spawns, and knowledge of the steps.",
+		}),
+	}),
 	makeMap("carrier", {
 		title: "Carrier",
 		releaseDate: "2015-06-02",

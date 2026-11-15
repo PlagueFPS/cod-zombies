@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-11-15T11:51:17.861Z
- * generated in: 28ms
+ * generated at: 2026-11-15T18:56:54.039Z
+ * generated in: 46ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -37,6 +37,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/love-and-war"
 	| "content/main-quests/making-history"
 	| "content/main-quests/maxis-potential"
+	| "content/main-quests/meat-is-murder"
 	| "content/main-quests/mined-games"
 	| "content/main-quests/most-escape-alive"
 	| "content/main-quests/my-brothers-keeper"
@@ -398,6 +399,7 @@ export type ZombiesPaths =
 	| "content/zombies/giant-thrasher"
 	| "content/zombies/gjallarfrost"
 	| "content/zombies/god-king"
+	| "content/zombies/goliath"
 	| "content/zombies/guardian"
 	| "content/zombies/heavy-zombie"
 	| "content/zombies/hellhound"
@@ -415,6 +417,7 @@ export type ZombiesPaths =
 	| "content/zombies/mangler"
 	| "content/zombies/marauder"
 	| "content/zombies/margwa"
+	| "content/zombies/meatbag"
 	| "content/zombies/megaton"
 	| "content/zombies/meistermeuchler"
 	| "content/zombies/meuchler"
@@ -429,6 +432,7 @@ export type ZombiesPaths =
 	| "content/zombies/nova-6-crawler"
 	| "content/zombies/nxyara"
 	| "content/zombies/oni"
+	| "content/zombies/oozer"
 	| "content/zombies/orda"
 	| "content/zombies/oscar"
 	| "content/zombies/panzermorder"
@@ -462,6 +466,7 @@ export type ZombiesPaths =
 	| "content/zombies/slasher"
 	| "content/zombies/space-monkey"
 	| "content/zombies/spider"
+	| "content/zombies/spiker"
 	| "content/zombies/stadtjager"
 	| "content/zombies/stoker"
 	| "content/zombies/teleport-zombie"
