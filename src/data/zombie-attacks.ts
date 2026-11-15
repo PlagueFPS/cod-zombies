@@ -911,7 +911,7 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		title: "Infection",
 		range: "Short",
 		description:
-			"A hit from a Host starts a 60 second infection timer, or 75 seconds with Exo tactical armor active, instead of a normal down.",
+			"A hit infects the player instead of a normal down. The timer is 60 seconds, or 75 seconds with Exo tactical armor active. A later zombie hit removes 3 seconds, or 5 seconds when that hit deals more than 50 damage. Other damage takes off a tenth of a second per point.",
 	}),
 	makeZombieAttack("goliath-melee", {
 		title: "Improvised Melee",
@@ -942,5 +942,11 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		range: "Long",
 		description:
 			"Fires homing rockets once you are outside melee reach. A rocket EMPs Exos within about 150 units when it detonates.",
+	}),
+	makeZombieAttack("emp-pulse", {
+		title: "EMP Pulse",
+		range: "Short",
+		description:
+			"Triggered when hitting a player or when a player attempts to boost away, disabling their Exoskeleton for 5 seconds and blurring vision.",
 	}),
 ])

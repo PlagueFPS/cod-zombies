@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-11-14T02:49:47.480Z
- * generated in: 29ms
+ * generated at: 2026-11-15T11:42:28.725Z
+ * generated in: 39ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -42,6 +42,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/my-brothers-keeper"
 	| "content/main-quests/no-mo-modi"
 	| "content/main-quests/outbreak"
+	| "content/main-quests/outbreak-aw"
 	| "content/main-quests/paradox-junction"
 	| "content/main-quests/paradoxical-prologue"
 	| "content/main-quests/pest-control"
@@ -366,6 +367,7 @@ export type ZombiesPaths =
 	| "content/zombies/brute"
 	| "content/zombies/brutus"
 	| "content/zombies/caltheris"
+	| "content/zombies/charger"
 	| "content/zombies/clown-zombie"
 	| "content/zombies/corpse-eater"
 	| "content/zombies/crog"
@@ -381,6 +383,8 @@ export type ZombiesPaths =
 	| "content/zombies/dravakar"
 	| "content/zombies/dread-skull"
 	| "content/zombies/elder-disciple"
+	| "content/zombies/emz"
+	| "content/zombies/exploder"
 	| "content/zombies/eye-of-malice"
 	| "content/zombies/fire-catalyst"
 	| "content/zombies/frost-zombie"
@@ -398,7 +402,7 @@ export type ZombiesPaths =
 	| "content/zombies/guardian"
 	| "content/zombies/heavy-zombie"
 	| "content/zombies/hellhound"
-	| "content/zombies/host-zombie"
+	| "content/zombies/host"
 	| "content/zombies/insanity-elementals"
 	| "content/zombies/jolting-jack"
 	| "content/zombies/jumping-jack"
@@ -448,6 +452,7 @@ export type ZombiesPaths =
 	| "content/zombies/sasquatch"
 	| "content/zombies/scorched-zombie"
 	| "content/zombies/scout"
+	| "content/zombies/security-dogs"
 	| "content/zombies/sentinel-artifact"
 	| "content/zombies/shadow-soul"
 	| "content/zombies/shadow-werewolf"
