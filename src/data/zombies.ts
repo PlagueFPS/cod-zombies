@@ -482,7 +482,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Electro Magnetic Zombies (EMZs) are exo-suited zombies crackling with blue electricity. Hitting a player or getting boosted away from triggers an EMP that disables their Exoskeleton for five seconds.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw"],
+		maps: ["outbreak-aw", "infection"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
@@ -518,7 +518,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Zombified security dogs that emerge from their kennels during dedicated special rounds. Fast and capable of jumping to high ground, they can also spawn with EMZ or Exploder traits.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw"],
+		maps: ["outbreak-aw", "infection"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
@@ -536,7 +536,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Exploders are volatile zombies surrounded by glowing green liquid and fire. They detonate when approached or killed, damaging nearby players while instantly killing surrounding zombies.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw"],
+		maps: ["outbreak-aw", "infection"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],

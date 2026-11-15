@@ -419,11 +419,11 @@ const MAPS = uniqueMap([
 		title: "Infection",
 		releaseDate: "2015-03-31",
 		description:
-			"A suburban Atlas outbreak around Burger Town, where a cursed burger brings the mascot Bubby back online.",
+			"The infection has spread to rural America, and everyone's favorite burger joint! Fight with up to 4 players against endless waves of mutant zombies!",
 		image: "/maps/infection.webp",
 		game: "advanced-warfare",
 		mainQuest: Option.some("content/main-quests/meat-is-murder"),
-		difficulty: Option.some("Medium"),
+		difficulty: Option.some("Easy"),
 		state: Option.none(),
 		estimatedTimeMins: Option.some({
 			min: 30,
