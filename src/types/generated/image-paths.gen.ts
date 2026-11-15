@@ -543,6 +543,7 @@ export type ZombiesImagePath =
   '/zombies/brute.webp' |
   '/zombies/brutus.webp' |
   '/zombies/caltheris.webp' |
+  '/zombies/charger.webp' |
   '/zombies/clown-zombie.webp' |
   '/zombies/corpse-eater.webp' |
   '/zombies/crog-brute.webp' |
@@ -558,6 +559,8 @@ export type ZombiesImagePath =
   '/zombies/dravakar.webp' |
   '/zombies/dread-skull-v1.webp' |
   '/zombies/elder-disciple.webp' |
+  '/zombies/emz.webp' |
+  '/zombies/exploder.webp' |
   '/zombies/eye-of-malice.webp' |
   '/zombies/fire-catalyst.webp' |
   '/zombies/frost-zombie.webp' |
@@ -574,7 +577,7 @@ export type ZombiesImagePath =
   '/zombies/guardian.webp' |
   '/zombies/heavy-zombie.webp' |
   '/zombies/hellhound-v1.webp' |
-  '/zombies/host-zombie.webp' |
+  '/zombies/host.webp' |
   '/zombies/insanity-elementals.webp' |
   '/zombies/jolting-jack.webp' |
   '/zombies/jumping-jack.webp' |
@@ -624,6 +627,7 @@ export type ZombiesImagePath =
   '/zombies/sasquatch.webp' |
   '/zombies/scorched-zombie.webp' |
   '/zombies/scout.webp' |
+  '/zombies/security-dogs.webp' |
   '/zombies/sentinel-artifact.webp' |
   '/zombies/shadow-soul.webp' |
   '/zombies/shadow-werewolf.webp' |

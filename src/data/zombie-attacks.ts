@@ -913,4 +913,10 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"A hit infects the player. The timer is 60 seconds, or 75 seconds with Exo tactical armor active. A later zombie hit removes 3 seconds, or 5 seconds when that hit deals more than 50 damage. Other damage drains the timer faster.",
 	}),
+	makeZombieAttack("emp-pulse", {
+		title: "EMP Pulse",
+		range: "Short",
+		description:
+			"Triggered when hitting a player or when a player attempts to boost away, disabling their Exoskeleton for 5 seconds and blurring vision.",
+	}),
 ])

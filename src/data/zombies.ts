@@ -456,11 +456,11 @@ const ZOMBIES = uniqueMap([
 			"In Origins, the Panzersoldat will always spawn in on Round 8 as long as the door to No Man's Land has been opened. Otherwise, it will spawn on the next round after that door has been opened, and then every 3-5 rounds after that. In Der Eisendrache, the Panzersoldat will spawn on Round 12 and every 5-6 rounds after that. During the Main Quest, a Panzersoldat will always spawn in after returning to the present time, and multiple will spawn during the final boss fight. In Revelations, the Panzersoldat will be between rounds 18-21, and is also present during the final boss fight.",
 		combatStrategy: "content/zombies/panzersoldat",
 	}),
-	makeZombie("host-zombie", {
+	makeZombie("host", {
 		title: "Host",
 		state: Option.none(),
 		releaseDate: "2015-01-27",
-		image: "/zombies/host-zombie.webp",
+		image: "/zombies/host.webp",
 		description:
 			"Hosts are infected test subjects on Outbreak. Boils cover the left side of the head, the right eye glows green, and the body trails green Manticore gas.",
 		games: ["advanced-warfare"],
@@ -472,7 +472,79 @@ const ZOMBIES = uniqueMap([
 		attacks: ["melee-swing", "infection"],
 		spawnBehavior:
 			"Hosts spawn on their own rounds and always sprint. Their health does not rise as the rounds go up. An-G warns that contamination has been detected. The last kill of the round drops a Full Reload and cures every infected player.",
-		combatStrategy: "content/zombies/host-zombie",
+		combatStrategy: "content/zombies/host",
+	}),
+	makeZombie("emz", {
+		title: "EMZ",
+		state: Option.none(),
+		releaseDate: "2015-01-27",
+		image: "/zombies/emz.webp",
+		description:
+			"Electro Magnetic Zombies (EMZs) are exo-suited zombies crackling with blue electricity. Hitting a player or getting boosted away from triggers an EMP that disables their Exoskeleton for five seconds.",
+		games: ["advanced-warfare"],
+		maps: ["outbreak-aw"],
+		type: "Special",
+		speed: "Medium",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["melee-swing", "emp-pulse"],
+		spawnBehavior:
+			"EMZs begin spawning during regular rounds after Round 4. They are distinguished by the blue electricity around their body and their distinct spawn stinger.",
+		combatStrategy: "content/zombies/emz",
+	}),
+	makeZombie("charger", {
+		title: "Charger",
+		state: Option.none(),
+		releaseDate: "2015-01-27",
+		image: "/zombies/charger.webp",
+		description:
+			"Chargers are aggressive, exo-suited zombies with glowing red eyes and chest. They run faster than standard zombies, have slightly more health, and frequently use their exoskeleton to leap at players.",
+		games: ["advanced-warfare"],
+		maps: ["outbreak-aw"],
+		type: "Special",
+		speed: "Fast",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["melee-swing", "jump-swing"],
+		spawnBehavior:
+			"Chargers spawn randomly during regular rounds and announce their presence with a sustained growl.",
+		combatStrategy: "content/zombies/charger",
+	}),
+	makeZombie("security-dogs", {
+		title: "Security Dogs",
+		state: Option.none(),
+		releaseDate: "2015-01-27",
+		image: "/zombies/security-dogs.webp",
+		description:
+			"Zombified security dogs that emerge from their kennels during dedicated special rounds. Fast and capable of jumping to high ground, they can also spawn with EMZ or Exploder traits.",
+		games: ["advanced-warfare"],
+		maps: ["outbreak-aw"],
+		type: "Special",
+		speed: "Fast",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["bite", "lunge"],
+		spawnBehavior:
+			"Security Dogs spawn in dedicated special rounds announced by An-G, emerging from kennels to hunt players. Killing the last dog of the round drops a Full Reload power-up. Some dogs spawn as EMZ or Exploder variants.",
+		combatStrategy: "content/zombies/security-dogs",
+	}),
+	makeZombie("exploder", {
+		title: "Exploder",
+		state: Option.none(),
+		releaseDate: "2015-01-27",
+		image: "/zombies/exploder.webp",
+		description:
+			"Exploders are volatile zombies surrounded by glowing green liquid and fire. They detonate when approached or killed, damaging nearby players while instantly killing surrounding zombies.",
+		games: ["advanced-warfare"],
+		maps: ["outbreak-aw"],
+		type: "Special",
+		speed: "Medium",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["melee-swing", "self-destruct", "explosion"],
+		spawnBehavior:
+			"Exploders spawn during regular rounds starting after the first Host round. They are distinguished by the glowing green liquid and fire around their body.",
+		combatStrategy: "content/zombies/exploder",
 	}),
 	makeZombie("keepers", {
 		title: "Keepers",
