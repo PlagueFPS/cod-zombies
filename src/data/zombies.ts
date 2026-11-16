@@ -516,7 +516,7 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2015-01-27",
 		image: "/zombies/security-dogs.webp",
 		description:
-			"Zombified security dogs that emerge from their kennels during dedicated special rounds. Fast and capable of jumping to high ground, they can also spawn with EMZ or Exploder traits. On Carrier, a bite deals 45 damage, and a dog with the teleport mutator has blue eyes and blinks.",
+			"Zombified security dogs that emerge from their kennels during dedicated special rounds. Fast and capable of jumping to high ground, they can also spawn with EMZ or Exploder traits. On Carrier, dogs with the teleport mutator have blue eyes and blink.",
 		games: ["advanced-warfare"],
 		maps: ["outbreak-aw", "infection", "carrier"],
 		type: "Special",
@@ -616,13 +616,13 @@ const ZOMBIES = uniqueMap([
 			"Wave 10 is a Goliath round. Later Goliath rounds are wave 19 and then every 10 waves. The round spawns about 75% of the usual number of enemies. The first is the Goliath, and the rest are regular zombies. Killing it on that round drops a nuke or an ammo pickup, alternating.",
 		combatStrategy: "content/zombies/goliath",
 	}),
-	makeZombie("teleport-zombie", {
-		title: "Teleport Zombie",
+	makeZombie("blinker", {
+		title: "Blinker",
 		state: Option.none(),
 		releaseDate: "2015-06-02",
-		image: "/zombies/teleport-zombie.webp",
+		image: "/zombies/blinker.webp",
 		description:
-			"Teleport Zombies are zombies carrying the teleport mutator on Carrier. A blue exo marks them, and they blink forward along their path.",
+			"Blinkers are zombies carrying the teleport mutator on Carrier. A blue exo marks them, and they blink forward along their path.",
 		games: ["advanced-warfare"],
 		maps: ["carrier"],
 		type: "Special",
@@ -632,7 +632,7 @@ const ZOMBIES = uniqueMap([
 		attacks: ["melee-swing", "blink"],
 		spawnBehavior:
 			"The teleport mutator joins normal rounds at wave 6. Solo adds a wave offset of 2, so they show up about wave 8. They spawn inside those rounds rather than on a round of their own.",
-		combatStrategy: "content/zombies/teleport-zombie",
+		combatStrategy: "content/zombies/blinker",
 	}),
 	makeZombie("keepers", {
 		title: "Keepers",

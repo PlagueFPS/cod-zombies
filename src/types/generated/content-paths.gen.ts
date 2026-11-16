@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-11-15T18:56:54.039Z
- * generated in: 46ms
+ * generated at: 2026-11-16T11:01:36.853Z
+ * generated in: 45ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -363,6 +363,7 @@ export type ZombiesPaths =
 	| "content/zombies/astronaut-zombie"
 	| "content/zombies/avogadro"
 	| "content/zombies/blightfather"
+	| "content/zombies/blinker"
 	| "content/zombies/bomber"
 	| "content/zombies/brenner"
 	| "content/zombies/brute"
@@ -469,7 +470,6 @@ export type ZombiesPaths =
 	| "content/zombies/spiker"
 	| "content/zombies/stadtjager"
 	| "content/zombies/stoker"
-	| "content/zombies/teleport-zombie"
 	| "content/zombies/tempest"
 	| "content/zombies/the-corrupted-keeper"
 	| "content/zombies/the-dark-heart"

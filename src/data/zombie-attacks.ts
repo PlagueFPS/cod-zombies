@@ -965,6 +965,6 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		title: "Blink",
 		range: "Medium",
 		description:
-			"While moving, blinks forward along its path. The gap is 0.5 to 3.2 seconds, scaled by move speed, and the jump stays between 50 and 450 units ahead.",
+			"While moving, periodically blinks forward along its path—faster when sprinting—to jump ahead and close the distance.",
 	}),
 ])

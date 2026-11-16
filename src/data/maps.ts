@@ -436,7 +436,7 @@ const MAPS = uniqueMap([
 		title: "Carrier",
 		releaseDate: "2015-06-02",
 		description:
-			"The source of the contagion has infected Atlas's prized super-carrier. Fight with up to 4 players to survive against the endless waves of mutant zombies.",
+			"The source of the contagion has infected Atlas's prized super-carrier! Fight with up to 4 players to survive against the endless waves of mutant zombies!",
 		image: "/maps/carrier.webp",
 		game: "advanced-warfare",
 		state: Option.none(),
@@ -446,7 +446,7 @@ const MAPS = uniqueMap([
 			min: 60,
 			max: 80,
 			reason:
-				"Solo guides put the quest around 60–80 minutes. Time varies with Plinko, fishing for the shovel, and teleport-mutator spawns.",
+				"Solo runs take around 60–80 minutes. Time varies with Plinko, fishing for the shovel, and teleport-mutator spawns.",
 		}),
 	}),
 	makeMap("shadows-of-evil", {
