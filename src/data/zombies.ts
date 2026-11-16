@@ -482,7 +482,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Electro Magnetic Zombies (EMZs) are exo-suited zombies crackling with blue electricity. Hitting a player or getting boosted away from triggers an EMP that disables their Exoskeleton for five seconds.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw", "infection"],
+		maps: ["outbreak-aw", "infection", "carrier"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
@@ -500,7 +500,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Chargers are aggressive, exo-suited zombies with glowing red eyes and chest. They run faster than standard zombies, have slightly more health, and frequently use their exoskeleton to leap at players.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw"],
+		maps: ["outbreak-aw", "carrier"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
@@ -536,7 +536,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Exploders are volatile zombies surrounded by glowing green liquid and fire. They detonate when approached or killed, damaging nearby players while instantly killing surrounding zombies.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw", "infection"],
+		maps: ["outbreak-aw", "infection", "carrier"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
@@ -552,15 +552,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2015-03-31",
 		image: "/zombies/meatbag.webp",
 		description:
-			"Meatbags are heavily armored zombies with glowing white eyes that appear on Infection. Their tactical armor and helmets make them much tougher to put down than standard zombies.",
+			"Meatbags are heavily armored zombies with glowing white eyes that appear on Infection and Carrier. Their tactical armor and helmets make them much tougher to put down than standard zombies.",
 		games: ["advanced-warfare"],
-		maps: ["infection"],
+		maps: ["infection", "carrier"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["melee-swing"],
-		spawnBehavior: "Meatbags spawn alongside regular zombies during standard rounds on Infection.",
+		spawnBehavior:
+			"Meatbags spawn alongside regular zombies during standard rounds on Infection and Carrier.",
 		combatStrategy: "content/zombies/meatbag",
 	}),
 	makeZombie("spiker", {
@@ -571,13 +572,14 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Spikers are mutated zombies with glowing red eyes and spikes protruding from their body and arms. Shooting their torso or killing them sprays shrapnel that damages both players and nearby zombies.",
 		games: ["advanced-warfare"],
-		maps: ["infection"],
+		maps: ["infection", "carrier"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["melee-swing", "spike-shrapnel"],
-		spawnBehavior: "Spikers spawn alongside regular zombies during standard rounds on Infection.",
+		spawnBehavior:
+			"Spikers spawn alongside regular zombies during standard rounds on Infection and Carrier.",
 		combatStrategy: "content/zombies/spiker",
 	}),
 	makeZombie("oozer", {
@@ -604,9 +606,9 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2015-03-31",
 		image: "/zombies/goliath.webp",
 		description:
-			"The Goliath is the armored special on Infection, a soldier swollen into a mech suit with a riot shield and an improvised weapon.",
+			"The Goliath is the armored special on Infection and Carrier, a soldier swollen into a mech suit with a riot shield and an improvised weapon.",
 		games: ["advanced-warfare"],
-		maps: ["infection"],
+		maps: ["infection", "carrier"],
 		type: "Elite",
 		speed: "Fast",
 		weakPoints: [],
