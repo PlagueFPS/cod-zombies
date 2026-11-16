@@ -432,6 +432,23 @@ const MAPS = uniqueMap([
 				"Solo runs take about 30–45 minutes. Full estimates run 30–55 minutes. Time varies with the 3D Printer, meat and valve spawns, and knowledge of the steps.",
 		}),
 	}),
+	makeMap("carrier", {
+		title: "Carrier",
+		releaseDate: "2015-06-02",
+		description:
+			"The source of the contagion has infected Atlas's prized super-carrier! Fight with up to 4 players to survive against the endless waves of mutant zombies!",
+		image: "/maps/carrier.webp",
+		game: "advanced-warfare",
+		state: Option.none(),
+		mainQuest: Option.some("content/main-quests/flotsam-and-jetsam"),
+		difficulty: Option.some("Medium"),
+		estimatedTimeMins: Option.some({
+			min: 60,
+			max: 80,
+			reason:
+				"Solo runs take around 60–80 minutes. Time varies with Plinko, fishing for the shovel, and teleport-mutator spawns.",
+		}),
+	}),
 	makeMap("shadows-of-evil", {
 		title: "Shadows of Evil",
 		releaseDate: "2015-11-06",

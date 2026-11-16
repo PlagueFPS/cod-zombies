@@ -961,4 +961,10 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Constantly drops puddles of acid on the ground wherever it walks, damaging players who step in them.",
 	}),
+	makeZombieAttack("blink", {
+		title: "Blink",
+		range: "Medium",
+		description:
+			"While moving, periodically blinks forward along its path—faster when sprinting—to jump ahead and close the distance.",
+	}),
 ])

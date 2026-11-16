@@ -462,9 +462,9 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2015-01-27",
 		image: "/zombies/host.webp",
 		description:
-			"Hosts are infected test subjects on Outbreak and Infection. Boils cover the left side of the head, the right eye glows green, and the body trails green Manticore gas. A hit starts the infection timer instead of a normal down, and a co-op player who fails to cure it becomes one.",
+			"Hosts are infected test subjects on Outbreak, Infection, and Carrier. Boils cover the left side of the head, the right eye glows green, and the body trails green Manticore gas. A hit starts the infection timer instead of a normal down, and a co-op player who fails to cure it becomes one.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw", "infection"],
+		maps: ["outbreak-aw", "infection", "carrier"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
@@ -482,7 +482,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Electro Magnetic Zombies (EMZs) are exo-suited zombies crackling with blue electricity. Hitting a player or getting boosted away from triggers an EMP that disables their Exoskeleton for five seconds.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw", "infection"],
+		maps: ["outbreak-aw", "infection", "carrier"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
@@ -500,7 +500,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Chargers are aggressive, exo-suited zombies with glowing red eyes and chest. They run faster than standard zombies, have slightly more health, and frequently use their exoskeleton to leap at players.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw"],
+		maps: ["outbreak-aw", "carrier"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
@@ -516,16 +516,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2015-01-27",
 		image: "/zombies/security-dogs.webp",
 		description:
-			"Zombified security dogs that emerge from their kennels during dedicated special rounds. Fast and capable of jumping to high ground, they can also spawn with EMZ or Exploder traits.",
+			"Zombified security dogs that emerge from their kennels during dedicated special rounds. Fast and capable of jumping to high ground, they can also spawn with EMZ or Exploder traits. On Carrier, dogs with the teleport mutator have blue eyes and blink.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw", "infection"],
+		maps: ["outbreak-aw", "infection", "carrier"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
 		elementalWeakness: [],
-		attacks: ["bite", "lunge"],
+		attacks: ["bite", "lunge", "blink"],
 		spawnBehavior:
-			"Security Dogs spawn in dedicated special rounds announced by An-G, emerging from kennels to hunt players. Killing the last dog of the round drops a Full Reload power-up. Some dogs spawn as EMZ or Exploder variants.",
+			"Security Dogs spawn in dedicated special rounds announced by An-G, emerging from kennels to hunt players. Killing the last dog of the round drops a Full Reload power-up. Some dogs spawn as EMZ or Exploder variants. On Carrier, the first special round is dogs. A round spawns 6 dogs per player, or 8 per player once the special-round counter is past 3. Health starts at 400 and climbs through 900 and 1300 to 1600 as that counter rises.",
 		combatStrategy: "content/zombies/security-dogs",
 	}),
 	makeZombie("exploder", {
@@ -536,7 +536,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Exploders are volatile zombies surrounded by glowing green liquid and fire. They detonate when approached or killed, damaging nearby players while instantly killing surrounding zombies.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw", "infection"],
+		maps: ["outbreak-aw", "infection", "carrier"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
@@ -552,15 +552,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2015-03-31",
 		image: "/zombies/meatbag.webp",
 		description:
-			"Meatbags are heavily armored zombies with glowing white eyes that appear on Infection. Their tactical armor and helmets make them much tougher to put down than standard zombies.",
+			"Meatbags are heavily armored zombies with glowing white eyes that appear on Infection and Carrier. Their tactical armor and helmets make them much tougher to put down than standard zombies.",
 		games: ["advanced-warfare"],
-		maps: ["infection"],
+		maps: ["infection", "carrier"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["melee-swing"],
-		spawnBehavior: "Meatbags spawn alongside regular zombies during standard rounds on Infection.",
+		spawnBehavior:
+			"Meatbags spawn alongside regular zombies during standard rounds on Infection and Carrier.",
 		combatStrategy: "content/zombies/meatbag",
 	}),
 	makeZombie("spiker", {
@@ -571,13 +572,14 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Spikers are mutated zombies with glowing red eyes and spikes protruding from their body and arms. Shooting their torso or killing them sprays shrapnel that damages both players and nearby zombies.",
 		games: ["advanced-warfare"],
-		maps: ["infection"],
+		maps: ["infection", "carrier"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["melee-swing", "spike-shrapnel"],
-		spawnBehavior: "Spikers spawn alongside regular zombies during standard rounds on Infection.",
+		spawnBehavior:
+			"Spikers spawn alongside regular zombies during standard rounds on Infection and Carrier.",
 		combatStrategy: "content/zombies/spiker",
 	}),
 	makeZombie("oozer", {
@@ -604,9 +606,9 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2015-03-31",
 		image: "/zombies/goliath.webp",
 		description:
-			"The Goliath is the armored special on Infection, a soldier swollen into a mech suit with a riot shield and an improvised weapon.",
+			"The Goliath is the armored special on Infection and Carrier, a soldier swollen into a mech suit with a riot shield and an improvised weapon.",
 		games: ["advanced-warfare"],
-		maps: ["infection"],
+		maps: ["infection", "carrier"],
 		type: "Elite",
 		speed: "Fast",
 		weakPoints: [],
@@ -615,6 +617,24 @@ const ZOMBIES = uniqueMap([
 		spawnBehavior:
 			"Wave 10 is a Goliath round. Later Goliath rounds are wave 19 and then every 10 waves. The round spawns about 75% of the usual number of enemies. The first is the Goliath, and the rest are regular zombies. Killing it on that round drops a nuke or an ammo pickup, alternating.",
 		combatStrategy: "content/zombies/goliath",
+	}),
+	makeZombie("blinker", {
+		title: "Blinker",
+		state: Option.none(),
+		releaseDate: "2015-06-02",
+		image: "/zombies/blinker.webp",
+		description:
+			"Blinkers are zombies carrying the teleport mutator on Carrier. A blue exo marks them, and they blink forward along their path.",
+		games: ["advanced-warfare"],
+		maps: ["carrier"],
+		type: "Special",
+		speed: "Medium",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["melee-swing", "blink"],
+		spawnBehavior:
+			"The teleport mutator joins normal rounds at wave 6. Solo adds a wave offset of 2, so they show up about wave 8. They spawn inside those rounds rather than on a round of their own.",
+		combatStrategy: "content/zombies/blinker",
 	}),
 	makeZombie("keepers", {
 		title: "Keepers",

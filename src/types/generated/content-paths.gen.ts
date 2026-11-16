@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-11-15T18:16:31.339Z
- * generated in: 39ms
+ * generated at: 2026-11-16T11:01:36.853Z
+ * generated in: 45ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -25,6 +25,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/electromagnetic-awakening-party"
 	| "content/main-quests/ensemble-cast"
 	| "content/main-quests/fireworks"
+	| "content/main-quests/flotsam-and-jetsam"
 	| "content/main-quests/for-the-good-of-all"
 	| "content/main-quests/greek-tragedy"
 	| "content/main-quests/high-maintenance"
@@ -362,6 +363,7 @@ export type ZombiesPaths =
 	| "content/zombies/astronaut-zombie"
 	| "content/zombies/avogadro"
 	| "content/zombies/blightfather"
+	| "content/zombies/blinker"
 	| "content/zombies/bomber"
 	| "content/zombies/brenner"
 	| "content/zombies/brute"
