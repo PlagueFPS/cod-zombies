@@ -49,7 +49,7 @@ export default function AotrtNumberTool() {
 							M number
 						</Label>
 						<Input
-							type="text"
+							type="number"
 							inputMode="numeric"
 							id="aotrt-m"
 							name="m"
@@ -58,6 +58,8 @@ export default function AotrtNumberTool() {
 							placeholder="7"
 							autoComplete="off"
 							size="lg"
+							min={1}
+							step={1}
 							className="text-center font-mono text-xl font-semibold tabular-nums"
 						/>
 					</div>
@@ -69,7 +71,7 @@ export default function AotrtNumberTool() {
 							Top TV number
 						</Label>
 						<Input
-							type="text"
+							type="number"
 							inputMode="numeric"
 							id="aotrt-top-tv-number"
 							name="topTvNumber"
@@ -78,6 +80,8 @@ export default function AotrtNumberTool() {
 							placeholder="61"
 							autoComplete="off"
 							size="lg"
+							min={1}
+							step={1}
 							className="text-center font-mono text-xl font-semibold tabular-nums"
 						/>
 					</div>

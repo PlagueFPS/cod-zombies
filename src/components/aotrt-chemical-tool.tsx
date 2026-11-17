@@ -80,7 +80,7 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 									O number
 								</Label>
 								<Input
-									type="text"
+									type="number"
 									inputMode="numeric"
 									id={`${idPrefix}-o`}
 									name="oNumber"
@@ -91,6 +91,8 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 									placeholder="4"
 									autoComplete="off"
 									size="lg"
+									min={1}
+									step={1}
 									className="text-center font-mono text-xl font-semibold tabular-nums"
 								/>
 							</div>
@@ -105,7 +107,7 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 							Top
 						</Label>
 						<Input
-							type="text"
+							type="number"
 							inputMode="numeric"
 							id={`${idPrefix}-top`}
 							name="top"
@@ -114,6 +116,8 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 							placeholder="8"
 							autoComplete="off"
 							size="lg"
+							min={1}
+							step={1}
 							className="text-center font-mono text-xl font-semibold tabular-nums"
 						/>
 					</div>
@@ -125,7 +129,7 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 							Left
 						</Label>
 						<Input
-							type="text"
+							type="number"
 							inputMode="numeric"
 							id={`${idPrefix}-left`}
 							name="left"
@@ -134,6 +138,8 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 							placeholder="1"
 							autoComplete="off"
 							size="lg"
+							min={1}
+							step={1}
 							className="text-center font-mono text-xl font-semibold tabular-nums"
 						/>
 					</div>

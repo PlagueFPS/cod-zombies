@@ -62,7 +62,7 @@ export default function TerminusCode() {
 								{letter}
 							</Label>
 							<Input
-								type="text"
+								type="number"
 								inputMode="numeric"
 								id={letter}
 								name={letter}
@@ -72,7 +72,9 @@ export default function TerminusCode() {
 								autoComplete="off"
 								className="text-center font-mono text-xl font-semibold tabular-nums"
 								size="lg"
-								maxLength={2}
+								min={0}
+								max={99}
+								step={1}
 							/>
 						</div>
 					))}
