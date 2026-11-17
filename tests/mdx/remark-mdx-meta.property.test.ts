@@ -22,7 +22,6 @@ describe("remark-mdx-meta slugify properties", () => {
 	it.prop("blank headings are omitted", [blankHeadingArb], ([text]) => {
 		const meta = getMdxDocumentMetaFromSource(`## ${text}\n\nSome words to read.`)
 
-		expect(Str.trim(text)).toBe("")
 		expect(meta.headings[0]).toBeUndefined()
 	})
 

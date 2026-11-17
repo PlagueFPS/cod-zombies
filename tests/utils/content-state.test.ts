@@ -39,13 +39,17 @@ describe("resolveNewContentState", () => {
 	})
 
 	test("shows New while calendar age is strictly below the max window", () => {
-		const now = Date.parse("2026-01-14T23:59:59.999Z")
-		expect(calendarDaysSinceIsoDate(anchor, now)).toBe(13)
+		const dayMs = 24 * 60 * 60 * 1000
+		const anchorStart = Date.parse(`${anchor}T00:00:00.000Z`)
+		const now = anchorStart + NEW_CONTENT_BADGE_MAX_AGE_DAYS * dayMs - 1
+		expect(calendarDaysSinceIsoDate(anchor, now)).toBe(NEW_CONTENT_BADGE_MAX_AGE_DAYS - 1)
 		expect(resolveNewContentState(Option.some("New"), anchor, now)).toEqual(Option.some("New"))
 	})
 
 	test("clears New once calendar age reaches the max day count", () => {
-		const now = Date.parse("2026-01-15T00:00:00.000Z")
+		const dayMs = 24 * 60 * 60 * 1000
+		const anchorStart = Date.parse(`${anchor}T00:00:00.000Z`)
+		const now = anchorStart + NEW_CONTENT_BADGE_MAX_AGE_DAYS * dayMs
 		expect(calendarDaysSinceIsoDate(anchor, now)).toBe(NEW_CONTENT_BADGE_MAX_AGE_DAYS)
 		expect(resolveNewContentState(Option.some("New"), anchor, now)).toEqual(Option.none())
 	})

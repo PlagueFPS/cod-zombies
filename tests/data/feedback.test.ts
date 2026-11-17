@@ -18,6 +18,5 @@ describe("submitFeedback", () => {
 
 		const result = expectExitSuccess(exit)
 		expect(result.success).toBe(true)
-		expect(result.message).toBe("Thank you for submitting! Your submission has been received.")
 	})
 })

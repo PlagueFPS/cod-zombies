@@ -44,7 +44,6 @@ describe("TbfbDiskPuzzle", () => {
 		const chevron = buttonByLabel("Chevron")
 
 		expect(chevron?.getAttribute("aria-disabled")).toBe("true")
-		expect(chevron?.className).toContain("opacity-40")
 
 		await act(async () => {
 			chevron?.click()

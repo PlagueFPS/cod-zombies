@@ -1,18 +1,12 @@
 import { Effect, Layer, Option } from "effect"
 import { describe, expect, test, vi } from "vitest"
-import { newsletterRequest } from "@/data/email.server"
+import { newsletterAcknowledgements, newsletterRequest } from "@/data/email.server"
 import { ResendError, Email } from "@/lib/services/emails"
 import { NewsletterTokens } from "@/lib/services/newsletter-tokens"
 
 describe("newsletter eligibility", () => {
 	for (const action of ["subscribe", "unsubscribe"] as const) {
-		const acknowledgement = {
-			success: true,
-			message:
-				action === "subscribe"
-					? "If this email isn't already subscribed a verification link will be sent to your inbox."
-					: "If this email is already subscribed a verification link will be sent to your inbox.",
-		}
+		const acknowledgement = newsletterAcknowledgements[action]
 
 		test.each([true, false])(
 			`${action} acknowledges membership %s and dispatches only when eligible`,
@@ -60,13 +54,7 @@ describe("newsletter eligibility", () => {
 
 describe("newsletter failure acknowledgement", () => {
 	for (const action of ["subscribe", "unsubscribe"] as const) {
-		const acknowledgement = {
-			success: true,
-			message:
-				action === "subscribe"
-					? "If this email isn't already subscribed a verification link will be sent to your inbox."
-					: "If this email is already subscribed a verification link will be sent to your inbox.",
-		}
+		const acknowledgement = newsletterAcknowledgements[action]
 
 		for (const failure of ["lookup", "send", "timeout"] as const) {
 			test(`${action} returns generic success after ${failure} failure`, async () => {

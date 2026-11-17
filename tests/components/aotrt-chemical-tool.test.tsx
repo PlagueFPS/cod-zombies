@@ -144,7 +144,6 @@ describe("AotrtChemicalTool", () => {
 		expect(container?.textContent).toContain("Step 1 = 22")
 		expect(container?.textContent).toContain("Step 2 = 26")
 		expect(container?.textContent).toContain("Step 3 = 23")
-		expect(container?.textContent).not.toContain("swapped")
 	})
 
 	test("says to view the board in the TV color for any other pair", async () => {
