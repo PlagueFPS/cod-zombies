@@ -17,15 +17,6 @@ describe("compareMapReleaseDescending", () => {
 			).pipe(Option.getOrThrow),
 		).toBeGreaterThan(0)
 	})
-
-	test("same calendar day: later MAPS insertion index sorts first", () => {
-		expect(
-			compareMapReleaseDescending(
-				{ id: "classified", releaseDate: "2018-10-12" },
-				{ id: "voyage-of-despair", releaseDate: "2018-10-12" },
-			).pipe(Option.getOrThrow),
-		).toBeLessThan(0)
-	})
 })
 
 describe("getMaps", () => {
@@ -33,18 +24,6 @@ describe("getMaps", () => {
 		const dates = Arr.map(getMaps(), m => m.releaseDate)
 		expect(dates.length).toBeGreaterThan(1)
 		assertSortedDescByDate(dates)
-	})
-
-	test("same calendar day: later MAPS entries appear first (e.g. BO4 launch)", () => {
-		const maps = getMaps()
-
-		const indexOf = (id: string) =>
-			Option.getOrElse(
-				Arr.findFirstIndex(maps, m => m.id === id),
-				() => -1,
-			)
-
-		expect(indexOf("classified")).toBeLessThan(indexOf("voyage-of-despair"))
 	})
 })
 

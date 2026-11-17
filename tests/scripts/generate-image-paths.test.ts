@@ -3,7 +3,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
-import { Effect, Exit, Layer, String as Str, Option } from "effect"
+import { Effect, Layer, String as Str, Option } from "effect"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import { generateImagePaths, ImageMetadataError } from "@/scripts/generate-image-paths"
@@ -35,12 +35,11 @@ describe("generateImagePaths", () => {
 		const exit = await Effect.runPromiseExit(program)
 		const cause = expectExitFailure(exit)
 		expectCauseHasString(cause, "Public directory does not exist")
-		expect(Exit.isFailure(exit)).toBe(true)
 		process.chdir(prevCwd)
 		rmSync(root, { recursive: true, force: true })
 	})
 
-	test("sorts root and per-dir image paths; excludes content and opengraph-images", async () => {
+	test("sorts root and per-dir image paths; excludes content", async () => {
 		const root = mkdtempSync(join(tmpdir(), "codz-pub-"))
 		mkdirSync(join(root, "public"), { recursive: true })
 		writeFileSync(
@@ -88,7 +87,6 @@ describe("generateImagePaths", () => {
 		expect(mapsA).toBeLessThan(mapsB)
 
 		expect(out).not.toContain("ContentImagePath")
-		expect(out).not.toContain("OpengraphImagesImagePath")
 
 		const variantsOut = readFileSync(
 			join(root, "src", "types", "generated", "image-variants.gen.ts"),

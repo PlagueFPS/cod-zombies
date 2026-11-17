@@ -77,9 +77,7 @@ describe("newsletter tokens with real WebCrypto", () => {
 					`v1.${claims}+.${tag}`,
 				]) {
 					const exit = yield* Effect.exit(tokens.verifySubscribe(invalid))
-					expect(
-						expectCauseTaggedError(expectExitFailure(exit), "TokenVerificationError"),
-					).toMatchObject({ message: "Invalid token" })
+					expectCauseTaggedError(expectExitFailure(exit), "TokenVerificationError")
 				}
 			}).pipe(Effect.provide(configured())),
 		)

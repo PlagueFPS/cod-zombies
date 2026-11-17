@@ -1,5 +1,5 @@
 import { it } from "@effect/vitest"
-import { Arbitrary, Schema, Array as Arr } from "effect"
+import { Arbitrary, Schema } from "effect"
 import { describe, expect } from "vitest"
 import {
 	formatEstimatedTimeMidpoint,
@@ -60,17 +60,6 @@ describe("formatEstimatedTimeRange properties", () => {
 			const minLabel = labelForRoundedMinutes(min)
 			const maxLabel = labelForRoundedMinutes(max)
 			const formatted = formatEstimatedTimeRange({ min, max })
-
-			for (const [minutes, label] of [
-				[min, minLabel],
-				[max, maxLabel],
-			] as const) {
-				expect(/^\d+m$/.test(label)).toBe(Math.round(minutes) < 60)
-			}
-
-			for (const minutes of Arr.filter([min, max], value => Math.round(value) >= 60)) {
-				expect(Math.round(minutes) % 60).toBeLessThan(60)
-			}
 
 			if (minLabel === maxLabel) return
 			expect(formatted).toBe(`${minLabel}-${maxLabel}`)

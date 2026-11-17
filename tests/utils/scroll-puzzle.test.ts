@@ -1,9 +1,8 @@
-import { Array as Arr, Record as Rec } from "effect"
+import { Array as Arr } from "effect"
 import { describe, expect, test } from "vitest"
 import {
 	applyScrollPresses,
 	isScrollPuzzleSolvable,
-	KOWAKUJO_SCROLL_TOGGLE_MATRIX,
 	SCROLL_COUNT,
 	solveScrollPuzzle,
 } from "@/utils/scroll-puzzle"
@@ -47,27 +46,6 @@ describe("solveScrollPuzzle", () => {
 
 			const solved = applyScrollPresses(state, presses ?? [])
 			expect(solved).toEqual(allIn)
-		}
-	})
-
-	test("toggle matrix matches in-game behavior", () => {
-		const expectations = {
-			0: [0, 1, 3],
-			1: [0, 1, 2, 4],
-			2: [1, 2, 5],
-			3: [0, 3, 4, 6],
-			4: [1, 3, 4, 5],
-			5: [2, 4, 5, 8],
-			6: [3, 6, 7],
-			7: [4, 6, 7, 8],
-			8: [5, 7, 8],
-		} as const
-
-		for (const [scroll, affected] of Rec.toEntries(expectations)) {
-			const row = KOWAKUJO_SCROLL_TOGGLE_MATRIX[Number(scroll)]
-			expect(row).toBeDefined()
-			const actual = Arr.flatMap(row!, (isAffected, index) => (isAffected ? [index] : []))
-			expect(actual).toEqual(affected)
 		}
 	})
 

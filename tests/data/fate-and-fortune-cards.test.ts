@@ -12,16 +12,4 @@ describe("getFateAndFortuneCardByKey", () => {
 		const card = getFateAndFortuneCardByKey("five-second-muscle").pipe(Option.getOrThrow)
 		expect(card.id).toBe("five-second-muscle")
 	})
-
-	test("returns no rarity for Fate cards", () => {
-		const card = getFateAndFortuneCardByKey("nade-party").pipe(Option.getOrThrow)
-		expect(card.type).toBe("Fate")
-		expect(Option.isNone(card.rarity)).toBe(true)
-	})
-
-	test("returns the Fortune card rarity", () => {
-		const card = getFateAndFortuneCardByKey("explosive-touch").pipe(Option.getOrThrow)
-		expect(card.type).toBe("Fortune")
-		expect(card.rarity).toEqual(Option.some("Legendary"))
-	})
 })

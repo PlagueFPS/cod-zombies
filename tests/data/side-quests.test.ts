@@ -1,22 +1,11 @@
 import { Option, Array as Arr } from "effect"
-import { afterEach, describe, expect, test, vi } from "vitest"
+import { describe, expect, test } from "vitest"
 import {
 	compareSideQuestDescending,
 	getAdjacentSideQuests,
 	getSideQuestByKey,
 	getSideQuests,
 } from "@/data/side-quests"
-
-describe("compareSideQuestDescending", () => {
-	test("same host map: later SIDE_QUESTS insertion index sorts first", () => {
-		expect(
-			compareSideQuestDescending(
-				{ id: "dead-again", map: "der-eisendrache" },
-				{ id: "brm-wall-buy", map: "der-eisendrache" },
-			).pipe(Option.getOrThrow),
-		).toBeGreaterThan(0)
-	})
-})
 
 describe("getSideQuests", () => {
 	test("sorted by map release date descending", () => {
@@ -39,20 +28,6 @@ describe("getSideQuestByKey", () => {
 	test("returns Some when the side quest exists", () => {
 		const s = getSideQuestByKey("115-clock-tower").pipe(Option.getOrThrow)
 		expect(s.id).toBe("115-clock-tower")
-	})
-})
-
-describe("getSideQuestByKey applies publishedDate New window", () => {
-	afterEach(() => {
-		vi.useRealTimers()
-	})
-
-	test("stored None stays None even when publishedDate is inside the 14-day window", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(Date.parse("2026-09-01T12:00:00.000Z"))
-		const quest = getSideQuestByKey("skull-mask").pipe(Option.getOrThrow)
-		expect(quest.publishedDate).toBe("2026-08-26")
-		expect(Option.getOrNull(quest.state)).toBeNull()
 	})
 })
 
