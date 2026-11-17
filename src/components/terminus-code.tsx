@@ -4,11 +4,11 @@ import {
 	CopyCodeButton,
 	SolverCard,
 	SolverHeader,
+	SolverNumberInput,
 	SolverResetButton,
 	SolverResult,
 } from "@/components/solver-primitives"
 import { CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { decodeTerminusCode } from "@/utils/validation-schemas"
 
@@ -40,11 +40,6 @@ export default function TerminusCode() {
 	const isInvalid = Boolean(decoded && Exit.isFailure(decoded))
 	const formattedCode = solvedItems ? Arr.map(solvedItems, item => item.value).join(", ") : ""
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target
-		setValues(prev => ({ ...prev, [name]: value }))
-	}
-
 	return (
 		<SolverCard className="max-w-md">
 			<SolverHeader
@@ -61,17 +56,13 @@ export default function TerminusCode() {
 							>
 								{letter}
 							</Label>
-							<Input
-								type="number"
-								inputMode="numeric"
+							<SolverNumberInput
 								id={letter}
 								name={letter}
+								label={letter.toUpperCase()}
 								value={values[letter]}
-								onChange={handleInputChange}
+								onValueChange={next => setValues(prev => ({ ...prev, [letter]: next }))}
 								placeholder="00"
-								autoComplete="off"
-								className="text-center font-mono text-xl font-semibold tabular-nums"
-								size="lg"
 								min={0}
 								max={99}
 								step={1}

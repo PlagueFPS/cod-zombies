@@ -1,5 +1,5 @@
 import { cn } from "cn"
-import { CheckIcon, CopyIcon, RotateCcwIcon } from "lucide-react"
+import { CheckIcon, CopyIcon, MinusIcon, PlusIcon, RotateCcwIcon } from "lucide-react"
 import { type ComponentProps, type ReactNode, useEffect, useState } from "react"
 import { Button, type ButtonProps } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -176,5 +176,96 @@ export function SolverResetButton({ className, children, ...props }: ButtonProps
 			<RotateCcwIcon className="size-3.5" />
 			{children ?? "Reset"}
 		</Button>
+	)
+}
+
+interface SolverNumberInputProps {
+	id: string
+	name: string
+	label: string
+	value: string
+	onValueChange: (value: string) => void
+	placeholder?: string
+	min?: number
+	max?: number
+	step?: number
+	className?: string
+}
+
+/**
+ * Centered numeric input with integrated tactile `-` / `+` stepper buttons,
+ * replacing the browser's native spin button.
+ */
+export function SolverNumberInput({
+	id,
+	name,
+	label,
+	value,
+	onValueChange,
+	placeholder,
+	min = 0,
+	max,
+	step = 1,
+	className,
+}: SolverNumberInputProps) {
+	const parsed = value.trim() === "" ? Number.NaN : Number(value)
+	const hasNumericValue = Number.isFinite(parsed)
+	const canDecrement = hasNumericValue && parsed > min
+	const canIncrement = !hasNumericValue || max === undefined || parsed < max
+
+	const handleStep = (delta: number) => {
+		const base = hasNumericValue ? parsed : min - step
+		const rawNext = base + delta
+
+		const clamped =
+			max !== undefined ? Math.min(max, Math.max(min, rawNext)) : Math.max(min, rawNext)
+
+		onValueChange(String(clamped))
+	}
+
+	return (
+		<div
+			className={cn(
+				"group/stepper flex h-11 w-full items-stretch overflow-hidden rounded-xl border border-input bg-background/80 shadow-xs/5 ring-ring/24 transition-[border-color,box-shadow,background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] focus-within:border-ring focus-within:ring-[3px] dark:bg-input/32",
+				className,
+			)}
+		>
+			<button
+				type="button"
+				tabIndex={-1}
+				onClick={() => handleStep(-step)}
+				disabled={!canDecrement}
+				aria-label={`Decrease ${label}`}
+				className="flex w-7 shrink-0 items-center justify-center border-r border-border/60 text-muted-foreground transition-[transform,color,background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] outline-none active:scale-[0.92] disabled:pointer-events-none disabled:opacity-30 disabled:active:scale-100 motion-reduce:transition-none motion-reduce:active:scale-100 sm:w-8 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-muted/60 [@media(hover:hover)_and_(pointer:fine)]:hover:text-foreground"
+			>
+				<MinusIcon className="size-3.5" />
+			</button>
+
+			<input
+				type="number"
+				inputMode="numeric"
+				id={id}
+				name={name}
+				value={value}
+				onChange={event => onValueChange(event.target.value)}
+				placeholder={placeholder}
+				autoComplete="off"
+				min={min}
+				max={max}
+				step={step}
+				className="w-full min-w-0 flex-1 appearance-none bg-transparent px-1 text-center font-mono text-lg font-semibold text-foreground tabular-nums outline-none placeholder:text-muted-foreground/50 sm:text-xl [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+			/>
+
+			<button
+				type="button"
+				tabIndex={-1}
+				onClick={() => handleStep(step)}
+				disabled={!canIncrement}
+				aria-label={`Increase ${label}`}
+				className="flex w-7 shrink-0 items-center justify-center border-l border-border/60 text-muted-foreground transition-[transform,color,background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] outline-none active:scale-[0.92] disabled:pointer-events-none disabled:opacity-30 disabled:active:scale-100 motion-reduce:transition-none motion-reduce:active:scale-100 sm:w-8 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-muted/60 [@media(hover:hover)_and_(pointer:fine)]:hover:text-foreground"
+			>
+				<PlusIcon className="size-3.5" />
+			</button>
+		</div>
 	)
 }

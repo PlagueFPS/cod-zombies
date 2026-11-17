@@ -3,11 +3,11 @@ import { useEffect, useState } from "react"
 import {
 	SolverCard,
 	SolverHeader,
+	SolverNumberInput,
 	SolverResetButton,
 	SolverResult,
 } from "@/components/solver-primitives"
 import { CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
 	decodeAotrtONumberInput,
@@ -48,19 +48,15 @@ export default function AotrtNumberTool() {
 						>
 							M number
 						</Label>
-						<Input
-							type="number"
-							inputMode="numeric"
+						<SolverNumberInput
 							id="aotrt-m"
 							name="m"
+							label="M number"
 							value={values.m}
 							onValueChange={m => setValues(current => ({ ...current, m }))}
 							placeholder="7"
-							autoComplete="off"
-							size="lg"
 							min={1}
 							step={1}
-							className="text-center font-mono text-xl font-semibold tabular-nums"
 						/>
 					</div>
 					<div className="flex flex-col items-center gap-1.5">
@@ -70,19 +66,15 @@ export default function AotrtNumberTool() {
 						>
 							Top TV number
 						</Label>
-						<Input
-							type="number"
-							inputMode="numeric"
+						<SolverNumberInput
 							id="aotrt-top-tv-number"
 							name="topTvNumber"
+							label="Top TV number"
 							value={values.topTvNumber}
 							onValueChange={topTvNumber => setValues(current => ({ ...current, topTvNumber }))}
 							placeholder="61"
-							autoComplete="off"
-							size="lg"
 							min={1}
 							step={1}
-							className="text-center font-mono text-xl font-semibold tabular-nums"
 						/>
 					</div>
 				</div>

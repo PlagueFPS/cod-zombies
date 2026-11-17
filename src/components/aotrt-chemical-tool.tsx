@@ -5,11 +5,11 @@ import {
 	CopyCodeButton,
 	SolverCard,
 	SolverHeader,
+	SolverNumberInput,
 	SolverResetButton,
 	SolverResult,
 } from "@/components/solver-primitives"
 import { CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useAotrtONumber } from "@/hooks/use-aotrt-o-number"
 import {
@@ -79,21 +79,17 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 								>
 									O number
 								</Label>
-								<Input
-									type="number"
-									inputMode="numeric"
+								<SolverNumberInput
 									id={`${idPrefix}-o`}
 									name="oNumber"
+									label="O number"
 									value={values.oNumber}
 									onValueChange={oNumberInput =>
 										setValues(current => ({ ...current, oNumber: oNumberInput }))
 									}
 									placeholder="4"
-									autoComplete="off"
-									size="lg"
 									min={1}
 									step={1}
-									className="text-center font-mono text-xl font-semibold tabular-nums"
 								/>
 							</div>
 						),
@@ -106,19 +102,15 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 						>
 							Top
 						</Label>
-						<Input
-							type="number"
-							inputMode="numeric"
+						<SolverNumberInput
 							id={`${idPrefix}-top`}
 							name="top"
+							label="Top"
 							value={values.top}
 							onValueChange={top => setValues(current => ({ ...current, top }))}
 							placeholder="8"
-							autoComplete="off"
-							size="lg"
 							min={1}
 							step={1}
-							className="text-center font-mono text-xl font-semibold tabular-nums"
 						/>
 					</div>
 					<div className="flex flex-col items-center gap-1.5">
@@ -128,19 +120,15 @@ export default function AotrtChemicalTool({ chemical }: AotrtChemicalToolProps) 
 						>
 							Left
 						</Label>
-						<Input
-							type="number"
-							inputMode="numeric"
+						<SolverNumberInput
 							id={`${idPrefix}-left`}
 							name="left"
+							label="Left"
 							value={values.left}
 							onValueChange={left => setValues(current => ({ ...current, left }))}
 							placeholder="1"
-							autoComplete="off"
-							size="lg"
 							min={1}
 							step={1}
-							className="text-center font-mono text-xl font-semibold tabular-nums"
 						/>
 					</div>
 				</div>
