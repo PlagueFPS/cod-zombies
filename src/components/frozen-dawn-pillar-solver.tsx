@@ -1,8 +1,15 @@
 import { cn } from "cn"
 import { Array as Arr, Option } from "effect"
+import { CheckCircle2Icon } from "lucide-react"
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+	CopyCodeButton,
+	SolverCard,
+	SolverHeader,
+	SolverResetButton,
+	SolverResult,
+} from "@/components/solver-primitives"
+import { CardContent } from "@/components/ui/card"
 import {
 	DIRECTION_NAMES,
 	DIRECTION_SYMBOLS,
@@ -33,72 +40,124 @@ export default function FrozenDawnPillarSolver() {
 		setHasInput(true)
 	}
 
+	const isSolved = hasInput && Option.isSome(solution)
+
+	const isAlreadySolved =
+		isSolved && Option.isSome(solution) && Arr.every(solution.value, count => count === 0)
+
+	const isUnsolvable = hasInput && Option.isNone(solution)
+
+	const copyText =
+		isSolved && !isAlreadySolved && Option.isSome(solution)
+			? Arr.join(
+					Arr.flatMap(PILLAR_IDS, id =>
+						solution.value[id] > 0 ? [`${PILLAR_LABELS[id]} ${solution.value[id]}x`] : [],
+					),
+					", ",
+				)
+			: ""
+
 	return (
-		<Card className="mx-auto w-[19.5rem] max-w-full bg-transparent shadow-lg sm:w-[23.5rem] dark:shadow-none">
-			<CardHeader className="items-center justify-items-center text-center">
-				<CardTitle className="text-xl">Pillar Solver</CardTitle>
-				<CardDescription>
-					Label the blocks A–D from left to right. Click each block to match its in-game facing.
-					Down means front; up means back.
-				</CardDescription>
-			</CardHeader>
-			<CardContent className="space-y-4">
-				<p className="text-center text-sm text-muted-foreground">
-					Shooting a block turns it 180° and each touching block 90°. Setting a facing here only
-					changes that block.
-				</p>
-				<div className="flex justify-center gap-2" role="group" aria-label="Pillar blocks">
-					{Arr.map(PILLAR_IDS, id => (
-						<button
-							key={id}
-							type="button"
-							onClick={() => cyclePillar(id)}
-							aria-label={`Block ${PILLAR_LABELS[id]}, facing ${DIRECTION_NAMES[directions[id]]}`}
-							className={cn(
-								"flex h-20 flex-1 flex-col items-center justify-center rounded-lg border border-border bg-background text-sm",
-								directions[id] === 0 && "border-primary bg-primary/10",
-							)}
-						>
-							<span className="text-2xl leading-none">{DIRECTION_SYMBOLS[directions[id]]}</span>
-							<span className="font-medium">{PILLAR_LABELS[id]}</span>
-							<span className="text-xs text-muted-foreground capitalize">
-								{DIRECTION_NAMES[directions[id]]}
-							</span>
-						</button>
-					))}
+		<SolverCard className="max-w-md">
+			<SolverHeader
+				title="Pillar Solver"
+				description="Label the blocks A–D from left to right. Click each block to match its in-game facing (down = front, up = back)."
+			/>
+			<CardContent className="space-y-4 px-5">
+				<div className="rounded-lg border border-border/60 bg-muted/35 px-3 py-2 text-center text-xs text-muted-foreground dark:bg-muted/20">
+					Shooting a block turns it 180° and touching blocks 90°. Setting a facing here only changes
+					that block.
 				</div>
-				<div className="flex justify-center">
-					<Button
-						type="button"
-						variant="destructive"
-						size="lg"
-						disabled={!hasInput}
-						onClick={() => {
-							setDirections(INITIAL_PILLARS)
-							setHasInput(false)
-						}}
-					>
-						Reset
-					</Button>
+
+				<div className="grid grid-cols-4 gap-2" role="group" aria-label="Pillar blocks">
+					{Arr.map(PILLAR_IDS, id => {
+						const isFront = directions[id] === 0
+						const facingName = DIRECTION_NAMES[directions[id]]
+
+						return (
+							<button
+								key={id}
+								type="button"
+								onClick={() => cyclePillar(id)}
+								aria-label={`Block ${PILLAR_LABELS[id]}, facing ${facingName}`}
+								className={cn(
+									"flex h-22 flex-col items-center justify-center gap-0.5 rounded-xl border border-border/80 bg-background/60 text-sm transition-[transform,background-color,border-color,color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100",
+									"hover:border-foreground/25 hover:bg-muted/60",
+									isFront &&
+										"border-primary/70 bg-primary/12 shadow-xs ring-1 ring-primary/30 hover:bg-primary/15",
+								)}
+							>
+								<span
+									className={cn(
+										"text-2xl leading-none",
+										isFront ? "text-primary" : "text-foreground",
+									)}
+								>
+									{DIRECTION_SYMBOLS[directions[id]]}
+								</span>
+								<span className="text-xs font-semibold text-foreground">{PILLAR_LABELS[id]}</span>
+								<span
+									className={cn(
+										"text-[11px] capitalize",
+										isFront ? "font-medium text-primary" : "text-muted-foreground",
+									)}
+								>
+									{facingName}
+								</span>
+							</button>
+						)
+					})}
 				</div>
-				<div className="rounded-sm bg-input p-2 text-center dark:bg-input/20" aria-live="polite">
-					<p className="text-base font-medium">Solution</p>
+
+				<SolverResult
+					tone={isSolved ? "solved" : isUnsolvable ? "warning" : "idle"}
+					label="Solution"
+					action={
+						hasInput ? (
+							<div className="flex items-center gap-1">
+								{copyText ? <CopyCodeButton value={copyText} label="Copy shot counts" /> : null}
+								<SolverResetButton
+									onClick={() => {
+										setDirections(INITIAL_PILLARS)
+										setHasInput(false)
+									}}
+									className="h-6 px-2 text-xs"
+								/>
+							</div>
+						) : null
+					}
+				>
 					{!hasInput ? (
-						<p className="mt-1 text-sm text-muted-foreground">
+						<p className="text-center text-sm text-muted-foreground">
 							Set the blocks to their in-game facings.
 						</p>
 					) : (
 						Option.match(solution, {
-							onNone: () => <p className="mt-1 text-sm">Check each block’s facing.</p>,
+							onNone: () => (
+								<p className="text-center text-sm text-amber-800 dark:text-amber-200">
+									Check each block’s facing.
+								</p>
+							),
 							onSome: counts =>
 								Arr.every(counts, count => count === 0) ? (
-									<p className="mt-1 text-sm">Already solved. Every block faces front.</p>
+									<div className="flex items-center justify-center gap-2 text-center text-sm text-foreground">
+										<CheckCircle2Icon className="size-4 shrink-0 text-primary" />
+										<span>Already solved. Every block faces front.</span>
+									</div>
 								) : (
-									<ul className="mt-1 list-none pl-0">
+									<ul className="list-none space-y-1.5 pl-0">
 										{Arr.map(PILLAR_IDS, id =>
 											counts[id] > 0 ? (
-												<li key={id} className="text-sm">
-													Shoot {PILLAR_LABELS[id]} {counts[id]}×
+												<li
+													key={id}
+													className="flex items-center justify-between gap-2 rounded-lg border border-border/60 bg-background/70 px-3 py-1.5 text-sm dark:bg-background/40"
+												>
+													<span className="font-medium text-foreground">
+														Shoot {PILLAR_LABELS[id]}
+													</span>
+													<span className="rounded-md bg-primary/15 px-2 py-0.5 font-mono text-xs font-bold text-primary tabular-nums">
+														{counts[id]}×
+													</span>
 												</li>
 											) : null,
 										)}
@@ -106,8 +165,8 @@ export default function FrozenDawnPillarSolver() {
 								),
 						})
 					)}
-				</div>
+				</SolverResult>
 			</CardContent>
-		</Card>
+		</SolverCard>
 	)
 }

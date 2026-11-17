@@ -1,6 +1,12 @@
 import { Option, Match } from "effect"
 import { useEffect, useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+	SolverCard,
+	SolverHeader,
+	SolverResetButton,
+	SolverResult,
+} from "@/components/solver-primitives"
+import { CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -17,7 +23,9 @@ export default function AotrtNumberTool() {
 		Option.map(value => solveAotrtONumber(value.m, value.topTvNumber)),
 	)
 
+	const hasAnyValue = values.m !== "" || values.topTvNumber !== ""
 	const hasBothValues = values.m !== "" && values.topTvNumber !== ""
+	const isInvalid = hasBothValues && Option.isNone(solved)
 	const oNumber = solved.pipe(Option.map(value => value.oNumber))
 
 	useEffect(() => {
@@ -26,14 +34,20 @@ export default function AotrtNumberTool() {
 	}, [oNumber])
 
 	return (
-		<Card className="mx-auto w-full max-w-md bg-transparent shadow-lg dark:shadow-none">
-			<CardHeader className="items-center justify-items-center text-center">
-				<CardTitle className="text-xl">Get your O Number and TV Color</CardTitle>
-			</CardHeader>
-			<CardContent className="space-y-4">
-				<div className="grid grid-cols-2 gap-4">
-					<div className="flex flex-col items-center gap-1">
-						<Label htmlFor="aotrt-m">M number</Label>
+		<SolverCard className="max-w-md">
+			<SolverHeader
+				title="Get your O Number and TV Color"
+				description="Enter the M number from the lab and the top number on Elvira’s TV."
+			/>
+			<CardContent className="space-y-4 px-5">
+				<div className="grid grid-cols-2 gap-3">
+					<div className="flex flex-col items-center gap-1.5">
+						<Label
+							htmlFor="aotrt-m"
+							className="text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+						>
+							M number
+						</Label>
 						<Input
 							type="text"
 							inputMode="numeric"
@@ -43,11 +57,17 @@ export default function AotrtNumberTool() {
 							onValueChange={m => setValues(current => ({ ...current, m }))}
 							placeholder="7"
 							autoComplete="off"
-							className="text-center text-lg"
+							size="lg"
+							className="text-center font-mono text-xl font-semibold tabular-nums"
 						/>
 					</div>
-					<div className="flex flex-col items-center gap-1">
-						<Label htmlFor="aotrt-top-tv-number">Top TV number</Label>
+					<div className="flex flex-col items-center gap-1.5">
+						<Label
+							htmlFor="aotrt-top-tv-number"
+							className="text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+						>
+							Top TV number
+						</Label>
 						<Input
 							type="text"
 							inputMode="numeric"
@@ -57,31 +77,54 @@ export default function AotrtNumberTool() {
 							onValueChange={topTvNumber => setValues(current => ({ ...current, topTvNumber }))}
 							placeholder="61"
 							autoComplete="off"
-							className="text-center text-lg"
+							size="lg"
+							className="text-center font-mono text-xl font-semibold tabular-nums"
 						/>
 					</div>
 				</div>
-				<div className="rounded-sm bg-input p-2 text-center dark:bg-input/20" aria-live="polite">
+
+				<SolverResult
+					tone={Option.isSome(solved) ? "solved" : isInvalid ? "error" : "idle"}
+					label="Result"
+					action={
+						hasAnyValue ? (
+							<SolverResetButton
+								onClick={() => setValues({ m: "", topTvNumber: "" })}
+								className="h-6 px-2 text-xs"
+							/>
+						) : null
+					}
+				>
 					{Option.match(solved, {
-						onSome: solved => (
-							<>
-								<p className="text-base">
-									O number = <span className="font-bold">{solved.oNumber}</span>
-								</p>
-								<p className="text-base">
-									TV Color = <span className="font-bold">{tvColorLabel(solved.tvColor.row)}</span>
-								</p>
-							</>
+						onSome: result => (
+							<div className="grid grid-cols-2 gap-2.5 text-center">
+								<div className="rounded-lg border border-border/60 bg-background/70 px-3 py-2.5 dark:bg-background/40">
+									<p className="text-xs font-medium text-muted-foreground">
+										O number<span className="sr-only"> = </span>
+										<span className="mt-0.5 block font-mono text-2xl font-bold text-foreground tabular-nums">
+											{result.oNumber}
+										</span>
+									</p>
+								</div>
+								<div className="rounded-lg border border-border/60 bg-background/70 px-3 py-2.5 dark:bg-background/40">
+									<p className="text-xs font-medium text-muted-foreground">
+										TV Color<span className="sr-only"> = </span>
+										<span className="mt-0.5 block text-2xl font-bold text-foreground">
+											{tvColorLabel(result.tvColor.row)}
+										</span>
+									</p>
+								</div>
+							</div>
 						),
 						onNone: () => (
-							<p className="text-sm text-muted-foreground">
+							<p className="text-center text-sm text-muted-foreground">
 								{hasBothValues ? "Enter positive whole numbers" : "Enter your M and top TV numbers"}
 							</p>
 						),
 					})}
-				</div>
+				</SolverResult>
 			</CardContent>
-		</Card>
+		</SolverCard>
 	)
 }
 
