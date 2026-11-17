@@ -462,16 +462,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2015-01-27",
 		image: "/zombies/host.webp",
 		description:
-			"Hosts are infected test subjects on Outbreak, Infection, and Carrier. Boils cover the left side of the head, the right eye glows green, and the body trails green Manticore gas. A hit starts the infection timer instead of a normal down, and a co-op player who fails to cure it becomes one.",
+			"Hosts are infected test subjects on Outbreak, Infection, Carrier, and Descent. Boils cover the left side of the head, the right eye glows green, and the body trails green Manticore gas. A hit starts the infection timer instead of a normal down, and a co-op player who fails to cure it becomes one.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw", "infection", "carrier"],
+		maps: ["outbreak-aw", "infection", "carrier", "descent"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["melee-swing", "infection"],
 		spawnBehavior:
-			"On Outbreak, Hosts spawn on their own rounds and always sprint. Their health does not rise as the rounds go up. An-G warns that contamination has been detected. The last kill of the round drops a Full Reload and cures every infected player. On Infection, wave 8 is a Host round, then wave 14, then every 10 waves. Every fifth spawn in the round is a regular zombie. The round ends with an ammo pickup. A co-op player whose burger infection expires also spawns a Host with four times the health.",
+			"On Outbreak, Hosts spawn on their own rounds and always sprint. Their health does not rise as the rounds go up. An-G warns that contamination has been detected. The last kill of the round drops a Full Reload and cures every infected player. On Infection, wave 8 is a Host round, then wave 14, then every 10 waves. Every fifth spawn in the round is a regular zombie. The round ends with an ammo pickup. A co-op player whose burger infection expires also spawns a Host with four times the health. On Descent, a floating Host blocks the flooded airlock during Reunion. Hosts can also fill the round-13 Oz squad, which is 1, 2, or 3 times the player count and rolls dogs or Hosts. The gas trap in that fight infects you, and a down from Mutated Oz infects you instead of a normal last stand. The arena decontamination station is free during the fight and costs 250 elsewhere.",
 		combatStrategy: "content/zombies/host",
 	}),
 	makeZombie("emz", {
@@ -480,16 +480,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2015-01-27",
 		image: "/zombies/emz.webp",
 		description:
-			"Electro Magnetic Zombies (EMZs) are exo-suited zombies crackling with blue electricity. Hitting a player or getting boosted away from triggers an EMP that disables their Exoskeleton for five seconds.",
+			"Electro Magnetic Zombies (EMZs) are exo-suited zombies crackling with blue electricity. Hitting a player or getting boosted away from triggers an EMP that disables their Exoskeleton for five seconds. On Descent, an attack within 180 units of the Galleria capacitor charges it and consumes the EMZ.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw", "infection", "carrier"],
+		maps: ["outbreak-aw", "infection", "carrier", "descent"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
-		attacks: ["melee-swing", "emp-pulse"],
+		attacks: ["melee-swing", "emp-pulse", "emz-discharge"],
 		spawnBehavior:
-			"EMZs begin spawning during regular rounds after Round 4. They are distinguished by the blue electricity around their body and their distinct spawn stinger.",
+			"EMZs begin spawning during regular rounds after Round 4. They are distinguished by the blue electricity around their body and their distinct spawn stinger. On Descent, the Galleria capacitor step needs 15 of their attacks within 180 units, and each attack consumes that EMZ.",
 		combatStrategy: "content/zombies/emz",
 	}),
 	makeZombie("charger", {
@@ -500,7 +500,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Chargers are aggressive, exo-suited zombies with glowing red eyes and chest. They run faster than standard zombies, have slightly more health, and frequently use their exoskeleton to leap at players.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw", "carrier"],
+		maps: ["outbreak-aw", "carrier", "descent"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
@@ -516,16 +516,16 @@ const ZOMBIES = uniqueMap([
 		releaseDate: "2015-01-27",
 		image: "/zombies/security-dogs.webp",
 		description:
-			"Zombified security dogs that emerge from their kennels during dedicated special rounds. Fast and capable of jumping to high ground, they can also spawn with EMZ or Exploder traits. On Carrier, dogs with the teleport mutator have blue eyes and blink.",
+			"Zombified security dogs that emerge from their kennels during dedicated special rounds. Fast and capable of jumping to high ground, they can also spawn with EMZ or Exploder traits. On Carrier, dogs with the teleport mutator have blue eyes and blink. On Descent, the round-13 Oz squad can roll dogs instead of Hosts.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw", "infection", "carrier"],
+		maps: ["outbreak-aw", "infection", "carrier", "descent"],
 		type: "Special",
 		speed: "Fast",
 		weakPoints: ["head"],
 		elementalWeakness: [],
 		attacks: ["bite", "lunge", "blink"],
 		spawnBehavior:
-			"Security Dogs spawn in dedicated special rounds announced by An-G, emerging from kennels to hunt players. Killing the last dog of the round drops a Full Reload power-up. Some dogs spawn as EMZ or Exploder variants. On Carrier, the first special round is dogs. A round spawns 6 dogs per player, or 8 per player once the special-round counter is past 3. Health starts at 400 and climbs through 900 and 1300 to 1600 as that counter rises.",
+			"Security Dogs spawn in dedicated special rounds announced by An-G, emerging from kennels to hunt players. Killing the last dog of the round drops a Full Reload power-up. Some dogs spawn as EMZ or Exploder variants. On Carrier, the first special round is dogs. A round spawns 6 dogs per player, or 8 per player once the special-round counter is past 3. Health starts at 400 and climbs through 900 and 1300 to 1600 as that counter rises. On Descent, during the round-13 Oz trap cycle, the squad after the turrets is 1, 2, or 3 times the player count, and the mutator is random between dogs and Hosts.",
 		combatStrategy: "content/zombies/security-dogs",
 	}),
 	makeZombie("exploder", {
@@ -536,7 +536,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Exploders are volatile zombies surrounded by glowing green liquid and fire. They detonate when approached or killed, damaging nearby players while instantly killing surrounding zombies.",
 		games: ["advanced-warfare"],
-		maps: ["outbreak-aw", "infection", "carrier"],
+		maps: ["outbreak-aw", "infection", "carrier", "descent"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
@@ -554,7 +554,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Meatbags are heavily armored zombies with glowing white eyes that appear on Infection and Carrier. Their tactical armor and helmets make them much tougher to put down than standard zombies.",
 		games: ["advanced-warfare"],
-		maps: ["infection", "carrier"],
+		maps: ["infection", "carrier", "descent"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
@@ -572,7 +572,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Spikers are mutated zombies with glowing red eyes and spikes protruding from their body and arms. Shooting their torso or killing them sprays shrapnel that damages both players and nearby zombies.",
 		games: ["advanced-warfare"],
-		maps: ["infection", "carrier"],
+		maps: ["infection", "carrier", "descent"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
@@ -626,7 +626,7 @@ const ZOMBIES = uniqueMap([
 		description:
 			"Blinkers are zombies carrying the teleport mutator on Carrier. A blue exo marks them, and they blink forward along their path.",
 		games: ["advanced-warfare"],
-		maps: ["carrier"],
+		maps: ["carrier", "descent"],
 		type: "Special",
 		speed: "Medium",
 		weakPoints: ["head"],
@@ -635,6 +635,50 @@ const ZOMBIES = uniqueMap([
 		spawnBehavior:
 			"The teleport mutator joins normal rounds at wave 6. Solo adds a wave offset of 2, so they show up about wave 8. They spawn inside those rounds rather than on a round of their own.",
 		combatStrategy: "content/zombies/blinker",
+	}),
+	makeZombie("oz", {
+		title: "Oz",
+		state: Option.none(),
+		releaseDate: "2015-09-03",
+		image: "/zombies/oz.webp",
+		description:
+			"The janitor of the Trident Retreat. On round 13 he fights from the control-room windows while the arena cycles its traps.",
+		games: ["advanced-warfare"],
+		maps: ["descent"],
+		type: "Elite",
+		speed: "Slow",
+		weakPoints: ["head"],
+		elementalWeakness: [],
+		attacks: ["exo-emp-lasers", "electricity-field", "host-infection", "turret-trap"],
+		spawnBehavior:
+			"Elite rounds are wave 13 and wave 20. A preview at the start of wave 6 pulls the crew into the arena, then sends them back. Wave 13 is this fight. If wave 13 would have been a dog or Host round, that special round is pushed later.",
+		combatStrategy: "content/zombies/oz",
+	}),
+	makeZombie("mutated-oz", {
+		title: "Mutated Oz",
+		state: Option.none(),
+		releaseDate: "2015-09-03",
+		image: "/zombies/mutated-oz.webp",
+		description:
+			"Oz's round-20 form. He ignores damage until a decontamination station stuns him, then closes in with melee, leaps, and EMP rockets.",
+		games: ["advanced-warfare"],
+		maps: ["descent"],
+		type: "Elite",
+		speed: "Fast",
+		weakPoints: ["body"],
+		elementalWeakness: [],
+		attacks: [
+			"crushing-melee",
+			"spin-attack",
+			"charging-lunge",
+			"bounding-leap",
+			"homing-rockets",
+			"exo-emp-stomp",
+			"host-infection",
+		],
+		spawnBehavior:
+			"Mutated Oz is the wave-20 elite, including wave 20 of Double Feature. He takes no damage unless the arena decontamination station has stunned him.",
+		combatStrategy: "content/zombies/mutated-oz",
 	}),
 	makeZombie("keepers", {
 		title: "Keepers",

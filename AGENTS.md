@@ -1,33 +1,16 @@
-## Verification commands
+## Toolchain and checks
 
-Run in this order after any code change (see `package.json` scripts):
+Use `bun` for dependency management, linting, formatting, type checks, and tests. Use `bun run test` for the repository test task, which includes lint regressions.
 
-```bash
-bun run typecheck   # tsc --noEmit
-bun run lint        # oxlint (warnings are expected; 0 errors = pass)
-bun run format      # oxfmt (auto-formats in place)
-bun run test        # bun test
-```
-
-### Expectations
-
-- Do not skip these steps for "small" edits — run them unless the user explicitly says not to
-- If `lint` reports issues, fix them (use `bun run lint:fix` when appropriate) and re-run `lint`
-- If `format` changes files, include those changes in the result
-- If `bun run format` fails, fix the reported issues and run it again
-- If `test` fails, fix the regression or explain why it is unrelated only when clearly pre-existing and the user did not ask for a fix
-
-### When to skip
-
-- Question-only or review-only tasks with no file edits
-- The user explicitly asks to skip verification
-- Docs-only changes with no TypeScript/test impact (still run checks if TS or tests were touched)
-
-Report a brief summary of pass/fail for each command when done.
-
-## Package manager
-
-Use `bun` instead of `npm`, and `bunx` instead of `npx`.
+| Command                         | Purpose                                                  |
+| ------------------------------- | -------------------------------------------------------- |
+| `bun install --frozen-lockfile` | Install pinned dependencies and run the toolchain patch. |
+| `bun run dev`                   | Start the web development server alone.                  |
+| `bun run typecheck`             | Check types.                                             |
+| `bun run test`                  | Run lint regressions and workspace tests.                |
+| `bun run build`                 | Build the web application.                               |
+| `bun run lint`                  | Check linting.                                           |
+| `bun run format`                | Format the repository.                                   |
 
 ## Imports
 
