@@ -1,8 +1,15 @@
 import { cn } from "cn"
 import { Predicate, Array as Arr } from "effect"
+import { CheckCircle2Icon } from "lucide-react"
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+	CopyCodeButton,
+	SolverCard,
+	SolverHeader,
+	SolverResetButton,
+	SolverResult,
+} from "@/components/solver-primitives"
+import { CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
 	cycleFacing,
@@ -70,23 +77,28 @@ export default function ShadowedThroneStatueSolver() {
 		setHasInput(false)
 	}
 
+	const isSolvedTurns = result?.status === "solved" && result.turns.length > 0
+	const isAlreadySolved = result?.status === "solved" && result.turns.length === 0
+	const isWarning = result?.status === "invalid" || result?.status === "unsolved"
+
+	const copyText = isSolvedTurns
+		? Arr.join(
+				Arr.map(result.turns, turn => `${turn.statue} ${turn.times}x`),
+				", ",
+			)
+		: ""
+
 	return (
-		<Card className="mx-auto w-[19.5rem] max-w-full bg-transparent shadow-lg sm:w-[23.5rem] dark:shadow-none">
-			<CardHeader className="items-center justify-items-center text-center">
-				<CardTitle className="text-xl">Statue Solver</CardTitle>
-				<CardDescription>
-					Pick the wall, then click each statue until its facing matches the game. Front points at
-					Barbarossa.
-				</CardDescription>
-			</CardHeader>
-			<CardContent className="space-y-4">
+		<SolverCard className="max-w-md">
+			<SolverHeader
+				title="Statue Solver"
+				description="Pick the wall, then click each statue until its facing matches the game. Front points at Barbarossa."
+			/>
+			<CardContent className="space-y-4 px-5">
 				<Tabs
 					value={wallId}
 					onValueChange={value => {
-						if (!isWallId(value)) {
-							return
-						}
-
+						if (!isWallId(value)) return
 						selectWall(value)
 					}}
 					className="w-full"
@@ -100,10 +112,11 @@ export default function ShadowedThroneStatueSolver() {
 					</TabsList>
 				</Tabs>
 
-				<div className="flex justify-center gap-2" role="group" aria-label="Statues">
+				<div className="grid grid-cols-4 gap-2" role="group" aria-label="Statues">
 					{Arr.map(visibleDirections, (direction, index) => {
 						const label = STATUE_LABELS[index]
 						const name = DIRECTION_NAMES[direction]
+						const isFront = direction === TARGET_DIRECTION
 
 						return (
 							<button
@@ -112,49 +125,80 @@ export default function ShadowedThroneStatueSolver() {
 								onClick={() => cycleStatue(index)}
 								aria-label={`Statue ${label}, facing ${name}`}
 								className={cn(
-									"flex h-20 w-[calc((100%-1.5rem)/4)] max-w-16 flex-col items-center justify-center rounded-lg border border-border bg-background text-sm sm:max-w-20",
-									direction === TARGET_DIRECTION && "border-primary bg-primary/10",
+									"flex h-22 flex-col items-center justify-center gap-0.5 rounded-xl border border-border/80 bg-background/60 text-sm transition-[transform,background-color,border-color,color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100",
+									statueCount === 3 && index === 0 && "col-start-1",
+									"hover:border-foreground/25 hover:bg-muted/60",
+									isFront &&
+										"border-primary/70 bg-primary/12 shadow-xs ring-1 ring-primary/30 hover:bg-primary/15",
 								)}
 							>
-								<span className="text-2xl leading-none">{DIRECTION_SYMBOLS[direction]}</span>
-								<span className="font-medium">{label}</span>
-								<span className="text-xs text-muted-foreground capitalize">{name}</span>
+								<span
+									className={cn(
+										"text-2xl leading-none",
+										isFront ? "text-primary" : "text-foreground",
+									)}
+								>
+									{DIRECTION_SYMBOLS[direction]}
+								</span>
+								<span className="text-xs font-semibold text-foreground">{label}</span>
+								<span
+									className={cn(
+										"text-[11px] capitalize",
+										isFront ? "font-medium text-primary" : "text-muted-foreground",
+									)}
+								>
+									{name}
+								</span>
 							</button>
 						)
 					})}
 				</div>
 
-				<div className="flex justify-center">
-					<Button
-						type="button"
-						variant="destructive"
-						size="lg"
-						onClick={reset}
-						disabled={!hasInput && facingFront}
-					>
-						Reset
-					</Button>
-				</div>
-
-				<div className="rounded-sm bg-input p-2 dark:bg-input/20" aria-live="polite">
-					<p className="text-center text-base font-medium">Solution</p>
+				<SolverResult
+					tone={isSolvedTurns || isAlreadySolved ? "solved" : isWarning ? "warning" : "idle"}
+					label="Solution"
+					action={
+						hasInput || !facingFront ? (
+							<div className="flex items-center gap-1">
+								{copyText ? <CopyCodeButton value={copyText} label="Copy turn order" /> : null}
+								<SolverResetButton onClick={reset} className="h-6 px-2 text-xs" />
+							</div>
+						) : null
+					}
+				>
 					{Predicate.isNull(result) ? (
-						<p className="mt-1 text-center text-sm text-muted-foreground">
+						<p className="text-center text-sm text-muted-foreground">
 							Set the statues to their in-game facings.
 						</p>
+					) : isAlreadySolved ? (
+						<div className="flex items-center justify-center gap-2 text-center text-sm text-foreground">
+							<CheckCircle2Icon className="size-4 shrink-0 text-primary" />
+							<span>{summary}</span>
+						</div>
 					) : Predicate.isNotNull(summary) ? (
-						<p className="mt-1 text-center text-sm">{summary}</p>
+						<p className="text-center text-sm text-amber-800 dark:text-amber-200">{summary}</p>
 					) : result.status === "solved" ? (
-						<ul className="mt-1 list-none pl-0">
-							{Arr.map(result.turns, turn => (
-								<li key={turn.statue} className="text-center text-sm">
-									Turn statue {turn.statue} {turn.times}×
+						<ol className="list-none space-y-1.5 pl-0">
+							{Arr.map(result.turns, (turn, stepIndex) => (
+								<li
+									key={turn.statue}
+									className="flex items-center justify-between gap-2 rounded-lg border border-border/60 bg-background/70 px-3 py-1.5 text-sm dark:bg-background/40"
+								>
+									<span className="flex items-center gap-2 font-medium text-foreground">
+										<span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-semibold text-primary tabular-nums">
+											{stepIndex + 1}
+										</span>
+										<span>Turn statue {turn.statue}</span>
+									</span>
+									<span className="rounded-md bg-primary/15 px-2 py-0.5 font-mono text-xs font-bold text-primary tabular-nums">
+										{turn.times}×
+									</span>
 								</li>
 							))}
-						</ul>
+						</ol>
 					) : null}
-				</div>
+				</SolverResult>
 			</CardContent>
-		</Card>
+		</SolverCard>
 	)
 }

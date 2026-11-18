@@ -1,75 +1,118 @@
-import { Cause, Exit, Array as Arr, Record as Rec } from "effect"
+import { Exit, Array as Arr, Record as Rec } from "effect"
 import { useState } from "react"
-import { toast } from "sonner"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+import {
+	CopyCodeButton,
+	SolverCard,
+	SolverHeader,
+	SolverNumberInput,
+	SolverResetButton,
+	SolverResult,
+} from "@/components/solver-primitives"
+import { CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { decodeTerminusCode, type TTerminusCode } from "@/utils/validation-schemas"
+import { decodeTerminusCode } from "@/utils/validation-schemas"
 
 export default function TerminusCode() {
 	const [values, setValues] = useState({ x: "", y: "", z: "" })
 
-	const solveEquations = (values: TTerminusCode) => {
-		const validValues = decodeTerminusCode(values)
+	const hasAnyValue = Arr.some(Rec.values(values), Boolean)
+	const hasAllValues = Arr.every(Rec.values(values), Boolean)
 
-		return Exit.match(validValues, {
-			onFailure: cause => {
-				console.error(Cause.pretty(cause))
-				toast.error(
-					"Invalid Values. Only positive, single digit, or double digit numbers are allowed.",
-					{ position: "bottom-center" },
-				)
+	const decoded = hasAllValues ? decodeTerminusCode(values) : null
 
-				return null
-			},
-			onSuccess: ({ x, y, z }) => {
-				const firstEquation = 2 * x + 11
-				const secondEquation = 2 * z + y - 5
-				const thirdEquation = Math.abs(y + z - x)
+	const solvedItems =
+		decoded && Exit.isSuccess(decoded)
+			? ([
+					{ key: "eq1", formula: "2X + 11", value: 2 * decoded.value.x + 11 },
+					{
+						key: "eq2",
+						formula: "2Z + Y - 5",
+						value: 2 * decoded.value.z + decoded.value.y - 5,
+					},
+					{
+						key: "eq3",
+						formula: "|Y + Z - X|",
+						value: Math.abs(decoded.value.y + decoded.value.z - decoded.value.x),
+					},
+				] as const)
+			: null
 
-				return `${firstEquation}, ${secondEquation}, ${thirdEquation}`
-			},
-		})
-	}
-
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target
-		setValues(prev => ({ ...prev, [name]: value }))
-	}
+	const isInvalid = Boolean(decoded && Exit.isFailure(decoded))
+	const formattedCode = solvedItems ? Arr.map(solvedItems, item => item.value).join(", ") : ""
 
 	return (
-		<Card className="mx-auto flex w-sm flex-col items-center justify-center border-2 bg-transparent pt-4 shadow-lg dark:shadow-none">
-			<CardContent>
-				<div className="grid grid-cols-3 gap-4">
+		<SolverCard className="max-w-md">
+			<SolverHeader
+				title="Terminus Terminal Code"
+				description="Enter the X, Y, and Z values from the sticky notes and chalkboard."
+			/>
+			<CardContent className="space-y-4 px-5">
+				<div className="grid grid-cols-3 gap-3">
 					{Arr.map(["x", "y", "z"] as const, letter => (
-						<div key={letter} className="flex flex-col items-center">
-							<Label htmlFor={letter} className="mb-1 text-sm capitalize">
+						<div key={letter} className="flex flex-col items-center gap-1.5">
+							<Label
+								htmlFor={letter}
+								className="text-xs font-semibold tracking-wider text-muted-foreground uppercase"
+							>
 								{letter}
 							</Label>
-							<Input
-								type="text"
+							<SolverNumberInput
 								id={letter}
 								name={letter}
+								label={letter.toUpperCase()}
 								value={values[letter]}
-								onChange={handleInputChange}
+								onValueChange={next => setValues(prev => ({ ...prev, [letter]: next }))}
 								placeholder="00"
-								className="w-11 text-center text-lg"
-								maxLength={2}
+								min={0}
+								max={99}
+								step={1}
 							/>
 						</div>
 					))}
 				</div>
-				<div className="mt-4 text-center text-base">
-					{Arr.every(Rec.values(values), Boolean) ? (
-						<>
-							<span>Your Code:</span>
-							<span className="ml-1 font-bold">{solveEquations(values)}</span>
-						</>
+
+				<SolverResult
+					tone={solvedItems ? "solved" : isInvalid ? "error" : "idle"}
+					label="Your Code"
+					action={
+						hasAnyValue ? (
+							<div className="flex items-center gap-1">
+								{formattedCode ? <CopyCodeButton value={formattedCode} /> : null}
+								<SolverResetButton
+									onClick={() => setValues({ x: "", y: "", z: "" })}
+									className="h-6 px-2 text-xs"
+								/>
+							</div>
+						) : null
+					}
+				>
+					{solvedItems ? (
+						<div className="grid grid-cols-3 gap-2">
+							{Arr.map(solvedItems, item => (
+								<div
+									key={item.key}
+									className="flex flex-col items-center rounded-lg border border-border/60 bg-background/70 px-2 py-2 dark:bg-background/40"
+								>
+									<span className="font-mono text-[10px] text-muted-foreground">
+										{item.formula}
+									</span>
+									<span className="font-mono text-2xl font-bold text-foreground tabular-nums">
+										{item.value}
+									</span>
+								</div>
+							))}
+						</div>
+					) : isInvalid ? (
+						<p className="text-center text-sm text-destructive">
+							Enter positive 1 or 2 digit whole numbers (0–99).
+						</p>
 					) : (
-						"Enter your values"
+						<p className="text-center text-sm text-muted-foreground">
+							Enter your X, Y, and Z values above.
+						</p>
 					)}
-				</div>
+				</SolverResult>
 			</CardContent>
-		</Card>
+		</SolverCard>
 	)
 }
