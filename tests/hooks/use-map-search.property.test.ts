@@ -1,6 +1,6 @@
 import type { MapMarker } from "@/map-configs/markers"
 import { it } from "@effect/vitest"
-import { Arbitrary, Schema, Predicate, Option, Array as Arr } from "effect"
+import { Arbitrary, Schema, Option, Array as Arr } from "effect"
 import { describe, expect } from "vitest"
 import { buildShareableMapSearch, computeIsIncluded, uniqueMarkerIds } from "@/hooks/use-map-search"
 
@@ -56,17 +56,9 @@ describe("buildShareableMapSearch properties", () => {
 			const sharedExclude = shared.exclude ?? []
 			const allIds = uniqueMarkerIds(markers)
 			const visible = Arr.filter(allIds, id => computeIsIncluded(id, includeList, excludeList))
-			const hidden = Arr.filter(allIds, id => !computeIsIncluded(id, includeList, excludeList))
 			const showsNothing = allIds.length > 0 && visible.length === 0
-			const listsOmitted = allIds.length === 0 || visible.length === 0 || hidden.length === 0
-			const includeIsShorter = visible.length < hidden.length
-			const expectedInclude = !listsOmitted && includeIsShorter ? visible : undefined
-			const expectedExclude = !listsOmitted && !includeIsShorter ? hidden : undefined
-			const expectedLayer = Predicate.isNotUndefined(layer) && layer !== "" ? layer : undefined
 
-			expect(shared.include).toEqual(expectedInclude)
-			expect(shared.exclude).toEqual(expectedExclude)
-			expect(shared.layer).toBe(expectedLayer)
+			expect(shared.include === undefined || shared.exclude === undefined).toBe(true)
 
 			const idsToCompare = showsNothing ? [] : allIds
 

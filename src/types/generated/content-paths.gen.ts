@@ -3,8 +3,8 @@
  * Run 'generate:content:paths' to regenerate.
  *
  * content directory scanned: src/content
- * generated at: 2026-11-16T11:01:36.853Z
- * generated in: 45ms
+ * generated at: 2026-11-16T15:00:10.900Z
+ * generated in: 49ms
  */
 
 /** Union of content paths in `content/legal` */
@@ -50,6 +50,7 @@ export type MainQuestsPaths =
 	| "content/main-quests/pop-goes-the-weasel"
 	| "content/main-quests/pyrrhic-victory"
 	| "content/main-quests/reckoning"
+	| "content/main-quests/reunion"
 	| "content/main-quests/rex-infernus"
 	| "content/main-quests/richtofens-grand-scheme"
 	| "content/main-quests/salvation-lies-above"
@@ -423,6 +424,7 @@ export type ZombiesPaths =
 	| "content/zombies/meistermeuchler"
 	| "content/zombies/meuchler"
 	| "content/zombies/mimic"
+	| "content/zombies/mutated-oz"
 	| "content/zombies/napalm-zombie"
 	| "content/zombies/nathan"
 	| "content/zombies/necropincer"
@@ -436,6 +438,7 @@ export type ZombiesPaths =
 	| "content/zombies/oozer"
 	| "content/zombies/orda"
 	| "content/zombies/oscar"
+	| "content/zombies/oz"
 	| "content/zombies/panzermorder"
 	| "content/zombies/panzersoldat"
 	| "content/zombies/parasite"

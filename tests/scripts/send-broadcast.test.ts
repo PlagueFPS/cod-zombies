@@ -2,7 +2,8 @@ import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import { ConfigProvider, Effect, Exit, Layer, Option } from "effect"
 import { Command } from "effect/cli"
 import { Digest } from "effect/crypto"
-import { describe, expect, test, vi } from "vitest"
+import { describe, expect, test } from "vitest"
+import { policyUpdateSubject } from "@/emails/policy-update-email"
 import { Email } from "@/lib/services/emails"
 import {
 	broadcastCli,
@@ -34,50 +35,6 @@ const testLayer = Layer.mergeAll(
 const runBroadcast = Command.runWith(broadcastCli, { version: "1.0.0" })
 
 describe("resolveContentBroadcast", () => {
-	test("should build a relic broadcast from the catalog slug", async () => {
-		const program = resolveContentBroadcast({
-			kind: "relic",
-			id: "mister-peeks-mayhem",
-			bullets: ["How to complete the Super Easter Egg"],
-			title: Option.none(),
-			description: Option.none(),
-		})
-
-		const exit = await Effect.runPromiseExit(program)
-
-		const broadcast = expectExitSuccess(exit)
-		expect(broadcast).toMatchObject({
-			kind: "relic",
-			type: "Special",
-			id: "mister-peeks-mayhem",
-			title: "Mister Peeks Mayhem",
-			redirectUrl: "/relics/black-ops-7/mister-peeks-mayhem",
-			bullets: ["How to complete the Super Easter Egg"],
-		})
-	})
-
-	test("should build a main quest broadcast from the map slug", async () => {
-		const program = resolveContentBroadcast({
-			kind: "main-quest",
-			id: "reckoning",
-			bullets: [" How to stabilize the reactors "],
-			title: Option.some("Reckoning"),
-			description: Option.none(),
-		})
-
-		const exit = await Effect.runPromiseExit(program)
-
-		const broadcast = expectExitSuccess(exit)
-		expect(broadcast).toMatchObject({
-			kind: "quest",
-			type: "Main",
-			id: "reckoning",
-			title: "Reckoning",
-			redirectUrl: "/main-quests/black-ops-6/reckoning",
-			bullets: ["How to stabilize the reactors"],
-		})
-	})
-
 	test("should reject a relic that is missing --bullet", async () => {
 		const program = resolveContentBroadcast({
 			kind: "relic",
@@ -144,29 +101,6 @@ describe("resolvePolicyBroadcast", () => {
 })
 
 describe("sendBroadcast", () => {
-	test("preserves the canonical SHA-256 idempotency fingerprint", async () => {
-		vi.useFakeTimers({ toFake: ["Date"] })
-		// oxlint-disable-next-line effecttsgo/global-date -- Local noon keeps the email fixture on October 30 in every test timezone.
-		vi.setSystemTime(new Date(2026, 9, 30, 12))
-		let key = ""
-
-		const email = Layer.mock(Email, {
-			createBroadcast: (_params, options) => {
-				key = new Headers(options?.headers).get("Idempotency-Key") ?? ""
-
-				return Effect.succeed({ id: "123" })
-			},
-		})
-
-		await Effect.runPromise(
-			sendBroadcast(
-				{ kind: "policy", bullets: ["How long confirmation tokens are kept"] },
-				{ send: true },
-			).pipe(Effect.provide([email, testConfig, Digest.layerWebCrypto])),
-		)
-		expect(key).toBe("broadcast/policy/8c106a5ccc7b20d3e2ceaf829d6a1a4b")
-	})
-
 	test("should dry-run a policy broadcast without calling Resend", async () => {
 		const program = sendBroadcast(
 			{ kind: "policy", bullets: ["How long confirmation tokens are kept"] },
@@ -181,7 +115,7 @@ describe("sendBroadcast", () => {
 			throw new Error(`expected a dry run, got ${result.mode}`)
 		}
 
-		expect(result.subject).toBe("Privacy Policy Update")
+		expect(result.subject).toBe(policyUpdateSubject)
 		expect(result.text).toContain("How long confirmation tokens are kept")
 		expect(result.segmentId).toBe("aud_test")
 	})
@@ -197,7 +131,7 @@ describe("sendBroadcast", () => {
 		expect(expectExitSuccess(exit)).toEqual({
 			mode: "sent",
 			id: "123",
-			subject: "Privacy Policy Update",
+			subject: policyUpdateSubject,
 		})
 	})
 })

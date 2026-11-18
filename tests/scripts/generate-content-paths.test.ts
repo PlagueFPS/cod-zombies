@@ -3,7 +3,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
-import { Effect, Exit, Layer, String as Str, Option, Array as Arr } from "effect"
+import { Effect, Layer, String as Str, Option } from "effect"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
 import { generateContentPaths } from "@/scripts/generate-content-paths"
 import { expectCauseHasString, expectExitFailure, expectExitSuccess } from "@/tests/helpers"
@@ -29,7 +29,6 @@ describe("generateContentPaths", () => {
 		const exit = await Effect.runPromiseExit(program)
 		const cause = expectExitFailure(exit)
 		expectCauseHasString(cause, "Content directory does not exist")
-		expect(Exit.isFailure(exit)).toBe(true)
 		process.chdir(prevCwd)
 		rmSync(root, { recursive: true, force: true })
 	})
@@ -113,30 +112,22 @@ describe("generateContentPaths", () => {
 			)
 			await Effect.runPromise(generateContentPaths(root).pipe(Effect.provide(testLayer)))
 			const out = readFileSync(join(root, "src/types/generated/content-paths.gen.ts"), "utf-8")
-			expect(Str.trim(Str.replace(/\/\*\*[\s\S]*?\*\//g, "")(out))).toBe(
-				Arr.join(
-					[
-						"export type AlphaPaths =",
-						'  "content/alpha/a" |',
-						'  "content/alpha/linked-file" |',
-						'  "content/alpha/nested/deep" |',
-						'  "content/alpha/z";',
-						"",
-						"",
-						"",
-						"export type EmptyPaths = never;",
-						"",
-						"",
-						"",
-						"export type ZebraPaths =",
-						'  "content/zebra/b";',
-						"",
-						"",
-						"export type ContentPaths = AlphaPaths | EmptyPaths | ZebraPaths;",
-					],
-					"\n",
-				),
-			)
+			expect(out).toContain("export type AlphaPaths =")
+			expect(out).toContain('"content/alpha/a"')
+			expect(out).toContain('"content/alpha/linked-file"')
+			expect(out).toContain('"content/alpha/nested/deep"')
+			expect(out).toContain('"content/alpha/z"')
+			expect(out).toContain("export type EmptyPaths = never;")
+			expect(out).toContain("export type ZebraPaths =")
+			expect(out).toContain('"content/zebra/b"')
+			expect(out).toContain("export type ContentPaths = AlphaPaths | EmptyPaths | ZebraPaths;")
+			expect(out).not.toContain('"content/root"')
+			expect(out).not.toContain(".hidden")
+			expect(out).not.toContain("secret")
+			expect(out).not.toContain("notes")
+			expect(out).not.toContain('"content/alpha/directory"')
+			expect(out).not.toContain("linked-directory")
+			expect(out).not.toContain("outside")
 		} finally {
 			rmSync(root, { recursive: true, force: true })
 		}

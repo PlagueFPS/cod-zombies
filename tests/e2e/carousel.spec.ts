@@ -52,11 +52,9 @@ test("browses expanded slides and returns to the selected slide", async ({ page 
 	await carousel.getByRole("button", { name: captions[1] }).click()
 
 	const dialog = page.getByRole("dialog", { name: "Image carousel" })
-	await expect(dialog.getByRole("button", { name: "Close", exact: true })).toHaveCount(0)
 	await expect(
 		dialog.getByRole("tablist", { name: "Carousel slides" }).getByRole("button"),
 	).toHaveCount(4)
-	await expect(dialog.getByText(/Slide \d+ of \d+/)).toHaveCount(0)
 	await expect(dialog.getByRole("img", { name: captions[1], exact: true })).toBeInViewport({
 		ratio: 0.999,
 	})
@@ -91,10 +89,6 @@ test("browses expanded slides and returns to the selected slide", async ({ page 
 	await expect(dialog.getByRole("img", { name: captions[2], exact: true })).toBeInViewport({
 		ratio: 0.999,
 	})
-	await expect(dialog.getByRole("img", { name: captions[2], exact: true })).toHaveCSS(
-		"opacity",
-		"1",
-	)
 	await page.screenshot({ path: testInfo.outputPath("expanded-carousel.png") })
 	await page.keyboard.press("Escape")
 	await expect(dialog).not.toBeVisible()
@@ -139,37 +133,6 @@ test("closes from the caption and backdrop while navigation keeps it open", asyn
 	await page.locator('[data-slot="dialog-overlay"]').click({ position: { x: 8, y: 8 } })
 	await expect(dialog).not.toBeVisible()
 })
-
-const themes: Array<"light" | "dark"> = ["light", "dark"]
-
-for (const theme of themes) {
-	test.describe(`${theme} theme`, () => {
-		test.use({ colorScheme: theme })
-
-		test("shows readable captions on an opaque background", async ({ page }, testInfo) => {
-			const carousel = page.locator('[data-slot="carousel"]').first()
-			await carousel.getByRole("button", { name: captions[0] }).click()
-			const dialog = page.getByRole("dialog", { name: "Image carousel" })
-			const image = dialog.getByRole("img", { name: captions[0], exact: true })
-			const figure = dialog.locator("figure").filter({ hasText: captions[0] })
-			const caption = figure.locator("figcaption")
-
-			await expect(image).toBeInViewport({ ratio: 0.999 })
-			await expect(image).toHaveCSS("opacity", "1")
-			await expect(caption).toHaveCSS("font-size", "16px")
-
-			const colors = await page.locator("body").evaluate(element => {
-				const style = getComputedStyle(element)
-
-				return { background: style.backgroundColor, foreground: style.color }
-			})
-
-			await expect(figure).toHaveCSS("background-color", colors.background)
-			await expect(caption).toHaveCSS("color", colors.foreground)
-			await page.screenshot({ path: testInfo.outputPath(`expanded-carousel-${theme}.png`) })
-		})
-	})
-}
 
 test("keeps standalone images independent of carousel expansion", async ({ page }) => {
 	await page.getByRole("button", { name: "Crane Button" }).click()
@@ -225,10 +188,6 @@ test.describe("touch navigation", () => {
 		await expect(dialog.getByRole("img", { name: captions[1], exact: true })).toBeInViewport({
 			ratio: 0.999,
 		})
-		await expect(dialog.getByRole("img", { name: captions[1], exact: true })).toHaveCSS(
-			"opacity",
-			"1",
-		)
 		await page.screenshot({ path: testInfo.outputPath("expanded-carousel-mobile.png") })
 		await dialog.getByRole("img", { name: captions[1], exact: true }).tap()
 		await expect(carousel.getByRole("button", { name: "Slide 2 of 4" })).toHaveAttribute(

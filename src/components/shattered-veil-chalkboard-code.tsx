@@ -1,7 +1,15 @@
+import { cn } from "cn"
 import { Array as Arr } from "effect"
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+	CopyCodeButton,
+	SolverCard,
+	SolverHeader,
+	SolverResetButton,
+	SolverResult,
+} from "@/components/solver-primitives"
+import { CardContent } from "@/components/ui/card"
+import { Toggle } from "@/components/ui/toggle"
 import {
 	type ChalkboardLetters,
 	type Code,
@@ -17,58 +25,115 @@ export default function ShatteredVeilCode() {
 	const allLetterGroups: ChalkboardLetters[] = ["E", "BCDEF", "OSTUHJLD", "AIOUY"]
 	const allCodeWords = getAllCodes()
 
+	const code = letterGroup && codeWord ? String(chalkboardCodes[letterGroup][codeWord]) : null
+	const hasSelection = Boolean(letterGroup || codeWord)
+
 	return (
-		<div className="flex items-center justify-center bg-background p-4">
-			<Card className="w-full bg-transparent">
-				<CardHeader>
-					<CardTitle>Keypad Code Generator</CardTitle>
-					<CardDescription>Select one option from each group to generate your code</CardDescription>
-				</CardHeader>
-				<CardContent className="space-y-6">
-					<div className="space-y-3">
-						<h3 className="text-sm font-semibold text-foreground/90">Code Words</h3>
-						<div className="grid grid-cols-2 gap-2">
-							{Arr.map(allCodeWords, word => (
-								<Button
+		<SolverCard className="max-w-lg">
+			<SolverHeader
+				title="Keypad Code Generator"
+				description="Select your code word and top-left chalkboard letter group."
+			/>
+			<CardContent className="space-y-5 px-5">
+				<div className="space-y-2">
+					<h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+						Code Words
+					</h3>
+					<div className="grid grid-cols-2 gap-2">
+						{Arr.map(allCodeWords, word => {
+							const isSelected = codeWord === word
+
+							return (
+								<Toggle
 									key={word}
-									variant={codeWord === word ? "default" : "outline"}
-									onClick={() => setCodeWord(word)}
-									className="w-full"
+									variant="outline"
+									pressed={isSelected}
+									onPressedChange={pressed => setCodeWord(pressed ? word : undefined)}
+									className={cn(
+										"h-10 w-full rounded-xl border-border/80 bg-background/60 font-mono text-sm font-semibold tracking-wider",
+										"hover:border-foreground/25 hover:bg-muted/60",
+										isSelected &&
+											"border-primary/70 bg-primary/12 text-primary shadow-xs ring-1 ring-primary/30 hover:bg-primary/15 aria-pressed:border-primary/70 aria-pressed:bg-primary/12 aria-pressed:text-primary data-[state=on]:bg-primary/12",
+									)}
 								>
 									{word}
-								</Button>
-							))}
-						</div>
+								</Toggle>
+							)
+						})}
 					</div>
+				</div>
 
-					<div className="space-y-3">
-						<h3 className="text-sm font-semibold text-foreground/90">Letter Groups</h3>
-						<div className="grid grid-cols-2 gap-2">
-							{Arr.map(allLetterGroups, group => (
-								<Button
+				<div className="space-y-2">
+					<h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+						Letter Groups
+					</h3>
+					<div className="grid grid-cols-2 gap-2">
+						{Arr.map(allLetterGroups, group => {
+							const isSelected = letterGroup === group
+
+							return (
+								<Toggle
 									key={group}
-									variant={letterGroup === group ? "default" : "outline"}
-									onClick={() => setLetterGroup(group)}
-									className="w-full"
+									variant="outline"
+									pressed={isSelected}
+									onPressedChange={pressed => setLetterGroup(pressed ? group : undefined)}
+									className={cn(
+										"h-10 w-full rounded-xl border-border/80 bg-background/60 font-mono text-sm font-semibold tracking-wider",
+										"hover:border-foreground/25 hover:bg-muted/60",
+										isSelected &&
+											"border-primary/70 bg-primary/12 text-primary shadow-xs ring-1 ring-primary/30 hover:bg-primary/15 aria-pressed:border-primary/70 aria-pressed:bg-primary/12 aria-pressed:text-primary data-[state=on]:bg-primary/12",
+									)}
 								>
 									{group}
-								</Button>
-							))}
-						</div>
+								</Toggle>
+							)
+						})}
 					</div>
+				</div>
 
-					{letterGroup && codeWord && (
-						<div className="border-t pt-4">
-							<p className="mb-2 text-sm text-foreground/90">Your Code:</p>
-							<div className="rounded-lg bg-muted p-4 dark:bg-input/30">
-								<code className="text-lg font-semibold text-foreground">
-									{chalkboardCodes[letterGroup][codeWord]}
-								</code>
+				<SolverResult
+					tone={code ? "solved" : "idle"}
+					label="Your Code"
+					action={
+						code ? (
+							<div className="flex items-center gap-1">
+								<CopyCodeButton value={code} />
+								<SolverResetButton
+									onClick={() => {
+										setLetterGroup(undefined)
+										setCodeWord(undefined)
+									}}
+									className="h-6 px-2 text-xs"
+								/>
 							</div>
+						) : hasSelection ? (
+							<SolverResetButton
+								onClick={() => {
+									setLetterGroup(undefined)
+									setCodeWord(undefined)
+								}}
+								className="h-6 px-2 text-xs"
+							/>
+						) : null
+					}
+				>
+					{code ? (
+						<div className="flex items-center justify-center py-1">
+							<code className="font-mono text-3xl font-bold tracking-[0.22em] text-foreground tabular-nums">
+								{code}
+							</code>
 						</div>
+					) : (
+						<p className="text-center text-sm text-muted-foreground">
+							{codeWord && !letterGroup
+								? "Now select your chalkboard letter group."
+								: !codeWord && letterGroup
+									? "Now select your code word."
+									: "Select one option from each group."}
+						</p>
 					)}
-				</CardContent>
-			</Card>
-		</div>
+				</SolverResult>
+			</CardContent>
+		</SolverCard>
 	)
 }

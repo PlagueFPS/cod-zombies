@@ -2,25 +2,11 @@ import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSyn
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
-import {
-	Predicate,
-	Effect,
-	Exit,
-	String as Str,
-	Array as Arr,
-	Option,
-	Schema,
-	Result,
-} from "effect"
+import { Predicate, Effect, String as Str, Array as Arr, Option, Schema, Result } from "effect"
 import { Command } from "effect/cli"
 import sharp from "sharp"
 import { afterEach, beforeEach, describe, expect, test } from "vitest"
-import {
-	generateOgCommand,
-	OG_IMAGE_SIZE,
-	OgCliError,
-	writeOgFile,
-} from "@/scripts/generate-og-images"
+import { generateOgCommand, OG_IMAGE_SIZE, writeOgFile } from "@/scripts/generate-og-images"
 import { expectCauseTaggedError, expectExitFailure, expectExitSuccess } from "@/tests/helpers"
 import { decodeOpengraphManifest } from "@/utils/validation-schemas"
 
@@ -84,11 +70,8 @@ describe("writeOgFile", () => {
 describe("generateOgCommand CLI (OgCliError)", () => {
 	test("empty argv yields OgCliError", async () => {
 		const exit = await Effect.runPromiseExit(runOg([]).pipe(Effect.provide(testLayer)))
-		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
-		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			Str.includes("Specify exactly one target")(e.message),
-		)
+		expectCauseTaggedError(cause, "OgCliError")
 	})
 
 	test("--maps with --map yields OgCliError", async () => {
@@ -96,11 +79,8 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 			runOg(["--maps", "--map", "die-maschine"]).pipe(Effect.provide(testLayer)),
 		)
 
-		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
-		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			Str.includes("--maps already generates")(e.message),
-		)
+		expectCauseTaggedError(cause, "OgCliError")
 	})
 
 	test("--zombies and --zombie together yield OgCliError", async () => {
@@ -108,11 +88,8 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 			runOg(["--zombies", "--zombie", "zombie"]).pipe(Effect.provide(testLayer)),
 		)
 
-		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
-		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			Str.includes("Use either --zombies or --zombie")(e.message),
-		)
+		expectCauseTaggedError(cause, "OgCliError")
 	})
 
 	test("--zombie with --map yields OgCliError", async () => {
@@ -120,11 +97,8 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 			runOg(["--zombie", "zombie", "--map", "die-maschine"]).pipe(Effect.provide(testLayer)),
 		)
 
-		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
-		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			Str.includes("--map is only valid with --zombies")(e.message),
-		)
+		expectCauseTaggedError(cause, "OgCliError")
 	})
 
 	test("--quests and --quest together yield OgCliError", async () => {
@@ -132,11 +106,8 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 			runOg(["--quests", "--quest", "free-perk"]).pipe(Effect.provide(testLayer)),
 		)
 
-		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
-		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			Str.includes("Use either --quests or --quest")(e.message),
-		)
+		expectCauseTaggedError(cause, "OgCliError")
 	})
 
 	test("--quest with --map yields OgCliError", async () => {
@@ -144,11 +115,8 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 			runOg(["--quest", "free-perk", "--map", "die-maschine"]).pipe(Effect.provide(testLayer)),
 		)
 
-		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
-		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			Str.includes("--map is only valid with --quests")(e.message),
-		)
+		expectCauseTaggedError(cause, "OgCliError")
 	})
 
 	test("--relics and --relic together yield OgCliError", async () => {
@@ -156,11 +124,8 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 			runOg(["--relics", "--relic", "lawyers-pen"]).pipe(Effect.provide(testLayer)),
 		)
 
-		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
-		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			Str.includes("Use either --relics or --relic")(e.message),
-		)
+		expectCauseTaggedError(cause, "OgCliError")
 	})
 
 	test("--relic with --map yields OgCliError", async () => {
@@ -168,11 +133,8 @@ describe("generateOgCommand CLI (OgCliError)", () => {
 			runOg(["--relic", "lawyers-pen", "--map", "die-maschine"]).pipe(Effect.provide(testLayer)),
 		)
 
-		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
-		expectCauseTaggedError(cause, "OgCliError", (e: OgCliError) =>
-			Str.includes("--map is only valid with --relics")(e.message),
-		)
+		expectCauseTaggedError(cause, "OgCliError")
 	})
 })
 

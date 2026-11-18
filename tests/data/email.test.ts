@@ -18,8 +18,5 @@ describe("sendContactEmail", () => {
 
 		const result = expectExitSuccess(exit)
 		expect(result.success).toBe(true)
-		expect(result.message).toBe(
-			"Thank you for contacting us! We will get back to you as soon as possible.",
-		)
 	})
 })

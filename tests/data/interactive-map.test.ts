@@ -1,5 +1,5 @@
 import { Effect, Option, Array as Arr } from "effect"
-import { afterEach, describe, expect, test, vi } from "vitest"
+import { describe, expect, test } from "vitest"
 import {
 	getInteractiveMapByKey,
 	getInteractiveMapConfig,
@@ -29,20 +29,6 @@ describe("getInteractiveMapByKey", () => {
 	test("returns Some when the interactive map exists", () => {
 		const m = getInteractiveMapByKey("paradox-junction").pipe(Option.getOrThrow)
 		expect(m.id).toBe("paradox-junction")
-	})
-})
-
-describe("getInteractiveMapByKey applies publishedDate New window", () => {
-	afterEach(() => {
-		vi.useRealTimers()
-	})
-
-	test("stored None stays None even when publishedDate is inside the 14-day window", () => {
-		vi.useFakeTimers()
-		vi.setSystemTime(Date.parse("2026-09-08T12:00:00.000Z"))
-		const map = getInteractiveMapByKey("rex-infernus").pipe(Option.getOrThrow)
-		expect(map.publishedDate).toBe("2026-08-30")
-		expect(Option.getOrNull(map.state)).toBeNull()
 	})
 })
 

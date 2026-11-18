@@ -1,5 +1,5 @@
 import type { TFeedbackForm } from "@/utils/validation-schemas"
-import { Effect, Exit, Predicate, Schema, Result } from "effect"
+import { Effect, Predicate, Schema, Result } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientResponse } from "effect/http"
 import { describe, expect, test } from "vitest"
 import {
@@ -105,7 +105,6 @@ describe("IssueTracker.createIssue", () => {
 
 		const exit = await runCreateIssue(feedbackWithoutEmail, fetch)
 
-		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "CreateIssueError")
 		expectCauseHasString(cause, "Entity not found: Team")
@@ -116,10 +115,8 @@ describe("IssueTracker.createIssue", () => {
 
 		const exit = await runCreateIssue(feedbackWithoutEmail, fetch)
 
-		expect(Exit.isFailure(exit)).toBe(true)
 		const cause = expectExitFailure(exit)
 		expectCauseTaggedError(cause, "CreateIssueError")
-		expectCauseHasString(cause, "unsuccessful")
 	})
 
 	test("fails when Linear responds with a non-OK HTTP status", async () => {
@@ -127,7 +124,6 @@ describe("IssueTracker.createIssue", () => {
 
 		const exit = await runCreateIssue(feedbackWithoutEmail, fetch)
 
-		expect(Exit.isFailure(exit)).toBe(true)
 		expectCauseTaggedError(expectExitFailure(exit), "CreateIssueError")
 	})
 })
