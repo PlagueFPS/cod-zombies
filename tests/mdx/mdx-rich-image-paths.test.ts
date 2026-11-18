@@ -17,6 +17,7 @@ describe("extractRichImageRefs", () => {
 				"Intro.",
 				'<RichImage image="/content/map/shot.webp" caption="On the table" />',
 				"<RichImage image='/content/map/other.webp' caption='Shelf' />",
+				'Click <RichImage image="/content/map/inline.webp">here</RichImage> to see it.',
 			],
 			"\n",
 		)
@@ -24,6 +25,7 @@ describe("extractRichImageRefs", () => {
 		expect(extractRichImageRefs(content)).toEqual([
 			{ image: "/content/map/shot.webp", line: 2 },
 			{ image: "/content/map/other.webp", line: 3 },
+			{ image: "/content/map/inline.webp", line: 4 },
 		])
 	})
 

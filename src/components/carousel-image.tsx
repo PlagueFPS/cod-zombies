@@ -14,7 +14,7 @@ export function CarouselImage({ image, caption, alt, index }: RichImageProps & {
 					width={776}
 					height={436}
 					description={caption}
-					alt={alt ?? caption}
+					alt={alt ?? caption ?? ""}
 					sizes="(max-width: 828px) 100vw, 1200px"
 					className="cursor-zoom-in rounded-lg"
 				/>
@@ -30,7 +30,7 @@ export function ExpandedCarouselImage({ image, caption, alt }: RichImageProps) {
 			width={1920}
 			height={1080}
 			description={caption}
-			alt={alt ?? caption}
+			alt={alt ?? caption ?? ""}
 			sizes="(max-width: 1920px) 100vw, 1920px"
 			containerClassName="rounded-lg bg-background text-foreground shadow-lg [&>figcaption]:m-0 [&>figcaption]:w-full [&>figcaption]:px-4 [&>figcaption]:py-3 [&>figcaption]:text-center [&>figcaption]:text-base [&>figcaption]:leading-relaxed"
 			className="aspect-auto h-auto max-h-[calc(100dvh-12rem)] rounded-lg object-contain"
