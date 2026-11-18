@@ -8,37 +8,33 @@ interface INewFeatureEmail {
 	unsubscribeUrl: string
 }
 
-export const featureUpdateSubject = "New Main Quest Guides: WWII"
+export const featureUpdateSubject = "New Main Quest Guides: Advanced Warfare"
 
-export const featureUpdatePreview = "Main quest guides for every WWII map are now available."
+export const featureUpdatePreview =
+	"Main quest guides for every Advanced Warfare map are now available."
 
 const siteOrigin = "https://www.codzombiesguides.com"
 
-const wwiiMainQuests = [
+const advancedWarfareMainQuests = [
 	{
-		mapId: "the-final-reich",
-		mapTitle: "The Final Reich",
-		questTitle: "Fireworks & Dark Reunion",
+		mapId: "outbreak-aw",
+		mapTitle: "Outbreak (AW)",
+		questTitle: "Game Over, Man!",
 	},
 	{
-		mapId: "the-darkest-shore",
-		mapTitle: "The Darkest Shore",
-		questTitle: "Making History",
+		mapId: "infection",
+		mapTitle: "Infection",
+		questTitle: "MEAT IS MURDER",
 	},
 	{
-		mapId: "the-shadowed-throne",
-		mapTitle: "The Shadowed Throne",
-		questTitle: "Stadtjäger Down",
+		mapId: "carrier",
+		mapTitle: "Carrier",
+		questTitle: "Flotsam & Jetsam",
 	},
 	{
-		mapId: "the-tortured-path",
-		mapTitle: "The Tortured Path",
-		questTitle: "I Have the Power",
-	},
-	{
-		mapId: "the-frozen-dawn",
-		mapTitle: "The Frozen Dawn",
-		questTitle: "Kingfall",
+		mapId: "descent",
+		mapTitle: "Descent",
+		questTitle: "Reunion",
 	},
 ] as const
 
@@ -51,15 +47,15 @@ function NewFeatureEmail({ unsubscribeUrl }: INewFeatureEmail) {
 			unsubscribeUrl={unsubscribeUrl}
 		>
 			<Heading as="h1" className="text-brand-ink mx-0 mt-0 mb-6 text-center text-2xl font-bold">
-				WWII Main Quests Are Now Available
+				Advanced Warfare Main Quests Are Now Available
 			</Heading>
 			<Text className="text-brand-body mb-6 text-base leading-6">
-				Main quest guides for <strong className="text-brand-accent">WWII</strong> are now on the
-				site. Follow each quest from setup to the final boss, including both Fireworks and Dark
-				Reunion on The Final Reich.
+				Main quest guides for <strong className="text-brand-accent">Advanced Warfare</strong> are
+				now on the site. Follow each Exo Zombies walkthrough from setup to the final encounter
+				across all four maps.
 			</Text>
-			{Arr.map(wwiiMainQuests, quest => {
-				const href = `${siteOrigin}/main-quests/wwii/${quest.mapId}`
+			{Arr.map(advancedWarfareMainQuests, quest => {
+				const href = `${siteOrigin}/main-quests/advanced-warfare/${quest.mapId}`
 				const label = `${quest.questTitle} for ${quest.mapTitle}`
 				const imageUrl = requireOpengraphImageUrl(siteOrigin, "main-quests", quest.mapId)
 
