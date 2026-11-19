@@ -1,5 +1,5 @@
 import { Exit } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import { expectExitSuccess } from "@/tests/helpers"
 import {
 	decodeBestiarySearchParams,

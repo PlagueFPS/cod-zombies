@@ -1,5 +1,5 @@
 import { Option } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import { mapWithGameVariant, resolveGameVariantOption, uniqueMap } from "@/data/registry-helpers"
 
 type Sample = {

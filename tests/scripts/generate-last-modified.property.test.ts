@@ -11,7 +11,7 @@ import {
 	Array as Arr,
 	Record as Rec,
 } from "effect"
-import { describe, expect } from "vitest"
+import { describe, expect } from "vite-plus/test"
 import { parseGitBatchOutput } from "@/scripts/generate-last-modified"
 import { expectExitSuccess } from "@/tests/helpers"
 

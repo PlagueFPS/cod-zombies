@@ -5,7 +5,7 @@ import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
 import { Effect, Layer, String as Str, Option } from "effect"
 import sharp from "sharp"
-import { afterEach, beforeEach, describe, expect, test } from "vitest"
+import { afterEach, beforeEach, describe, expect, test } from "vite-plus/test"
 import { generateImagePaths, ImageMetadataError } from "@/scripts/generate-image-paths"
 import {
 	expectCauseHasString,

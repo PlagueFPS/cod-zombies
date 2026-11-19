@@ -2,7 +2,7 @@
 
 import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
-import { afterEach, describe, expect, test } from "vitest"
+import { afterEach, describe, expect, test } from "vite-plus/test"
 import { FeaturedImage } from "@/components/featured-image"
 
 describe("FeaturedImage", () => {

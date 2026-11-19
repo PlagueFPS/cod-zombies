@@ -9,7 +9,7 @@ import {
 import { String as Str } from "effect"
 import { act, type ReactNode } from "react"
 import { createRoot, type Root } from "react-dom/client"
-import { afterEach, describe, expect, test } from "vitest"
+import { afterEach, describe, expect, test } from "vite-plus/test"
 import { Heading2, Heading3, Heading4 } from "@/components/rich-headings"
 
 async function renderWithRouter(ui: ReactNode): Promise<{

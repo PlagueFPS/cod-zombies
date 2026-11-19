@@ -2,7 +2,7 @@
 
 import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
-import { afterEach, describe, expect, test } from "vitest"
+import { afterEach, describe, expect, test } from "vite-plus/test"
 import AotrtNumberTool from "@/components/aotrt-number-tool"
 import { AOTRT_O_NUMBER_STORAGE_KEY } from "@/utils/aotrt-o-number-storage"
 

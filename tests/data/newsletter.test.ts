@@ -1,5 +1,5 @@
 import { Effect, Layer, Option } from "effect"
-import { describe, expect, test, vi } from "vitest"
+import { describe, expect, test, vi } from "vite-plus/test"
 import { newsletterAcknowledgements, newsletterRequest } from "@/data/email.server"
 import { ResendError, Email } from "@/lib/services/emails"
 import { NewsletterTokens } from "@/lib/services/newsletter-tokens"

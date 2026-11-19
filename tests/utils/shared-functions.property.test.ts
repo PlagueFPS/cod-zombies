@@ -1,6 +1,6 @@
 import { it } from "@effect/vitest"
 import { Arbitrary, Schema } from "effect"
-import { describe, expect } from "vitest"
+import { describe, expect } from "vite-plus/test"
 import {
 	formatEstimatedTimeMidpoint,
 	formatEstimatedTimeRange,

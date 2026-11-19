@@ -4,7 +4,7 @@ import type { Relic } from "@/data/relics"
 import type { SideQuest } from "@/data/side-quests"
 import type { Zombie } from "@/data/zombies"
 import { Data, Option } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import {
 	decodeInteractiveMap,
 	decodeMap,

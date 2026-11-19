@@ -13,7 +13,7 @@ import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
 import { Cause, Effect, Layer, Option, Queue, Terminal, String as Str } from "effect"
 import sharp from "sharp"
-import { afterEach, beforeEach, describe, expect, test } from "vitest"
+import { afterEach, beforeEach, describe, expect, test } from "vite-plus/test"
 import {
 	ICON_LARGE_SIZE,
 	ICON_SMALL_SIZE,

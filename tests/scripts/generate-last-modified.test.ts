@@ -1,7 +1,7 @@
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
 import { Effect, FileSystem, Layer, MutableHashSet, String as Str } from "effect"
-import { afterEach, describe, expect, test, vi } from "vitest"
+import { afterEach, describe, expect, test, vi } from "vite-plus/test"
 import {
 	getAllContentFiles,
 	parseGitBatchOutput,

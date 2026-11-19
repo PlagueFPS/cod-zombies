@@ -1,4 +1,4 @@
-import { defineRule } from "@oxlint/plugins";
+import { defineRule } from "vite-plus/lint/plugins";
 
 import { arrayMethodTarget, isKnownIteratorExpression, unwrapArrayExpression } from "../shared/array-method.ts";
 

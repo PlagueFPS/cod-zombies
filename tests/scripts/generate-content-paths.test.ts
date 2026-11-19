@@ -4,7 +4,7 @@ import { join } from "node:path"
 import { layer as BunFileSystemLayer } from "@effect/platform-bun/BunFileSystem"
 import { layer as BunPathLayer } from "@effect/platform-bun/BunPath"
 import { Effect, Layer, String as Str, Option } from "effect"
-import { afterEach, beforeEach, describe, expect, test } from "vitest"
+import { afterEach, beforeEach, describe, expect, test } from "vite-plus/test"
 import { generateContentPaths } from "@/scripts/generate-content-paths"
 import { expectCauseHasString, expectExitFailure, expectExitSuccess } from "@/tests/helpers"
 
