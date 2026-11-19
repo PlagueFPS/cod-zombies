@@ -1,6 +1,6 @@
 import { it } from "@effect/vitest"
 import { Arbitrary, Schema, Predicate, Result, Array as Arr } from "effect"
-import { describe, expect } from "vitest"
+import { describe, expect } from "vite-plus/test"
 import { expectExitSuccess } from "@/tests/helpers"
 import { normalizeParsedSearch, parseSearch, type ParsedSearchParams } from "@/utils/search-params"
 import { decodeMainQuestSearchParams } from "@/utils/validation-schemas"

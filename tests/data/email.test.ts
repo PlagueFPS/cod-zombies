@@ -1,5 +1,5 @@
 import { Effect, Layer } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import { sendContactEmail } from "@/data/email.server"
 import { Email } from "@/lib/services/emails"
 import { expectExitSuccess } from "@/tests/helpers"

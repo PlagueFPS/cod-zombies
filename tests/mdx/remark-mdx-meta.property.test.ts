@@ -1,6 +1,6 @@
 import { it } from "@effect/vitest"
 import { Arbitrary, Schema, Predicate, Array as Arr, String as Str } from "effect"
-import { describe, expect } from "vitest"
+import { describe, expect } from "vite-plus/test"
 import { getMdxDocumentMetaFromSource } from "@/lib/remark-mdx-meta"
 import { slugify } from "@/utils/shared-functions"
 

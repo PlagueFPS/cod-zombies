@@ -1,5 +1,5 @@
 import { Option } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import {
 	NEW_CONTENT_BADGE_MAX_AGE_DAYS,
 	calendarDaysSinceIsoDate,

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest"
+import { afterEach, describe, expect, it, vi } from "vite-plus/test"
 import { DATE_OPTIONS } from "@/utils/constants"
 import { getLastModified } from "@/utils/functions.server"
 import { dateFrom } from "@/utils/system-time"

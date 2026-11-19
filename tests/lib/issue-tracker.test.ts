@@ -1,7 +1,7 @@
 import type { TFeedbackForm } from "@/utils/validation-schemas"
 import { Effect, Predicate, Schema, Result } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientResponse } from "effect/http"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import {
 	IssueTracker,
 	issueTrackerLayer,

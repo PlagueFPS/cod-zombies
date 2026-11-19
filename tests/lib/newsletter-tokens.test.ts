@@ -1,6 +1,6 @@
 import { ConfigProvider, Effect, Exit, Layer, String as Str, Schema } from "effect"
 import { TestClock } from "effect/testing"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import { newsletterTokensLayer, NewsletterTokens } from "@/lib/services/newsletter-tokens"
 import { expectCauseTaggedError, expectExitFailure } from "@/tests/helpers"
 

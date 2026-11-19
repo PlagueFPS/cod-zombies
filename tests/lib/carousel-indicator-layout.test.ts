@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import { resolveCarouselIndicatorLayout } from "@/lib/embla-carousel/carousel-indicator-layout"
 import { CAROUSEL_MIN_IMG_BOX_FOR_LAYOUT_PX } from "@/lib/embla-carousel/carousel-indicator-position"
 

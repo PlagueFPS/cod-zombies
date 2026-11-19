@@ -1,6 +1,6 @@
 import type { MapMarker } from "@/map-configs/markers"
 import { Option } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import { buildShareableMapSearch, computeIsIncluded, uniqueMarkerIds } from "@/hooks/use-map-search"
 
 const marker = (id: string, type?: MapMarker["type"]): MapMarker => ({

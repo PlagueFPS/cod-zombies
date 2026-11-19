@@ -1,5 +1,5 @@
 import { Array as Arr } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import {
 	applyFilters,
 	applySort,
