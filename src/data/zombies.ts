@@ -367,7 +367,18 @@ const ZOMBIES = uniqueMap([
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
-		attacks: ["aoe-slam", "lightning-bolt", "charge"],
+		attacks: [
+			{
+				attack: "ground-slam",
+				description:
+					"Slams the ground stunning all players within the radius for around 5 seconds.",
+			},
+			{
+				attack: "lightning-bolts",
+				description: "Fires a lightning bolt at the targeted player dealing significant damage.",
+			},
+			"charge",
+		],
 		spawnBehavior:
 			"In TranZit, the Avogadro spawns in after turning on the power. In Alpha Omega, the Avogadro is the final boss of the Main Quest.",
 		combatStrategy: "content/zombies/avogadro",
@@ -475,7 +486,14 @@ const ZOMBIES = uniqueMap([
 		speed: "Fast",
 		weakPoints: ["head"],
 		elementalWeakness: [],
-		attacks: ["melee-swing", "infection"],
+		attacks: [
+			"melee-swing",
+			{
+				attack: "infection",
+				description:
+					"A hit infects the player instead of a normal down. The timer is 60 seconds, or 75 seconds with Exo tactical armor active. A later zombie hit removes 3 seconds, or 5 seconds when that hit deals more than 50 damage. Other damage takes off a tenth of a second per point.",
+			},
+		],
 		spawnBehavior:
 			"On Outbreak, Hosts spawn on their own rounds and always sprint. Their health does not rise as the rounds go up. An-G warns that contamination has been detected. The last kill of the round drops a Full Reload and cures every infected player. On Infection, wave 8 is a Host round, then wave 14, then every 10 waves. Every fifth spawn in the round is a regular zombie. The round ends with an ammo pickup. A co-op player whose burger infection expires also spawns a Host with four times the health. On Descent, a floating Host blocks the flooded airlock during Reunion. Hosts can also fill the round-13 Oz squad, which is 1, 2, or 3 times the player count and rolls dogs or Hosts. The gas trap in that fight infects you, and a down from Mutated Oz infects you instead of a normal last stand. The arena decontamination station is free during the fight and costs 250 elsewhere.",
 		combatStrategy: "content/zombies/host",
@@ -619,7 +637,29 @@ const ZOMBIES = uniqueMap([
 		speed: "Fast",
 		weakPoints: [],
 		elementalWeakness: [],
-		attacks: ["goliath-melee", "goliath-lunge", "goliath-spin", "emp-stomp", "goliath-rockets"],
+		attacks: [
+			{
+				attack: "melee-swing",
+				description:
+					"Swings a parking meter, stop sign, or axle, or bashes with the riot shield, for 90 damage inside about 120 units.",
+			},
+			{
+				attack: "lunge",
+				description:
+					"Lunges from up to about 250 units. It has to move about 100 units from that spot before it can lunge again.",
+			},
+			{
+				attack: "spin-attack",
+				description:
+					"Spins if you are still near where it last lunged. The cooldown is about 5 seconds solo and 15 seconds in co-op.",
+			},
+			"emp-stomp",
+			{
+				attack: "homing-rockets",
+				description:
+					"Fires homing rockets once you are outside melee reach. A rocket EMPs Exos within about 150 units when it detonates.",
+			},
+		],
 		spawnBehavior:
 			"Wave 10 is a Goliath round. Later Goliath rounds are wave 19 and then every 10 waves. The round spawns about 75% of the usual number of enemies. The first is the Goliath, and the rest are regular zombies. Killing it on that round drops a nuke or an ammo pickup, alternating.",
 		combatStrategy: "content/zombies/goliath",
@@ -655,7 +695,7 @@ const ZOMBIES = uniqueMap([
 		speed: "Slow",
 		weakPoints: ["head"],
 		elementalWeakness: [],
-		attacks: ["exo-emp-lasers", "electricity-field", "host-infection", "turret-trap"],
+		attacks: ["exo-emp-lasers", "electricity-field", "infection", "turret-trap"],
 		spawnBehavior:
 			"Elite rounds are wave 13 and wave 20. A preview at the start of wave 6 pulls the crew into the arena, then sends them back. Wave 13 is this fight. If wave 13 would have been a dog or Host round, that special round is pushed later.",
 		combatStrategy: "content/zombies/oz",
@@ -674,13 +714,17 @@ const ZOMBIES = uniqueMap([
 		weakPoints: ["body"],
 		elementalWeakness: [],
 		attacks: [
-			"crushing-melee",
+			{ attack: "powerful-melee", description: "A melee hit that deals 250 damage." },
 			"spin-attack",
-			"charging-lunge",
-			"bounding-leap",
+			{ attack: "lunge", description: "Lunges at a player from outside melee range." },
+			{ attack: "leap", range: "Long", description: "Leaps toward a player." },
 			"homing-rockets",
-			"exo-emp-stomp",
-			"host-infection",
+			{
+				attack: "emp-stomp",
+				range: "Long",
+				description: "A stomp that EMPs Exo suits within 1000 units.",
+			},
+			"infection",
 		],
 		spawnBehavior:
 			"Mutated Oz is the wave-20 elite, including wave 20 of Double Feature. He takes no damage unless the arena decontamination station has stunned him.",
@@ -1112,7 +1156,15 @@ const ZOMBIES = uniqueMap([
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
-		attacks: ["ground-slam", "shield-throw", "staff-swing", "ninja-summon"],
+		attacks: [
+			"ground-slam",
+			"shield-throw",
+			{
+				attack: "melee-swing",
+				description: "Swings a staff to deal damage to the player in close range.",
+			},
+			"ninja-summon",
+		],
 		spawnBehavior:
 			"The Rat King only spawns during the Pest Control main quest. Three symbol encounters end when he drops an eye, a brain, or a heart, and the quest finishes with a fight in the sewers.",
 		combatStrategy: "content/zombies/rat-king",
@@ -1166,7 +1218,17 @@ const ZOMBIES = uniqueMap([
 		speed: "Slow",
 		weakPoints: ["chest"],
 		elementalWeakness: [],
-		attacks: ["fireball", "laser-beam", "shockwave-slam", "acid-spray", "crog-summon"],
+		attacks: [
+			"fireball",
+			{
+				attack: "laser-beam",
+				description:
+					"Fires a laser beam from the light on its head, dealing heavy damage while a player is caught in the beam.",
+			},
+			"shockwave-slam",
+			"acid-spray",
+			"crog-summon",
+		],
 		spawnBehavior:
 			"Crog-Zilla is in the bay for the whole match and weapons cannot damage it. It only fights during the Soul-Less main quest, after the bomb is teleported to the beach. Outside that fight it launches eggs that hatch into Crogs, and it also sends Crog Brutes after the players.",
 		combatStrategy: "content/zombies/crog-zilla",
@@ -1184,7 +1246,13 @@ const ZOMBIES = uniqueMap([
 		speed: "Fast",
 		weakPoints: ["head"],
 		elementalWeakness: [],
-		attacks: ["leaping-strike"],
+		attacks: [
+			{
+				attack: "leap",
+				description:
+					"Leaps at the player from a distance and hits for the same damage as a normal zombie.",
+			},
+		],
 		spawnBehavior:
 			"Scouts are the only enemies until N31L's head is installed, and they stop spawning as the round enemy on the next round after that. At least three spawn each time a Pack-a-Punch bridge piece is picked up. After round 10 they can appear as a special round, and the last one drops a Max Ammo. They also spawn during The End? boss fight.",
 		combatStrategy: "content/zombies/scout",
@@ -1298,7 +1366,11 @@ const ZOMBIES = uniqueMap([
 		speed: "Medium",
 		weakPoints: ["head"],
 		elementalWeakness: [],
-		attacks: ["forward-charge", "melee-swing", "ground-slam"],
+		attacks: [
+			{ attack: "charge", description: "Charges straight ahead." },
+			"melee-swing",
+			"ground-slam",
+		],
 		spawnBehavior:
 			"A Wüstling may wake from a storage tube during the Laboratory escort. On The Darkest Shore, a charged Wüstling spine starts the perk ritual, and the Ancient Room lockdown spawns an anointed Wüstling plus extra Wüstlings. On The Shadowed Throne, one breaks out of the Smuggler's door when the bat is paid for with a gun that is not Pack-a-Punched. On The Tortured Path, two have to be alive at once so one charge knocks the arm club off the other. On The Frozen Dawn, one rises from the Blood Altar pool with the Thulian Shield on its back, and three spawn in the Deathraven trial.",
 		combatStrategy: "content/zombies/wustling",
@@ -1334,7 +1406,7 @@ const ZOMBIES = uniqueMap([
 		speed: "Slow",
 		weakPoints: [],
 		elementalWeakness: [],
-		attacks: ["forward-charge", "melee-swing"],
+		attacks: [{ attack: "charge", description: "Charges straight ahead." }, "melee-swing"],
 		spawnBehavior:
 			"The Panzermörder spawns in the boss arena about 7 seconds after the hilt is taken.",
 		combatStrategy: "content/zombies/panzermorder",
@@ -1352,7 +1424,12 @@ const ZOMBIES = uniqueMap([
 		speed: "Fast",
 		weakPoints: ["head"],
 		elementalWeakness: [],
-		attacks: ["heavy-swing"],
+		attacks: [
+			{
+				attack: "powerful-melee",
+				description: "Swings for about 75–85% of the player's maximum health.",
+			},
+		],
 		spawnBehavior:
 			"Meuchlers spawn in every fog after the first, and they leave when that fog lifts. The Ancient Room can also push them in, and the quest lockdown spawns one anointed Meuchler. On The Tortured Path, they spawn on the Darkest Shore apparition island and when a cup-game guess is wrong.",
 		combatStrategy: "content/zombies/meuchler",
@@ -1406,7 +1483,11 @@ const ZOMBIES = uniqueMap([
 		speed: "Medium",
 		weakPoints: ["chest-engine"],
 		elementalWeakness: [],
-		attacks: ["forward-charge", "sizzler-pulse", "red-gas-cloud"],
+		attacks: [
+			{ attack: "charge", description: "Charges straight ahead." },
+			"sizzler-pulse",
+			"red-gas-cloud",
+		],
 		spawnBehavior:
 			"On The Shadowed Throne, the Stadtjäger spawns when a player walks back toward the drop pod after Straub is defeated. On The Tortured Path, a weaker variant spawns on Wave 10 of Across the Depths.",
 		combatStrategy: "content/zombies/stadtjager",
@@ -1591,7 +1672,15 @@ const ZOMBIES = uniqueMap([
 		speed: "Medium",
 		weakPoints: ["back-sacs", "elbow-sacs"],
 		elementalWeakness: [],
-		attacks: ["melee-swing", "homing-vomit", "tongue-grab"],
+		attacks: [
+			"melee-swing",
+			{
+				attack: "projectile-vomit",
+				description:
+					"Shoots a homing vomit projectile at the targeted player dealing damage on hit and overtime.",
+			},
+			"tongue-grab",
+		],
 		spawnBehavior:
 			"The Blightfather will not spawn until Round 15 on any map and spawns from a normal zombie by ripping apart the zombie like a parasite and crawling out of the zombie's mouth, quickly growing to full size.",
 		combatStrategy: "content/zombies/blightfather",
@@ -1753,7 +1842,14 @@ const ZOMBIES = uniqueMap([
 		speed: "Medium",
 		weakPoints: ["red-glowing-spots"],
 		elementalWeakness: [],
-		attacks: ["sword-swing", "spear-throw", "shield-blind"],
+		attacks: [
+			{
+				attack: "melee-swing",
+				description: "Swings their sword to deal damage to the player in close range.",
+			},
+			"spear-throw",
+			"shield-blind",
+		],
 		spawnBehavior:
 			"The Gegenees will begin spawning on Round 15, however one will spawn when picking up the Golden Bridle and when shooting down the bird cage within the Omphalos.",
 		combatStrategy: "content/zombies/gegenees",
@@ -1984,7 +2080,14 @@ const ZOMBIES = uniqueMap([
 		speed: "Medium",
 		weakPoints: ["mouth"],
 		elementalWeakness: [],
-		attacks: ["powerful-melee", "fireballs"],
+		attacks: [
+			"powerful-melee",
+			{
+				attack: "fireball",
+				description:
+					"Launches a barrage of fireballs that track the player, dealing damage and spawning a hellhound upon impact.",
+			},
+		],
 		spawnBehavior:
 			"Ordas can spawn during the third Dimensional Tear Assault waves in Firebase Z, and an Orda is also the final boss of the main quest.",
 		combatStrategy: "content/zombies/orda",
@@ -2280,7 +2383,16 @@ const ZOMBIES = uniqueMap([
 		speed: "Slow",
 		weakPoints: ["chest", "shoulders", "forearms", "calves"],
 		elementalWeakness: [],
-		attacks: ["lava-balls", "ground-stomp", "hammer-slam", "leaping-hammer"],
+		attacks: [
+			"lava-balls",
+			{
+				attack: "ground-slam",
+				description:
+					"Stomps the ground with its foot, dealing damage and knocking back players in close proximity.",
+			},
+			"hammer-slam",
+			"leaping-hammer",
+		],
 		spawnBehavior:
 			"The Guardian spawns once you use the Guardian Key on the statue in the Town Square. In Black Ops 7, the Guardian appears during the Boss Rush encounter of the Super Easter Egg.",
 		combatStrategy: "content/zombies/the-guardian",
@@ -2501,7 +2613,7 @@ const ZOMBIES = uniqueMap([
 		speed: "Slow",
 		weakPoints: ["red-glowing-spots", "golden-underbelly"],
 		elementalWeakness: [],
-		attacks: ["missile-barrage", "carpet-bomb", "car-steal", "aether-laser"],
+		attacks: ["missile-barrage", "carpet-bomb", "car-steal", "laser-beam"],
 		spawnBehavior:
 			"Veytharion is the final boss of the Ashes of the Damned main quest Dust To Dust and will spawn during the final encounter.",
 		combatStrategy: "content/zombies/veytharion",
@@ -2542,7 +2654,18 @@ const ZOMBIES = uniqueMap([
 		speed: "Fast",
 		weakPoints: ["blue-glowing-spots"],
 		elementalWeakness: [],
-		attacks: ["orbital-laser", "meteor-shower", "toxic-gas-cloud", "ground-slam", "rock-throw"],
+		attacks: [
+			"laser-beam",
+			"meteor-shower",
+			{
+				attack: "toxic-gas",
+				range: "Long",
+				description:
+					"Produces a toxic gas cloud that covers the lower arena, limiting health to a maximum of 175HP.",
+			},
+			"ground-slam",
+			"rock-throw",
+		],
 		spawnBehavior:
 			"Caltheris is the final boss of the Astra Malorum main quest and will spawn during the final encounter. She also appears as one of the encounter in the Super Easter Egg boss rush.",
 		combatStrategy: "content/zombies/caltheris",
