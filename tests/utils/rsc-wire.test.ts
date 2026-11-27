@@ -83,6 +83,7 @@ const sampleZombie = new ZombieRecord({
 	speed: "Slow",
 	weakPoints: [],
 	elementalWeakness: [],
+	variants: Option.some({ "world-at-war": { elementalWeakness: ["brain-rot"] } }),
 	attacks: [],
 	spawnBehavior: "waves",
 	combatStrategy: "content/zombies/abomination",
@@ -168,6 +169,12 @@ describe("encodeZombie / decodeZombie", () => {
 		const encoded = encodeZombie(sampleZombie)
 		expect(encoded).not.toHaveProperty("combatStrategy")
 		expect(encoded.state).toBe("New")
+	})
+
+	test("replaces the variants Option with the plain overlay map", () => {
+		expect(encodeZombie(sampleZombie).variants).toEqual({
+			"world-at-war": { elementalWeakness: ["brain-rot"] },
+		})
 	})
 })
 

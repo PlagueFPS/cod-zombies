@@ -1,6 +1,13 @@
 import { Option, Array as Arr } from "effect"
 import { describe, expect, test } from "vite-plus/test"
-import { compareZombieReleaseDescending, getAdjacentZombies, getZombies } from "@/data/zombies"
+import {
+	compareZombieReleaseDescending,
+	getAdjacentZombies,
+	getZombies,
+	getZombieWeaknessesByGame,
+	type Zombie,
+	zombieHasWeakness,
+} from "@/data/zombies"
 import { assertSortedDescByDate } from "@/tests/helpers"
 
 describe("getZombies", () => {
@@ -54,4 +61,74 @@ test("compareZombieReleaseDescending returns None for missing tie-break indexes"
 			{ id: "unknown-b", releaseDate: "2026-01-01" },
 		),
 	).toEqual(Option.none())
+})
+
+const fixtureZombie = (
+	variants: Zombie["variants"],
+): Pick<Zombie, "games" | "elementalWeakness" | "variants"> => ({
+	games: ["black-ops-1", "black-ops-3", "black-ops-6"],
+	elementalWeakness: ["napalm-burst"],
+	variants,
+})
+
+describe("getZombieWeaknessesByGame", () => {
+	test("returns one group with every game when there are no overrides", () => {
+		expect(getZombieWeaknessesByGame(fixtureZombie(Option.none()))).toEqual([
+			{ games: ["black-ops-1", "black-ops-3", "black-ops-6"], weaknesses: ["napalm-burst"] },
+		])
+	})
+
+	test("an override replaces the default list for that game instead of appending", () => {
+		const zombie = fixtureZombie(
+			Option.some({ "black-ops-6": { elementalWeakness: ["brain-rot"] } }),
+		)
+
+		expect(getZombieWeaknessesByGame(zombie)).toEqual([
+			{ games: ["black-ops-1", "black-ops-3"], weaknesses: ["napalm-burst"] },
+			{ games: ["black-ops-6"], weaknesses: ["brain-rot"] },
+		])
+	})
+
+	test("groups games whose resolved lists are equal, including an override equal to the default", () => {
+		const zombie = fixtureZombie(
+			Option.some({
+				"black-ops-1": { elementalWeakness: [] },
+				"black-ops-6": { elementalWeakness: ["napalm-burst"] },
+			}),
+		)
+
+		expect(getZombieWeaknessesByGame(zombie)).toEqual([
+			{ games: ["black-ops-1"], weaknesses: [] },
+			{ games: ["black-ops-3", "black-ops-6"], weaknesses: ["napalm-burst"] },
+		])
+	})
+
+	test("every catalog zombie's groups cover exactly its games", () => {
+		for (const zombie of getZombies()) {
+			const groupedGames = Arr.flatMap(getZombieWeaknessesByGame(zombie), group => group.games)
+			expect([...groupedGames].sort()).toEqual([...zombie.games].sort())
+		}
+	})
+})
+
+describe("zombieHasWeakness", () => {
+	const zombie = fixtureZombie(Option.some({ "black-ops-6": { elementalWeakness: ["brain-rot"] } }))
+
+	test("without a game filter, matches a weakness from any game", () => {
+		expect(zombieHasWeakness(zombie, "napalm-burst")).toBe(true)
+		expect(zombieHasWeakness(zombie, "brain-rot")).toBe(true)
+		expect(zombieHasWeakness(zombie, "shatter-blast")).toBe(false)
+	})
+
+	test("with a game filter, matches only the resolved lists of the selected games", () => {
+		expect(zombieHasWeakness(zombie, "brain-rot", ["black-ops-6"])).toBe(true)
+		expect(zombieHasWeakness(zombie, "napalm-burst", ["black-ops-6"])).toBe(false)
+		expect(zombieHasWeakness(zombie, "brain-rot", ["black-ops-1"])).toBe(false)
+		expect(zombieHasWeakness(zombie, "napalm-burst", ["black-ops-1", "black-ops-6"])).toBe(true)
+	})
+
+	test("a selected game the zombie is not in never matches its default list", () => {
+		expect(zombieHasWeakness(zombie, "napalm-burst", ["black-ops-7"])).toBe(false)
+		expect(zombieHasWeakness(zombie, "napalm-burst", ["black-ops-7", "black-ops-6"])).toBe(false)
+	})
 })

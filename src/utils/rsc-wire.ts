@@ -15,7 +15,7 @@ export type EncodedSideQuest = Omit<EncodedFields<SideQuest, "state">, "content"
 
 export type EncodedRelic = Omit<EncodedFields<Relic, "state">, "content">
 
-export type EncodedZombie = Omit<EncodedFields<Zombie, "state">, "combatStrategy">
+export type EncodedZombie = Omit<EncodedFields<Zombie, "state" | "variants">, "combatStrategy">
 
 export type EncodedInteractiveMap = EncodedFields<InteractiveMap, "state">
 
@@ -57,9 +57,9 @@ export function encodeRelic(relic: Relic): EncodedRelic {
 }
 
 export function encodeZombie(zombie: Zombie): EncodedZombie {
-	const { combatStrategy, state, ...rest } = zombie
+	const { combatStrategy, state, variants, ...rest } = zombie
 
-	return { ...rest, state: Option.getOrNull(state) }
+	return { ...rest, state: Option.getOrNull(state), variants: Option.getOrNull(variants) }
 }
 
 export function encodeInteractiveMap(map: InteractiveMap): EncodedInteractiveMap {
@@ -105,7 +105,11 @@ export function decodeRelic(encoded: EncodedRelic): Omit<Relic, "content"> {
 }
 
 export function decodeZombie(encoded: EncodedZombie): Omit<Zombie, "combatStrategy"> {
-	return { ...encoded, state: Option.fromNullOr(encoded.state) }
+	return {
+		...encoded,
+		state: Option.fromNullOr(encoded.state),
+		variants: Option.fromNullOr(encoded.variants),
+	}
 }
 
 export function decodeInteractiveMap(encoded: EncodedInteractiveMap): InteractiveMap {
