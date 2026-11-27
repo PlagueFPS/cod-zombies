@@ -1,3 +1,4 @@
+import type { AmmoModKey } from "@/data/ammo-mods"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { cn } from "cn"
@@ -34,13 +35,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Skeleton } from "@/components/ui/skeleton"
-import { getGameByKey } from "@/data/games"
+import { type GameKey, getGameByKey } from "@/data/games"
 import { getMapByKey } from "@/data/maps"
 import { mdxComponentQueryOptions, mdxMetaQueryOptions } from "@/data/queries"
 import { getOgImgUrl } from "@/data/server-functions/content"
 import { getWeakPointByKey } from "@/data/weak-points"
 import { getZombieAttackByKey } from "@/data/zombie-attacks"
-import { getAdjacentZombies, getZombieByKey } from "@/data/zombies"
+import { getAdjacentZombies, getZombieByKey, getZombieWeaknessesByGame } from "@/data/zombies"
 import { type EncodedZombie, encodeZombie } from "@/utils/rsc-wire"
 import { capitalize, createSeoTitle } from "@/utils/shared-functions"
 import richStyles from "@/rich-text.module.css"
@@ -60,15 +61,26 @@ export const Route = createFileRoute("/bestiary/$zombieId")({
 		if (!(Predicate.isNotNullish(opengraphUrl) && Predicate.isTruthy(opengraphUrl)))
 			throw notFound()
 
-		const mostRecentGame = Arr.last(zombie.games).pipe(
-			Option.flatMap(game => getGameByKey(game)),
-			Option.getOrThrowWith(() => notFound()),
-		)
+		if (Option.isNone(Arr.last(zombie.games).pipe(Option.flatMap(game => getGameByKey(game)))))
+			throw notFound()
 
 		const firstAppearIn = Arr.head(zombie.maps).pipe(
 			Option.flatMap(map => getMapByKey(map)),
 			Option.getOrThrowWith(() => notFound()),
 		)
+
+		const weaknessGroups = Arr.map(getZombieWeaknessesByGame(zombie), group => ({
+			weaknesses: group.weaknesses,
+			game: Arr.lastNonEmpty(group.games),
+			label: Arr.join(
+				Arr.flatMap(group.games, game =>
+					getGameByKey(game).pipe(
+						Option.match({ onNone: () => [], onSome: ({ title }) => [title] }),
+					),
+				),
+				", ",
+			),
+		}))
 
 		const { prev, next } = getAdjacentZombies(zombie.id)
 
@@ -83,7 +95,7 @@ export const Route = createFileRoute("/bestiary/$zombieId")({
 			opengraphUrl,
 			shareUrl,
 			zombie: { ...encodeZombie(zombie), combatStrategy: zombie.combatStrategy },
-			mostRecentGame: { id: mostRecentGame.id, title: mostRecentGame.title },
+			weaknessGroups,
 			firstAppearIn: { id: firstAppearIn.id, title: firstAppearIn.title },
 			prev: Option.match(prev, { onNone: () => null, onSome: encodeZombie }),
 			next: Option.match(next, { onNone: () => null, onSome: encodeZombie }),
@@ -116,8 +128,25 @@ export const Route = createFileRoute("/bestiary/$zombieId")({
 	staleTime: Infinity,
 })
 
+function ElementalWeaknessList({
+	weaknesses,
+	game,
+}: {
+	weaknesses: readonly AmmoModKey[]
+	game: GameKey
+}) {
+	return Arr.isReadonlyArrayNonEmpty(weaknesses) ? (
+		Arr.map(weaknesses, weakness => (
+			<AmmoModTooltip key={weakness} ammoModKey={weakness} game={game} />
+		))
+	) : (
+		<span className="text-orange-800 dark:text-orange-200">No elemental weaknesses</span>
+	)
+}
+
 function ZombieInfo() {
-	const { zombie, mostRecentGame, firstAppearIn, shareUrl, prev, next } = Route.useLoaderData()
+	const { zombie, firstAppearIn, weaknessGroups, shareUrl, prev, next } = Route.useLoaderData()
+	const onlyWeaknessGroup = weaknessGroups.length === 1 ? Arr.head(weaknessGroups) : Option.none()
 	const { data: meta } = useSuspenseQuery(mdxMetaQueryOptions(zombie.id, zombie.combatStrategy))
 
 	const { data: component } = useSuspenseQuery(
@@ -310,21 +339,28 @@ function ZombieInfo() {
 									<AlertTriangle className="size-5 text-orange-800 dark:text-orange-200" />
 									Elemental Weaknesses
 								</h3>
-								<div className="flex flex-wrap items-center gap-2">
-									{Arr.isArrayNonEmpty(zombie.elementalWeakness) ? (
-										Arr.map(zombie.elementalWeakness, weakness => (
-											<AmmoModTooltip
-												key={weakness}
-												ammoModKey={weakness}
-												game={mostRecentGame.id}
-											/>
-										))
-									) : (
-										<span className="text-orange-800 dark:text-orange-200">
-											No elemental weaknesses
-										</span>
-									)}
-								</div>
+								{Option.match(onlyWeaknessGroup, {
+									onSome: group => (
+										<div className="flex flex-wrap items-center gap-2">
+											<ElementalWeaknessList weaknesses={group.weaknesses} game={group.game} />
+										</div>
+									),
+									onNone: () => (
+										<div className="space-y-3">
+											{Arr.map(weaknessGroups, group => (
+												<div key={group.game} className="space-y-1">
+													<p className="text-sm font-medium text-muted-foreground">{group.label}</p>
+													<div className="flex flex-wrap items-center gap-2">
+														<ElementalWeaknessList
+															weaknesses={group.weaknesses}
+															game={group.game}
+														/>
+													</div>
+												</div>
+											))}
+										</div>
+									),
+								})}
 							</div>
 						</div>
 					</section>

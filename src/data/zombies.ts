@@ -22,6 +22,9 @@ export type ZombieSpeed = "Slow" | "Medium" | "Fast"
 /** Union type of all zombies */
 export type ZombieKey = Parameters<typeof ZOMBIES.get>[0]
 
+/** Per-game overlay for a zombie. A field set here replaces the default for that game. */
+type ZombieVariant = Partial<Pick<Zombie, "elementalWeakness">>
+
 export interface Zombie {
 	/** Internal tag to discriminate against for type-narrowing */
 	readonly _tag: "Zombie"
@@ -50,8 +53,10 @@ export interface Zombie {
 	readonly speed: ZombieSpeed
 	/** Weak points of the zombie */
 	readonly weakPoints: WeakPointKey[]
-	/** Elemental weaknesses of the zombie */
+	/** Elemental weaknesses of the zombie in every game without a `variants` override */
 	readonly elementalWeakness: AmmoModKey[]
+	/** Per-game overrides, resolved with `resolveGameVariantOption` or grouped with `getZombieWeaknessesByGame` */
+	readonly variants: Option.Option<Partial<Record<GameKey, ZombieVariant>>>
 	/** Attacks of the zombie */
 	readonly attacks: ZombieAttackKey[]
 	/** Spawn behavior of the zombie */
@@ -97,6 +102,56 @@ export const getZombies = (): Zombie[] =>
 export const getZombieByKey = (key: RegistryKeyInput<ZombieKey>) =>
 	registryGet(ZOMBIES, key).pipe(Option.map(withResolvedZombieState))
 
+const isSameWeaknessList = Arr.makeEquivalence<AmmoModKey>((a, b) => a === b)
+
+/** Games of one zombie that share the same resolved elemental weaknesses */
+export interface ZombieWeaknessGroup {
+	/** Games in this group, in the zombie's `games` order (most recent last) */
+	readonly games: Arr.NonEmptyArray<GameKey>
+	/** Elemental weaknesses the zombie has in every game of this group */
+	readonly weaknesses: AmmoModKey[]
+}
+
+/**
+ * Groups a zombie's games by their resolved elemental weaknesses.
+ * A zombie without weakness overrides returns one group holding all its games.
+ */
+export const getZombieWeaknessesByGame = (
+	zombie: Pick<Zombie, "games" | "elementalWeakness" | "variants">,
+): ZombieWeaknessGroup[] => {
+	const groups: ZombieWeaknessGroup[] = []
+
+	for (const game of zombie.games) {
+		const weaknesses = zombie.variants.pipe(
+			Option.flatMapNullishOr(variants => variants[game]?.elementalWeakness),
+			Option.getOrElse(() => zombie.elementalWeakness),
+		)
+
+		const group = Arr.findFirst(groups, g => isSameWeaknessList(g.weaknesses, weaknesses))
+
+		if (Option.isSome(group)) group.value.games.push(game)
+		else groups.push({ games: [game], weaknesses })
+	}
+
+	return groups
+}
+
+/**
+ * Whether the zombie has `weakness` in any of `games`, or in any of its games when `games` is empty.
+ * Games the zombie does not appear in never match.
+ */
+export const zombieHasWeakness = (
+	zombie: Pick<Zombie, "games" | "elementalWeakness" | "variants">,
+	weakness: string,
+	games: readonly string[] = [],
+): boolean =>
+	Arr.some(
+		getZombieWeaknessesByGame(zombie),
+		group =>
+			(Arr.isReadonlyArrayEmpty(games) || Arr.some(group.games, game => games.includes(game))) &&
+			Arr.some(group.weaknesses, w => w === weakness),
+	)
+
 /**
  * @returns The previous and next zombies based on the current
  * @param current The key of the current zombie
@@ -118,10 +173,19 @@ export const getZombieSortOptions = (): SortOption[] => [
 
 class ZombieRecord extends Data.TaggedClass("Zombie")<Omit<Zombie, "_tag">> {}
 
-const makeZombie = <T extends string>(
+/** `variants` keys are limited to the zombie's own `games`, so an override for another game fails to compile */
+type ZombieInput<G extends GameKey> = Omit<Zombie, "_tag" | "id" | "games" | "variants"> & {
+	readonly games: G[]
+	readonly variants?: Partial<Record<NoInfer<G>, ZombieVariant>>
+}
+
+const makeZombie = <T extends string, G extends GameKey>(
 	identifier: T,
-	zombie: Omit<Zombie, "_tag" | "id">,
-): [T, Zombie] => [identifier, new ZombieRecord({ id: identifier, ...zombie })]
+	{ variants, ...zombie }: ZombieInput<G>,
+): [T, Zombie] => [
+	identifier,
+	new ZombieRecord({ id: identifier, ...zombie, variants: Option.fromNullishOr(variants) }),
+]
 
 const ZOMBIES = uniqueMap([
 	makeZombie("zombie", {

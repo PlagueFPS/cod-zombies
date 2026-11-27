@@ -14,7 +14,13 @@ import { GridSort } from "@/components/grid-sort"
 import { getAmmoModByKey } from "@/data/ammo-mods"
 import { getGames } from "@/data/games"
 import { getMaps } from "@/data/maps"
-import { getZombieSortOptions, getZombies, type Zombie } from "@/data/zombies"
+import {
+	getZombieSortOptions,
+	getZombies,
+	getZombieWeaknessesByGame,
+	type Zombie,
+	zombieHasWeakness,
+} from "@/data/zombies"
 import {
 	applyFilters,
 	applySort,
@@ -70,7 +76,13 @@ export const Route = createFileRoute("/bestiary/")({
 		)
 
 		const weaknessFilters = Arr.flatMap(
-			Array.from(new Set(Arr.flatMap(allZombies, zombie => zombie.elementalWeakness))),
+			Array.from(
+				new Set(
+					Arr.flatMap(allZombies, zombie =>
+						Arr.flatMap(getZombieWeaknessesByGame(zombie), group => group.weaknesses),
+					),
+				),
+			),
 			weakness =>
 				Option.match(getAmmoModByKey(weakness), {
 					onSome: ammoMod => [
@@ -98,7 +110,7 @@ export const Route = createFileRoute("/bestiary/")({
 			},
 			{
 				values: deps.weakness,
-				match: (z, slug) => Arr.some(z.elementalWeakness, weakness => weakness === slug),
+				match: (z, slug) => zombieHasWeakness(z, slug, deps.game),
 			},
 		]
 

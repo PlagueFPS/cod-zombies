@@ -10,13 +10,19 @@ import IconImage from "@/components/icon-image"
 import { Badge } from "@/components/ui/badge"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { resolveGameVariantOption } from "@/data/registry-helpers"
 import { getWeakPointByKey } from "@/data/weak-points"
 import { getZombieByKey } from "@/data/zombies"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 export default function ZombieTooltip({ zombieKey }: { zombieKey: RegistryKeyInput<ZombieKey> }) {
 	const isMobile = useIsMobile(640)
-	const zombie = getZombieByKey(zombieKey)
+
+	const zombie = getZombieByKey(zombieKey).pipe(
+		Option.flatMap(z =>
+			resolveGameVariantOption(Option.some(z), Arr.last(z.games).valueOrUndefined),
+		),
+	)
 
 	if (Option.isNone(zombie)) {
 		console.error(`Unable to render tooltip for zombie: ${zombieKey}`)
