@@ -1,5 +1,5 @@
 import { Array as Arr } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import { getZombieAttacks } from "@/data/zombie-attacks"
 import { getZombies } from "@/data/zombies"
 
