@@ -1,7 +1,6 @@
 import type { SortOption } from "@/components/grid-sort"
 import type { AmmoModKey } from "@/data/ammo-mods"
 import type { WeakPointKey } from "@/data/weak-points"
-import type { ZombieAttackKey } from "@/data/zombie-attacks"
 import type { ContentState } from "@/types/data"
 import type { ZombiesPaths } from "@/types/generated/content-paths.gen"
 import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
@@ -9,6 +8,7 @@ import { HashMap, Data, Option, Array as Arr } from "effect"
 import { type GameKey, getGames } from "@/data/games"
 import { getMaps, type MapKey } from "@/data/maps"
 import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
+import { type ZombieAttack, type ZombieAttackUse, resolveZombieAttack } from "@/data/zombie-attacks"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 import { nowMillis } from "@/utils/system-time"
@@ -53,7 +53,7 @@ export interface Zombie {
 	/** Elemental weaknesses of the zombie */
 	readonly elementalWeakness: AmmoModKey[]
 	/** Attacks of the zombie */
-	readonly attacks: ZombieAttackKey[]
+	readonly attacks: ZombieAttack[]
 	/** Spawn behavior of the zombie */
 	readonly spawnBehavior: string
 	/** Combat strategy of the zombie */
@@ -120,8 +120,14 @@ class ZombieRecord extends Data.TaggedClass("Zombie")<Omit<Zombie, "_tag">> {}
 
 const makeZombie = <T extends string>(
 	identifier: T,
-	zombie: Omit<Zombie, "_tag" | "id">,
-): [T, Zombie] => [identifier, new ZombieRecord({ id: identifier, ...zombie })]
+	{
+		attacks,
+		...zombie
+	}: Omit<Zombie, "_tag" | "id" | "attacks"> & { readonly attacks: ZombieAttackUse[] },
+): [T, Zombie] => [
+	identifier,
+	new ZombieRecord({ id: identifier, ...zombie, attacks: Arr.map(attacks, resolveZombieAttack) }),
+]
 
 const ZOMBIES = uniqueMap([
 	makeZombie("zombie", {

@@ -1,5 +1,5 @@
-import { Data } from "effect"
-import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
+import { Data, Option, Predicate } from "effect"
+import { registryGet, uniqueMap } from "@/data/registry-helpers"
 
 export interface ZombieAttack {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -18,10 +18,30 @@ export interface ZombieAttack {
 export type ZombieAttackKey = Parameters<(typeof ZOMBIE_ATTACKS)["get"]>[0]
 
 /**
- * Gets a zombie attack by its key.
+ * A zombie's use of a shared attack: the key alone, or the key with this zombie's own
+ * description or range. The title is never overridden, so every use keeps the shared name.
  */
-export const getZombieAttackByKey = (key: RegistryKeyInput<ZombieAttackKey>) =>
-	registryGet(ZOMBIE_ATTACKS, key)
+export type ZombieAttackUse =
+	| ZombieAttackKey
+	| {
+			readonly attack: ZombieAttackKey
+			readonly description?: string
+			readonly range?: ZombieAttack["range"]
+	  }
+
+/** @returns Every shared zombie attack */
+export const getZombieAttacks = (): ZombieAttack[] => [...ZOMBIE_ATTACKS.values()]
+
+/**
+ * @returns The attack a zombie renders: a plain copy of the shared attack with the use's
+ * overrides applied. Plain, because zombies carry it through route loader serialization.
+ */
+export const resolveZombieAttack = (use: ZombieAttackUse): ZombieAttack => {
+	const { attack, description, range } = Predicate.isString(use) ? { attack: use } : use
+	const base = registryGet(ZOMBIE_ATTACKS, attack).pipe(Option.getOrThrow)
+
+	return { ...base, range: range ?? base.range, description: description ?? base.description }
+}
 
 class ZombieAttackRecord extends Data.TaggedClass("ZombieAttack")<Omit<ZombieAttack, "_tag">> {}
 

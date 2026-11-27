@@ -28,7 +28,6 @@ import {
 import { getRelicByKey, getRelics, type Relic, type RelicType } from "@/data/relics"
 import { getSideQuestByKey, getSideQuests, type SideQuest } from "@/data/side-quests"
 import { getWeakPointByKey } from "@/data/weak-points"
-import { getZombieAttackByKey } from "@/data/zombie-attacks"
 import { getZombieByKey, getZombies, type Zombie, type ZombieType } from "@/data/zombies"
 import { getMdxDocumentMetaFromSource } from "@/lib/remark-mdx-meta"
 import { DATE_OPTIONS } from "@/utils/constants"
@@ -552,13 +551,7 @@ export const generateZombieImage = Effect.fnUntraced(
 			)
 		}
 
-		const attackTitle = (key: (typeof zombie.attacks)[number]) =>
-			getZombieAttackByKey(key).pipe(
-				Option.map(a => a.title),
-				Option.getOrElse(() => key),
-			)
-
-		const attackLabels = Arr.map(zombie.attacks, attackTitle)
+		const attackLabels = Arr.map(zombie.attacks, attack => attack.title)
 
 		const attackStr =
 			Predicate.isNotNullish(attackLabels.length) && Predicate.isTruthy(attackLabels.length)
