@@ -1,8 +1,8 @@
-import { defineRule } from "@oxlint/plugins";
+import { defineRule } from "vite-plus/lint/plugins";
 
 import { resolveVariable } from "../shared/scope.ts";
 
-import type { ESTree, SourceCode } from "@oxlint/plugins";
+import type { ESTree, SourceCode } from "vite-plus/lint/plugins";
 
 const moduleMockMethods = new Set(["doMock", "mock", "unstable_mockModule"]);
 
@@ -33,7 +33,10 @@ function isTestFrameworkObject(
     }
     const source = definition.parent.source.value;
     const name = importedName(definition.node);
-    return (source === "vitest" && name === "vi") || (source === "@jest/globals" && name === "jest");
+    return (
+      ((source === "vitest" || source === "vite-plus/test") && name === "vi") ||
+      (source === "@jest/globals" && name === "jest")
+    );
   });
 }
 

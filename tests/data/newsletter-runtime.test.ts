@@ -1,4 +1,4 @@
-import { afterEach, expect, test, vi } from "vitest"
+import { afterEach, expect, test, vi } from "vite-plus/test"
 import { newsletterAcknowledgements } from "@/data/email.server"
 import { runNewsletterRequest } from "@/data/server-functions/email"
 

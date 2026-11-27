@@ -2,7 +2,7 @@
 import { Schema, Result } from "effect"
 import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
-import { afterEach, describe, expect, test } from "vitest"
+import { afterEach, describe, expect, test } from "vite-plus/test"
 import { useLocalStorage } from "@/hooks/use-local-storage"
 
 const PreferenceSchema = Schema.Struct({ size: Schema.Finite })

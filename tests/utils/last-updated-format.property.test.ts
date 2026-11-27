@@ -1,6 +1,6 @@
 import { it } from "@effect/vitest"
 import { Arbitrary, Schema, Array as Arr, Predicate } from "effect"
-import { describe, expect } from "vitest"
+import { describe, expect } from "vite-plus/test"
 import { formatRelativeTimeAgo, MS_DAY } from "@/utils/last-updated-format"
 
 const MINUTE_FLOOR_MS = 120_000

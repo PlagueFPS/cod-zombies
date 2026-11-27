@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs"
 import { join, relative } from "node:path"
 import { String as Str } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import { getMdxDocumentMetaFromSource } from "@/lib/remark-mdx-meta"
 
 const CONTENT_ROOT = join(process.cwd(), "src", "content")

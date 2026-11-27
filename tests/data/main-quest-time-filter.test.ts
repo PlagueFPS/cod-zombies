@@ -1,5 +1,5 @@
 import { Array as Arr, Option } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import {
 	MAIN_QUEST_TIME_RANGE_FILTERS,
 	MAIN_QUEST_TIME_RANGE_OPEN_END_SLUG,

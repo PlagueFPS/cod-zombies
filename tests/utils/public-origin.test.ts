@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import { SITE_ORIGIN } from "@/utils/constants"
 import { isLoopbackHost, resolvePublicOrigin } from "@/utils/public-origin"
 

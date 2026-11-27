@@ -2,7 +2,7 @@ import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import { ConfigProvider, Effect, Exit, Layer, Option } from "effect"
 import { Command } from "effect/cli"
 import { Digest } from "effect/crypto"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import { policyUpdateSubject } from "@/emails/policy-update-email"
 import { Email } from "@/lib/services/emails"
 import {

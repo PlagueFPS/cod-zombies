@@ -1,5 +1,5 @@
 import { Option, String as Str } from "effect"
-import { afterEach, describe, expect, test, vi } from "vitest"
+import { afterEach, describe, expect, test, vi } from "vite-plus/test"
 import { MAIN_QUEST_DIFFICULTIES } from "@/data/maps"
 import {
 	capitalize,

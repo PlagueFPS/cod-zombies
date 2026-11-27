@@ -1,7 +1,7 @@
 import type { MapMarker } from "@/map-configs/markers"
 import { it } from "@effect/vitest"
 import { Arbitrary, Schema, Option, Array as Arr } from "effect"
-import { describe, expect } from "vitest"
+import { describe, expect } from "vite-plus/test"
 import { buildShareableMapSearch, computeIsIncluded, uniqueMarkerIds } from "@/hooks/use-map-search"
 
 const Id = Schema.String.check(Schema.isPattern(/^[a-z]{1,6}$/))

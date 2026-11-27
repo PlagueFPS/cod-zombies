@@ -1,5 +1,5 @@
 import { Cause, Exit, Option, Predicate, Schema, Result } from "effect"
-import { expect } from "vitest"
+import { expect } from "vite-plus/test"
 import { dateFrom } from "@/utils/system-time"
 
 export function assertSortedDescByDate(dates: readonly (string | Date)[]) {

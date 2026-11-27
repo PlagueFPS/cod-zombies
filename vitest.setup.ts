@@ -1,4 +1,4 @@
-import { afterEach, vi } from "vitest"
+import { afterEach, vi } from "vite-plus/test"
 
 declare global {
 	// React: opt-in for `act()` in custom test runners (Vitest + happy-dom/jsdom).

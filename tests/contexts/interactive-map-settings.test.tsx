@@ -2,7 +2,7 @@
 import { Schema, Result } from "effect"
 import { act } from "react"
 import { createRoot, type Root } from "react-dom/client"
-import { afterEach, describe, expect, test } from "vitest"
+import { afterEach, describe, expect, test } from "vite-plus/test"
 import { MapSettingsProvider, useMapSettings } from "@/contexts/interactive-map-settings"
 
 let root: Root | undefined

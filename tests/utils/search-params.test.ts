@@ -1,6 +1,6 @@
 import { stringifySearchWith } from "@tanstack/react-router"
 import { Predicate, Array as Arr, String as Str } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import { expectExitSuccess } from "@/tests/helpers"
 import { normalizeParsedSearch, parseSearch, type ParsedSearchParams } from "@/utils/search-params"
 import { decodeMainQuestSearchParams } from "@/utils/validation-schemas"

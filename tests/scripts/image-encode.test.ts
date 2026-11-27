@@ -1,5 +1,5 @@
 import sharp from "sharp"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it } from "vite-plus/test"
 import { encodeWebp } from "@/scripts/image-optimization"
 
 describe("encodeWebp", () => {

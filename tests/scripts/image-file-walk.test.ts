@@ -3,7 +3,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { layer as BunServicesLayer } from "@effect/platform-bun/BunServices"
 import { Effect, Array as Arr } from "effect"
-import { afterEach, beforeEach, describe, expect, test } from "vitest"
+import { afterEach, beforeEach, describe, expect, test } from "vite-plus/test"
 import { walkImageFiles } from "@/scripts/image-file-walk"
 
 describe("walkImageFiles", () => {

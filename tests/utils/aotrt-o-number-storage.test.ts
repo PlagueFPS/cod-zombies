@@ -1,7 +1,7 @@
 /** @vitest-environment happy-dom */
 
 import { Option } from "effect"
-import { afterEach, describe, expect, test } from "vitest"
+import { afterEach, describe, expect, test } from "vite-plus/test"
 import {
 	AOTRT_O_NUMBER_STORAGE_KEY,
 	readAotrtONumber,

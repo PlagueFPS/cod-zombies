@@ -1,5 +1,5 @@
 import { Effect, Layer } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import { submitFeedback } from "@/data/feedback.server"
 import { IssueTracker } from "@/lib/services/issue-tracker"
 import { expectExitSuccess } from "@/tests/helpers"

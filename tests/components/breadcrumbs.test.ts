@@ -1,6 +1,6 @@
 import type { FileRoutesByTo } from "@/routeTree.gen"
 import { Array as Arr } from "effect"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from "vite-plus/test"
 import { trailAfterHome, type Link } from "@/components/breadcrumbs"
 
 function L(href: string, title: string): Link {

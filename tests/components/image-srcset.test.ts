@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it } from "vite-plus/test"
 import { generateImgAttrs } from "@/lib/generate-img-attrs"
 
 const imageVariants = {
