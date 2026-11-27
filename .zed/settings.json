@@ -240,6 +240,10 @@
       }
     },
     "oxlint": {
+      "binary": {
+        "path": "node_modules/.bin/effect-tsgo",
+        "arguments": ["--tsrs-lint", "oxlint", "--lsp"]
+      },
       "initialization_options": {
         "settings": {
           "run": "onType",

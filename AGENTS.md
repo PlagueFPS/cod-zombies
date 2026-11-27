@@ -30,6 +30,25 @@ release. Add a tool name to select part of the graph. For example, run
 
 <!--VITE PLUS END-->
 
+## Project Scripts & Effect Linting
+
+`vite.config.ts` enables `effecttsgo/*` rules via `@effect/tsgo`. Always run linting and full checks through the package scripts (`vpr check`, `vpr lint`, `vpr lint:fix`) rather than bare `vp check` or `vp lint`, because bare `vp` runs stock Oxlint without the `effect-tsgo --tsrs-lint` wrapper and fails on the `effecttsgo` plugin.
+
+| Command         | Purpose                                                              |
+| --------------- | -------------------------------------------------------------------- |
+| `vp install`    | Install dependencies and run `effect-tsgo patch --tsrs`.             |
+| `vpr check`     | Format check, Oxlint (with Effect rules), and `tsrs` type checking.  |
+| `vpr lint`      | Run Oxlint with `effect-tsgo --tsrs-lint`.                           |
+| `vpr lint:fix`  | Run Oxlint with autofix via `effect-tsgo --tsrs-lint`.               |
+| `vpr typecheck` | Run standalone `tsrs --noEmit`.                                      |
+| `vpr typegen`   | Regenerate Cloudflare Wrangler worker types.                         |
+| `vp test`       | Run Vitest unit/integration tests (`vpr test:watch` for watch mode). |
+| `vpr test:e2e`  | Run Playwright E2E tests (`vpr test:all` for unit + E2E).            |
+| `vp dev`        | Start the development server.                                        |
+| `vp build`      | Build the application.                                               |
+| `vpr email`     | Start the React Email preview server.                                |
+| `vpr broadcast` | Preview or send newsletter broadcasts.                               |
+
 ## Imports
 
 Use the `@/*` alias from `tsconfig.json` for imports inside the repo. The alias points at `./src/*`. Import `cn` from the `cn` package. In `import.meta.glob` and in dynamic `import()`, use `./` or `../`. Vite resolves those strings itself. An `@/` path in them breaks the build.

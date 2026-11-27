@@ -25,7 +25,7 @@ const depsWithBrokenSourcemaps = [
 	"standardwebhooks",
 ]
 
-export default defineConfig(({ command, mode }) => ({
+export default defineConfig(({ command }) => ({
 	fmt: {
 		useTabs: true,
 		tabWidth: 2,
@@ -226,6 +226,7 @@ export default defineConfig(({ command, mode }) => ({
 			".opencode/**",
 			".pi/**",
 			".roo/**",
+			".windsurf/**",
 			"tools/oxlint/anti-slop/**",
 		],
 	},
@@ -269,7 +270,8 @@ export default defineConfig(({ command, mode }) => ({
 		exclude: ["lucide-react"],
 	},
 	plugins: lazyPlugins(() =>
-		mode === "test"
+		// oxlint-disable-next-line effecttsgo/process-env -- Vite checks Vitest's env flag before the Effect runtime starts.
+		process.env.VITEST === "true"
 			? []
 			: [
 					devtools(),
