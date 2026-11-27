@@ -8,13 +8,7 @@ import type { ZombiesImagePath } from "@/types/generated/image-paths.gen"
 import { HashMap, Data, Option, Array as Arr } from "effect"
 import { type GameKey, getGames } from "@/data/games"
 import { getMaps, type MapKey } from "@/data/maps"
-import {
-	mapWithGameVariant,
-	type RegistryKeyInput,
-	registryGet,
-	resolveGameVariantOption,
-	uniqueMap,
-} from "@/data/registry-helpers"
+import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
 import { resolveNewContentState } from "@/utils/content-state"
 import { getAdjacentItems, sortDates } from "@/utils/shared-functions"
 import { nowMillis } from "@/utils/system-time"
@@ -61,7 +55,7 @@ export interface Zombie {
 	readonly weakPoints: WeakPointKey[]
 	/** Elemental weaknesses of the zombie in every game without a `variants` override */
 	readonly elementalWeakness: AmmoModKey[]
-	/** Per-game overrides, resolved with `getZombieByKey(key, game)` or `getZombies(game)` */
+	/** Per-game overrides, resolved with `resolveGameVariantOption` or grouped with `getZombieWeaknessesByGame` */
 	readonly variants: Option.Option<Partial<Record<GameKey, ZombieVariant>>>
 	/** Attacks of the zombie */
 	readonly attacks: ZombieAttackKey[]
@@ -98,27 +92,15 @@ function withResolvedZombieState(zombie: Zombie): Zombie {
 	}
 }
 
-/**
- * @returns An array of all zombies sorted by release date in descending order
- * @param game Resolves each zombie's `variants` overlay for this game
- */
-export const getZombies = (game?: RegistryKeyInput<GameKey>): Zombie[] =>
-	mapWithGameVariant(Arr.map([...ZOMBIES.values()], withResolvedZombieState), game).sort((a, b) =>
+/** @returns An array of all zombies sorted by release date in descending order */
+export const getZombies = (): Zombie[] =>
+	Arr.map([...ZOMBIES.values()], withResolvedZombieState).sort((a, b) =>
 		compareZombieReleaseDescending(a, b).pipe(Option.getOrElse(() => 0)),
 	)
 
-/**
- * @returns The zombie with the given key
- * @param game Resolves the zombie's `variants` overlay for this game
- */
-export const getZombieByKey = (
-	key: RegistryKeyInput<ZombieKey>,
-	game?: RegistryKeyInput<GameKey>,
-) =>
-	resolveGameVariantOption(
-		registryGet(ZOMBIES, key).pipe(Option.map(withResolvedZombieState)),
-		game,
-	)
+/** @returns The zombie with the given key */
+export const getZombieByKey = (key: RegistryKeyInput<ZombieKey>) =>
+	registryGet(ZOMBIES, key).pipe(Option.map(withResolvedZombieState))
 
 const isSameWeaknessList = Arr.makeEquivalence<AmmoModKey>((a, b) => a === b)
 
