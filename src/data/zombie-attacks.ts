@@ -1,5 +1,5 @@
-import { Data } from "effect"
-import { type RegistryKeyInput, registryGet, uniqueMap } from "@/data/registry-helpers"
+import { Data, Option, Predicate } from "effect"
+import { registryGet, uniqueMap } from "@/data/registry-helpers"
 
 export interface ZombieAttack {
 	/** Internal tag to discriminate against for type-narrowing */
@@ -18,10 +18,30 @@ export interface ZombieAttack {
 export type ZombieAttackKey = Parameters<(typeof ZOMBIE_ATTACKS)["get"]>[0]
 
 /**
- * Gets a zombie attack by its key.
+ * A zombie's use of a shared attack: the key alone, or the key with this zombie's own
+ * description or range. The title is never overridden, so every use keeps the shared name.
  */
-export const getZombieAttackByKey = (key: RegistryKeyInput<ZombieAttackKey>) =>
-	registryGet(ZOMBIE_ATTACKS, key)
+export type ZombieAttackUse =
+	| ZombieAttackKey
+	| {
+			readonly attack: ZombieAttackKey
+			readonly description?: string
+			readonly range?: ZombieAttack["range"]
+	  }
+
+/** @returns Every shared zombie attack */
+export const getZombieAttacks = (): ZombieAttack[] => [...ZOMBIE_ATTACKS.values()]
+
+/**
+ * @returns The attack a zombie renders: a plain copy of the shared attack with the use's
+ * overrides applied. Plain, because zombies carry it through route loader serialization.
+ */
+export const resolveZombieAttack = (use: ZombieAttackUse): ZombieAttack => {
+	const { attack, description, range } = Predicate.isString(use) ? { attack: use } : use
+	const base = registryGet(ZOMBIE_ATTACKS, attack).pipe(Option.getOrThrow)
+
+	return { ...base, range: range ?? base.range, description: description ?? base.description }
+}
 
 class ZombieAttackRecord extends Data.TaggedClass("ZombieAttack")<Omit<ZombieAttack, "_tag">> {}
 
@@ -122,16 +142,6 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		range: "Medium",
 		description:
 			"Leaps onto the player, attaching to their head and scratching their face until downed.",
-	}),
-	makeZombieAttack("aoe-slam", {
-		title: "AOE Slam",
-		range: "Short",
-		description: "Slams the ground stunning all players within the radius for around 5 seconds.",
-	}),
-	makeZombieAttack("lightning-bolt", {
-		title: "Lightning Bolt",
-		range: "Long",
-		description: "Fires a lightning bolt at the targeted player dealing significant damage.",
 	}),
 	makeZombieAttack("charge", {
 		title: "Charge",
@@ -277,12 +287,6 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Leaps towards the targeted player doing damage on hit and unleashes Rapid Slashes once landing.",
 	}),
-	makeZombieAttack("homing-vomit", {
-		title: "Homing Vomit",
-		range: "Long",
-		description:
-			"Shoots a homing vomit projectile at the targeted player dealing damage on hit and overtime.",
-	}),
 	makeZombieAttack("tongue-grab", {
 		title: "Tongue Grab",
 		range: "Medium",
@@ -317,11 +321,6 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		range: "Long",
 		description:
 			"Jumps onto the targeted player to gain a positional advantage dealing little damage to the player.",
-	}),
-	makeZombieAttack("sword-swing", {
-		title: "Sword Swing",
-		range: "Short",
-		description: "Swings their sword to deal damage to the player in close range.",
 	}),
 	makeZombieAttack("spear-throw", {
 		title: "Spear Throw",
@@ -374,12 +373,6 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		range: "Long",
 		description:
 			"Releases a shock burst when destroying thrown equipment, damaging nearby players.",
-	}),
-	makeZombieAttack("fireballs", {
-		title: "Fireballs",
-		range: "Long",
-		description:
-			"Launches a barrage of fireballs that track the player, dealing damage and spawning a hellhound upon impact.",
 	}),
 	makeZombieAttack("life-drain", {
 		title: "Life Drain",
@@ -444,12 +437,6 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		range: "Long",
 		description:
 			"Launches three fireballs that spread lava over an area dealing massive damage on impact and damage overtime via the lava.",
-	}),
-	makeZombieAttack("ground-stomp", {
-		title: "Ground Stomp",
-		range: "Short",
-		description:
-			"Stomps the ground with its foot, dealing damage and knocking back players in close proximity.",
 	}),
 	makeZombieAttack("hammer-slam", {
 		title: "Hammer Slam",
@@ -552,12 +539,6 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Steals Ol' Tessie if no one is inside, damage the car, and throwing it back at a player, dealing decent damage.",
 	}),
-	makeZombieAttack("aether-laser", {
-		title: "Aether Laser",
-		range: "Long",
-		description:
-			"Launches a powerful laser beam that perfectly tracks players, dealing critical damage.",
-	}),
 	makeZombieAttack("drone-shield", {
 		title: "Drone Shield",
 		range: "Short",
@@ -582,23 +563,11 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Produces non-critical internal parts from its interior and hefts them at a threat",
 	}),
-	makeZombieAttack("orbital-laser", {
-		title: "Orbital Laser",
-		range: "Long",
-		description:
-			"Launches a powerful laser beam that perfectly tracks players, dealing critical damage.",
-	}),
 	makeZombieAttack("meteor-shower", {
 		title: "Meteor Shower",
 		range: "Long",
 		description:
 			"Launches a barrage of meteors that rain down on the player, dealing critical damage.",
-	}),
-	makeZombieAttack("toxic-gas-cloud", {
-		title: "Toxic Gas Cloud",
-		range: "Long",
-		description:
-			"Produces a toxic gas cloud that covers the lower arena, limiting health to a maximum of 175HP.",
 	}),
 	makeZombieAttack("rock-throw", {
 		title: "Rock Throw",
@@ -716,11 +685,6 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		range: "Medium",
 		description: "Throws a shield at the targeted player.",
 	}),
-	makeZombieAttack("staff-swing", {
-		title: "Staff Swing",
-		range: "Short",
-		description: "Swings a staff to deal damage to the player in close range.",
-	}),
 	makeZombieAttack("ninja-summon", {
 		title: "Ninja Summon",
 		range: "Medium",
@@ -764,7 +728,7 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		title: "Laser Beam",
 		range: "Long",
 		description:
-			"Fires a laser beam from the light on its head, dealing heavy damage while a player is caught in the beam.",
+			"Launches a powerful laser beam that perfectly tracks players, dealing critical damage.",
 	}),
 	makeZombieAttack("shockwave-slam", {
 		title: "Shockwave Slam",
@@ -782,12 +746,6 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		range: "Long",
 		description: "Launches eggs that hatch into Crogs where they land.",
 	}),
-	makeZombieAttack("leaping-strike", {
-		title: "Leaping Strike",
-		range: "Medium",
-		description:
-			"Leaps at the player from a distance and hits for the same damage as a normal zombie.",
-	}),
 	makeZombieAttack("phantom-strike", {
 		title: "Phantom Strike",
 		range: "Short",
@@ -804,16 +762,6 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		title: "Carried Bomb",
 		range: "Short",
 		description: "Carries a bomb. Shooting the bomb makes it explode.",
-	}),
-	makeZombieAttack("forward-charge", {
-		title: "Forward Charge",
-		range: "Long",
-		description: "Charges straight ahead.",
-	}),
-	makeZombieAttack("heavy-swing", {
-		title: "Heavy Swing",
-		range: "Short",
-		description: "Swings for about 75–85% of the player's maximum health.",
 	}),
 	makeZombieAttack("electric-armour", {
 		title: "Electric Armour",
@@ -911,37 +859,13 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		title: "Infection",
 		range: "Short",
 		description:
-			"A hit infects the player instead of a normal down. The timer is 60 seconds, or 75 seconds with Exo tactical armor active. A later zombie hit removes 3 seconds, or 5 seconds when that hit deals more than 50 damage. Other damage takes off a tenth of a second per point.",
-	}),
-	makeZombieAttack("goliath-melee", {
-		title: "Improvised Melee",
-		range: "Short",
-		description:
-			"Swings a parking meter, stop sign, or axle, or bashes with the riot shield, for 90 damage inside about 120 units.",
-	}),
-	makeZombieAttack("goliath-lunge", {
-		title: "Lunge",
-		range: "Medium",
-		description:
-			"Lunges from up to about 250 units. It has to move about 100 units from that spot before it can lunge again.",
-	}),
-	makeZombieAttack("goliath-spin", {
-		title: "Spin",
-		range: "Short",
-		description:
-			"Spins if you are still near where it last lunged. The cooldown is about 5 seconds solo and 15 seconds in co-op.",
+			"Infects the player. The round-13 gas trap applies it, and a down from Mutated Oz infects you instead of a normal last stand. Cure it at a decontamination station.",
 	}),
 	makeZombieAttack("emp-stomp", {
 		title: "EMP Stomp",
 		range: "Medium",
 		description:
 			"After taking 2000 damage and waiting 15 seconds, it stomps when you are within about 500 units and shuts down Exos in that radius.",
-	}),
-	makeZombieAttack("goliath-rockets", {
-		title: "Homing Rockets",
-		range: "Long",
-		description:
-			"Fires homing rockets once you are outside melee reach. A rocket EMPs Exos within about 150 units when it detonates.",
 	}),
 	makeZombieAttack("emp-pulse", {
 		title: "EMP Pulse",
@@ -954,12 +878,6 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		range: "Short",
 		description:
 			"An electric attack. Within 180 units of the Galleria capacitor, it charges the capacitor and consumes the EMZ.",
-	}),
-	makeZombieAttack("host-infection", {
-		title: "Host Infection",
-		range: "Short",
-		description:
-			"Infects the player. The round-13 gas trap applies it, and a down from Mutated Oz infects you instead of a normal last stand. Cure it at a decontamination station.",
 	}),
 	makeZombieAttack("exo-emp-lasers", {
 		title: "Laser Grid",
@@ -978,35 +896,15 @@ const ZOMBIE_ATTACKS = uniqueMap([
 		description:
 			"Sentries or mounted turrets open fire. One turret with two or fewer players, and two turrets with three or more.",
 	}),
-	makeZombieAttack("crushing-melee", {
-		title: "Crushing Melee",
-		range: "Short",
-		description: "A melee hit that deals 250 damage.",
-	}),
 	makeZombieAttack("spin-attack", {
 		title: "Spin",
 		range: "Short",
 		description: "A spinning strike. The cooldown is 5 seconds solo and 15 seconds in co-op.",
 	}),
-	makeZombieAttack("charging-lunge", {
-		title: "Charging Lunge",
-		range: "Medium",
-		description: "Lunges at a player from outside melee range.",
-	}),
-	makeZombieAttack("bounding-leap", {
-		title: "Bounding Leap",
-		range: "Long",
-		description: "Leaps toward a player.",
-	}),
 	makeZombieAttack("homing-rockets", {
 		title: "Homing Rockets",
 		range: "Long",
 		description: "Fires homing rockets that EMP Exo suits within 150 units.",
-	}),
-	makeZombieAttack("exo-emp-stomp", {
-		title: "EMP Stomp",
-		range: "Long",
-		description: "A stomp that EMPs Exo suits within 1000 units.",
 	}),
 	makeZombieAttack("spike-shrapnel", {
 		title: "Spike Shrapnel",
