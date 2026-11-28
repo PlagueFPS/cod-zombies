@@ -311,6 +311,10 @@ function listeningInodes(port: number) {
 	return inodes
 }
 
+/**
+ * Descendants of `pid`. A child can be recorded on a non-main thread
+ * (`vp` starts Vite from a worker), so every task's children file is read.
+ */
 function processTree(pid: number) {
 	const seen = new Set<number>()
 	const stack = [pid]
@@ -318,10 +322,20 @@ function processTree(pid: number) {
 		const current = stack.pop()
 		if (current === undefined || seen.has(current)) continue
 		seen.add(current)
-		const childrenPath = `/proc/${current}/task/${current}/children`
-		if (!existsSync(childrenPath)) continue
-		const children = readFileSync(childrenPath, "utf8").trim().split(/\s+/).filter(Boolean)
-		for (const child of children) stack.push(Number(child))
+		const taskDir = `/proc/${current}/task`
+		if (!existsSync(taskDir)) continue
+		let tids: string[] = []
+		try {
+			tids = readdirSync(taskDir)
+		} catch {
+			continue
+		}
+		for (const tid of tids) {
+			const childrenPath = join(taskDir, tid, "children")
+			if (!existsSync(childrenPath)) continue
+			const children = readFileSync(childrenPath, "utf8").trim().split(/\s+/).filter(Boolean)
+			for (const child of children) stack.push(Number(child))
+		}
 	}
 	return seen
 }
